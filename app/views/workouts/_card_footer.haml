@@ -1,0 +1,14 @@
+.card-footer
+  .btn-group.btn-group-block
+    -if current_user.has_active_workout? && current_user.active_workout.id == workout.id
+      %button.btn.btn-error
+        %a{:href => "/workouts/stop" }
+          End Workout
+    -else
+      %button.btn
+        %a{:href => "/workouts/#{workout.id}/edit" }
+          Edit Workout
+      
+    %button.btn 
+      Analyze
+    %button.btn Share

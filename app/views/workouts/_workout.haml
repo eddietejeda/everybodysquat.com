@@ -1,0 +1,34 @@
+- cache workout do
+  .card
+    .card-header
+      .card-title.h5
+        =link_to workout.created_at.strftime("%a, %b %d %Y"), edit_workout_path(workout)
+      .card-subtitle.text-gray
+        Good day
+      .card-body.columns
+        - workout.exercises.each do |exercise|
+          .column.col-12
+            %h6
+              = exercise.name
+          .column.col-12
+            .columns
+              .col-4
+                Previous
+              .col-4
+                Current
+              .col-4
+
+              - workout.setts.where(exercise_id: exercise.id).order(:id).each do |sett|
+                .columns.col-12{"data-controller" => "sett", "data-sett-id" => sett.id}
+                  .col-4
+                    %small.tile-subtitle.text-gray 
+                      =sett.weight
+                  .col-4
+                    %small.tile-subtitle.text-gray 
+                      %input{type: "number", min: 0, max: 2000, step: 2.5, value: sett.incremented_weight.to_i, "data-target" => "sett.weight", "data-action" => "change->sett#updateWeight"}
+                  .col-4
+                    %button.btn.btn-action.s-circle{"data-target" => "sett.button", "data-action" => "click->sett#updateReps", :class => ("btn-primary" if sett.reps_completed > 0)}
+                      .div{"data-target" => "sett.reps", "value" => "0"}
+                        ="#{sett.reps_completed}x#{sett.reps_goal}"
+
+      =render 'card_footer', workout: workout

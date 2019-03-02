@@ -1,0 +1,4 @@
+%input#toggle-all/
+%label{:for => "toggle-all"} Mark all as complete
+- @workouts.map do |workout|
+  = hidden_field_tag "ids[]", workout.id

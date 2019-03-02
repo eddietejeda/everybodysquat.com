@@ -1,0 +1,9 @@
+%table.table.table-striped.table-hover{"data-controller" => "workout-list"}
+  %thead
+    %tr
+      %th name
+      %th date
+  %tbody.workoutapp
+    = cache @workouts do
+      %tr.workout-list
+        = render @workouts, cached: true

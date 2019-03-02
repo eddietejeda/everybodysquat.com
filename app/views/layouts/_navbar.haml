@@ -1,0 +1,42 @@
+#sidebar.main-sidebar{"data-controller" => "sidebar"}
+  #navbar.main-navbar
+    %a.off-canvas-toggle.btn.btn-link.btn-action{"data-action" => "click->sidebar#toggle"}
+      %i.icon.icon-menu
+    .btns.d-flex
+      -if current_user
+        %a.btn.ml-1{:href => "/"} View Log
+        -if current_user.has_active_workout?
+          %a.btn.btn-primary.ml-1{:href => "/workouts/#{current_user.active_workout.id}/edit"} Current Workout
+        -else
+          %a.btn.btn-primary.ml-1{:href => "/workouts/create"} New Workout
+
+  #sidebar.main-sidebar.off-canvas-sidebar{"data-target" => "sidebar.menu"}
+    .main-brand
+      %a.main-logo{:href => "/#"}
+        %h2 EveryBody
+        %small.label.label-secondary.text-bold squat
+    %ul.nav.main-nav
+      -if current_user
+    
+        %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'show') }
+          %a{:href => "/#{current_user.username}"} 
+            My Account
+        %li.nav-item{class: ('active' if params[:controller] == 'routines') }
+          %a{:href => "/routines"}
+            Routines 
+        %li.nav-item{class: ('active' if params[:controller] == 'workouts') }
+          %a{:href => "/workouts"} 
+            Workouts 
+        %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'metrics') }
+          %a{:href => "/#{current_user.username}/metrics"} 
+            Metrics 
+        %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'charts') }
+          %a{:href => "/#{current_user.username}/charts"} 
+            Charts
+        %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'timeline') }
+          %a{:href => "/#{current_user.username}/timeline"} 
+            Timeline
+        %li.nav-item
+          =link_to('Logout', destroy_user_session_path)
+
+  %a.off-canvas-overlay{"data-action" => "click->sidebar#toggle", "data-target" => "sidebar.overlay"}

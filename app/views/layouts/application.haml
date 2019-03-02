@@ -1,0 +1,29 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title EveryBody
+    / inline css to get 100 at google page speed
+    - if Rails.env.production?
+      :css
+        #{raw File.read("public" + asset_pack_path("application.css"))}
+    - else
+      = stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', async: Rails.env.production?
+    %meta{:content => "width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no", :name => "viewport"}/
+    %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}/
+    
+    = csrf_meta_tags
+  %body{class: @device_type}
+    .main-container.off-canvas.off-canvas-sidebar-show
+      = render 'layouts/navbar'
+      .off-canvas-content
+        #content.main-content{class: controller_name}
+          .container
+            .columns
+              .column.col-3.col-md-3.col-lg-2
+              .column.col-6.col-md-6.col-lg-8.col-xs-12
+                = render 'layouts/alert'
+                = yield
+              .column.col-3.col-md-3.col-lg-2
+          #copyright.main-footer.container.grid-lg

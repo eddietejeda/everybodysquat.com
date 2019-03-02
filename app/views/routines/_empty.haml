@@ -1,0 +1,14 @@
+.empty
+  .empty-icon
+    %i.icon.icon-3x.icon-mail
+  %p.empty-title.h5 You have no routines 
+  %p.empty-subtitle hello
+  .empty-action
+    =link_to "/routines/new" do
+      %button.btn.btn-primary Create new routine
+
+  -if @routines.length > 0
+    -@routines.each do |routine|
+      %div
+        =routine.name
+  

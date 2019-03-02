@@ -1,0 +1,22 @@
+= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|  
+  .panel
+    .panel-header.text-center
+      .panel-title.h5.mt-10 Login
+    .panel-body
+      .field.form-group
+        = f.label :login
+        %br/
+        = f.text_field :login, autofocus: true, autocomplete: "login"
+      .field.form-group
+        = f.label :password
+        %br/
+        = f.password_field :password, autocomplete: "current-password"
+      - if devise_mapping.rememberable?
+        .field.form-group
+          = f.check_box :remember_me
+          = f.label :remember_me
+      .actions
+      
+      = render "devise/shared/links"
+    .panel-footer
+      = f.submit value: "Log in", class: "btn btn-primary btn-block"

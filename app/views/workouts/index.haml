@@ -1,0 +1,29 @@
+
+
+=render "empty"
+/ .card
+/   .card-header
+/     .card-title.h5
+/       Next workout is tomorrow
+/
+
+
+
+
+  
+-@workouts.each do |workout|
+  .card
+    .card-header
+      .card-title.h5
+        =link_to workout.created_at.strftime("%a, %b %d %Y"), edit_workout_path(workout)
+      .card-subtitle.text-gray
+        Good day
+      .card-body.columns
+        - workout.exercises.each do |exercise|
+          .column.col-7.col-xs-5.col-md-7
+            = exercise.name
+          .column.col-5.col-xs-7.col-md-5
+            - workout.setts.where(exercise_id: exercise.id).distinct(:exercise_id).each do |sett|
+              .label.label-primary
+                =sett.reps_completed
+      =render 'card_footer', workout: workout

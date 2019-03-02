@@ -1,0 +1,14 @@
+-if flash.any?
+  .column.col-12
+    .text-center
+      -flash.each do |key, value|
+        -if key == 'alert'
+          -alert_type = 'label-warning'
+        -if key == 'error'
+          -alert_type = 'label-error'
+        -else  #notice
+          -alert_type = 'label-primary'
+
+        %span.label{class: "#{alert_type}"}
+          =value
+    
