@@ -6,7 +6,7 @@ class AdminMailer < ApplicationMailer
 
   def new_user_waiting_for_approval(email)
     @email = email
-    to_email = ENV.fetch('ADMIN') || "#{Etc.getlogin}@localhost"
+    to_email = ENV['ADMIN_EMAIL'] || "#{Etc.getlogin}@localhost"
     mail(to: to_email, subject: 'New user awaiting approval')
   end
 end
