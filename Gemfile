@@ -15,6 +15,7 @@ gem 'redis-rails'
 gem 'turbolinks'
 gem 'webpacker'
 
+gem 'sendgrid-ruby'
 
 gem 'devise'
 gem 'omniauth'
