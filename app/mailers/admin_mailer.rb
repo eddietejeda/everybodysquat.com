@@ -1,9 +1,12 @@
+require 'etc'
+
 class AdminMailer < ApplicationMailer
   default from: 'no-reply@everybodysquat.com'
   layout 'mailer'
 
   def new_user_waiting_for_approval(email)
     @email = email
-    mail(to: 'admin@email.com', subject: 'New User Awaiting Admin Approval')
+    to_email = ENV.fetch('ADMIN') || "#{Etc.getlogin}@localhost"
+    mail(to: to_email, subject: 'New user awaiting approval')
   end
 end
