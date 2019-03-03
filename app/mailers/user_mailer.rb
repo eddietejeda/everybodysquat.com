@@ -1,6 +1,6 @@
 require 'etc'
 
-class AdminMailer < ApplicationMailer
+class UserMailer < ApplicationMailer
   default from: 'no-reply@everybodysquat.com'
   layout 'mailer'
 
