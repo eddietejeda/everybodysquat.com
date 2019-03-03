@@ -3,7 +3,11 @@
 class UsersController < ApplicationController
   # helper_method :filtering_params
   # validate :reserved_username
-      
+
+  def index
+    redirect_to "/workouts"
+  end
+  
   def show
     @user = User.where("username = '#{params[:username]}'").first
     
