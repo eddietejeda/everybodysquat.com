@@ -1,0 +1,20 @@
+/
+  Note that this belongs in a form where "f" is the form variable.
+  In this case, we are dealing with a child model called LineItem.
+  Make careful note of the pluralization of "line_item" below - some
+  must be plural and others singular.  See the _line_item.html.erb
+  file for an example of the actual subform.  Also note that you
+  must allow for "id" and "_destroy" fields in your strong parameters
+  for line_items_attributes.
+%fieldset
+  %legend Line Items
+  %table#line_items_tbl
+    %thead
+      %tr
+        %th Field 1
+        %th Field 2
+        %th Actions
+    %tbody#line_items
+      = f.fields_for :line_items do |li_form|
+        = render partial: "form_line", locals: { f: li_form }
+  = add_child_button 'Add A Line Item', f, :line_items, partial: 'form_line'

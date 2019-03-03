@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :routines, only: %i[index new create show], path: '/routines'
+  resources :routines, only: %i[index new edit update create show], path: '/routines'
 
   get "/:username", to: "users#show"
   get "/:username/timeline", to: "users#timeline"
