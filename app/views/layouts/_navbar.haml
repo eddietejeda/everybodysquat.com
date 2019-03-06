@@ -4,11 +4,11 @@
       %i.icon.icon-menu
     .btns.d-flex
       -if current_user
-        %a.btn.ml-1{:href => "/"} View Log
+        / %a.btn.ml-1{:href => "/"} View Log
         -if current_user.has_active_workout?
-          %a.btn.btn-primary.ml-1{:href => "/workouts/#{current_user.active_workout.id}/edit"} Current Workout
+          %a.btn.btn-primary.ml-1{:href => "/workouts/#{current_user.active_workout.id}/edit"} In Progress
         -else
-          %a.btn.btn-primary.ml-1{:href => "/workouts/create"} New Workout
+          %a.btn.btn-primary.ml-1{:href => "/workouts/create"} Begin workout
 
   #sidebar.main-sidebar.off-canvas-sidebar{"data-target" => "sidebar.menu"}
     .main-brand
