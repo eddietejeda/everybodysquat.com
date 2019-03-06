@@ -1,0 +1,19 @@
+%h1 Listing exercise_routines
+
+%table
+  %thead
+    %tr
+      %th
+      %th
+      %th
+
+  %tbody
+    - @exercise_routines.each do |exercise_routine|
+      %tr
+        %td= link_to 'Show', exercise_routine
+        %td= link_to 'Edit', edit_exercise_routine_path(exercise_routine)
+        %td= link_to 'Destroy', exercise_routine, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Exercise routine', new_exercise_routine_path

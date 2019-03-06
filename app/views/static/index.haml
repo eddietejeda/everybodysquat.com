@@ -12,3 +12,5 @@
   %p.text-gray
     Latest version:
     %span.version
+      
+      =ENV['HEROKU_RELEASE_VERSION'] || "#{`git rev-parse --short HEAD`}"

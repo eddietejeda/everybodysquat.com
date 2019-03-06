@@ -19,23 +19,21 @@
       -if current_user
     
         %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'show') }
-          %a{:href => "/#{current_user.username}"} 
-            My Account
+          %a{:href => "/#{current_user.username}"} My Profile
         %li.nav-item{class: ('active' if params[:controller] == 'routines') }
-          %a{:href => "/routines"}
-            Routines 
+          %a{:href => "/routines"} Routines 
         %li.nav-item{class: ('active' if params[:controller] == 'workouts') }
-          %a{:href => "/workouts"} 
-            Workouts 
-        %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'metrics') }
-          %a{:href => "/#{current_user.username}/metrics"} 
-            Metrics 
+          %a{:href => "/workouts"}  Workouts 
+
+        -if current_user.is_admin?
+          %li.nav-item{class: ('active' if params[:controller] == 'exercises') }
+            %a.badge.data-badge{:href => "/exercises"} Exercises 
+        %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'goals') }
+          %a{:href => "/#{current_user.username}/goals"}  Goals 
         %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'charts') }
-          %a{:href => "/#{current_user.username}/charts"} 
-            Charts
+          %a{:href => "/#{current_user.username}/charts"}  Charts
         %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'timeline') }
-          %a{:href => "/#{current_user.username}/timeline"} 
-            Timeline
+          %a{:href => "/#{current_user.username}/timeline"}  Timeline
         %li.nav-item
           =link_to('Logout', destroy_user_session_path)
 

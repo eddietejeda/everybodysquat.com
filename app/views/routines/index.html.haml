@@ -1,19 +1,28 @@
-%h1 Listing routines
+.card
 
-%table
-  %thead
-    %tr
-      %th
-      %th
-      %th
+  %h1 Workout Programs
 
-  %tbody
-    - @routines.each do |routine|
-      %tr
-        %td= link_to 'Show', routine
-        %td= link_to 'Edit', edit_routine_path(routine)
-        %td= link_to 'Destroy', routine, method: :delete, data: { confirm: 'Are you sure?' }
+  .columns
+    - @routines.each do |routine|      
 
-%br
+      .col-4
+        = link_to "#{routine.name}", associate_user_to_routine_path(routine) 
 
-= link_to 'New Routine', new_routine_path
+      .col-4
+        - if current_user.routine_id == routine.id
+          ="Active"
+        -else
+          ="-"
+
+
+      .col-4
+        = link_to "(Edit)", edit_routine_path(routine)
+      / %td= link_to 'Edit', edit_routine_path(routine)
+      / %td= link_to 'Destroy', routine, method: :delete, data: { confirm: 'Are you sure?' }
+
+  %br
+
+  = link_to 'New Routine', new_routine_path
+
+
+

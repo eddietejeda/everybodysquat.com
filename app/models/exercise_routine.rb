@@ -11,4 +11,7 @@
 class ExerciseRoutine < ApplicationRecord
   belongs_to :exercise
   belongs_to :routine
+  
+  accepts_nested_attributes_for :exercise
+  
 end

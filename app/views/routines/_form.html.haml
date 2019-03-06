@@ -1,20 +1,52 @@
-.panel
-  .panel-header.text-center
-    .panel-title.h5.mt-10 Routine
-    #error_explanation
-      %ul
-        - @routine.errors.full_messages.each do |message|
-          %li= message
-      = form_for @routine do |f|
-        .panel-body
-          .field.form-group
-            = f.label :name
-            %br/
-            = f.text_field :name, autofocus: true
 
-          .field.form-group
-            = f.label :description
-            %br/
-            = f.text_field :description
-        .actions
-        = f.submit 'Save'
+#error_explanation
+  %ul
+    - @routine.errors.full_messages.each do |message|
+      %li= message
+      
+
+  %p Form Start
+  = form_for @routine do |form|
+    .panel-body
+      .field.form-group
+        = form.label :name
+        %br/
+        = form.text_field :name, autofocus: true
+
+      .field.form-group
+        = form.label :description
+        %br/
+        = form.text_field :description
+
+
+
+      -# = options_from_collection_for_select(City.all, :id, :name)
+      .columns.col-12
+        .col-4 Exercise
+        .col-4 Reps
+        .col-4 Sets
+        
+      =form.fields_for :exercise_routines do |form_exercise_routine|
+        .columns.col-12
+          .col-4 
+            =form_exercise_routine.fields_for :exercise do |form_exercise|
+              = form_exercise.text_field :name
+          .col-4
+            / -# = form_exercise_routine.label :sets
+            = form_exercise_routine.text_field :sets, width: 5
+          .col-4 
+            / -#= form_exercise_routine.label :reps
+            = form_exercise_routine.text_field :reps, width: 5
+          .col-4 
+            -#link_to 'Edit', edit_exercise_routine_path(exercise_routine)
+            -#link_to 'Destroy', exercise_routine, method: :delete, data: { confirm: 'Are you sure?' }
+
+      -# Adding new Exercise
+      / %p=link_to 'Add exercise to routine', new_exercise_routine_path
+      %p= link_to 'Add exercise to routine ', "/routines/#{@routine.id}/exercises/new"
+      %p= link_to 'Create new exercise', new_exercise_path
+                                
+        
+    .columns.actions
+      .col-12
+        = form.submit 'Save'

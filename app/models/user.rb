@@ -37,6 +37,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, authentication_keys: [:login]
 
   has_many :workouts
+  has_one :routine
   # belongs_to :routine
   validates :username, presence: :true, uniqueness: { case_sensitive: false }
   validate :validate_username
@@ -109,7 +110,7 @@ class User < ApplicationRecord
     
     workout = Workout.create({
       user_id: self.id,
-      routine_id: self.routine.id,
+      routine_id: self.routine_id,
       active: true
     })
 

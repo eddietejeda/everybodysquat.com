@@ -5,31 +5,14 @@ class UsersController < ApplicationController
   # validate :reserved_username
 
   def index
-    redirect_to "/workouts"
-  end
-  
-  def show
-    @user = User.where("username = '#{params[:username]}'").first
-    
-    unless @user
-      # raise ActionController::RoutingError.new('Not Found')
-      # render :status => 404
-      render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
-    end
-    
+    redirect_to "/{#{current_user.username}}"
   end
 
-  def metrics
-    
+  def add_routine_to_user
+    current_user.update!(routine_to_user_params)
+    redirect_to "/routines"    
   end
   
-  def charts
-    
-  end
-
-  def timeline
-    
-  end
 
 
   private
@@ -39,6 +22,11 @@ class UsersController < ApplicationController
       errors.add(:reserved_username, "username is reserved for the app") if reserved_usernames.include?(username)
     end
       
+      
+    def routine_to_user_params
+      params.permit(:routine_id)
+    end
+
 
 
 end

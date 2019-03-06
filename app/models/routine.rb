@@ -16,4 +16,9 @@ class Routine < ApplicationRecord
   has_many :users
   has_many :exercise_routines
   has_many :exercises, through: :exercise_routines
+  
+  accepts_nested_attributes_for :exercises
+  accepts_nested_attributes_for :exercise_routines
+  
+  
 end

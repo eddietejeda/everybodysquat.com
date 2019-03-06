@@ -12,4 +12,7 @@ class Exercise < ApplicationRecord
   has_many :exercise_routines
   has_many :routines, through: :exercise_routines
   has_many :setts
+  
+  # belongs_to :routine
+
 end
