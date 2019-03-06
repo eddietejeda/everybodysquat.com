@@ -26,3 +26,4 @@
 .bundle
 ios
 .env
+config/skylight.yml

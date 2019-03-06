@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '2.4.3'
+ruby '2.6.1'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
@@ -16,6 +16,7 @@ gem 'turbolinks'
 gem 'webpacker'
 
 gem 'sendgrid-ruby'
+gem "skylight"
 
 gem 'devise'
 gem 'omniauth'
