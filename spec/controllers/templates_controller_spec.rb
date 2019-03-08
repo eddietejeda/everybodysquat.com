@@ -23,10 +23,10 @@ require 'rails_helper'
 # removed from Rails core in Rails 5, but can be added back in via the
 # `rails-controller-testing` gem.
 
-RSpec.describe ExerciseRoutinesController, type: :controller do
+RSpec.describe TemplatesController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
-  # ExerciseRoutine. As you add validations to ExerciseRoutine, be sure to
+  # Template. As you add validations to Template, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
@@ -38,12 +38,12 @@ RSpec.describe ExerciseRoutinesController, type: :controller do
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
-  # ExerciseRoutinesController. Be sure to keep this updated too.
+  # TemplatesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
   describe "GET #index" do
     it "returns a success response" do
-      ExerciseRoutine.create! valid_attributes
+      Template.create! valid_attributes
       get :index, params: {}, session: valid_session
       expect(response).to be_successful
     end
@@ -51,8 +51,8 @@ RSpec.describe ExerciseRoutinesController, type: :controller do
 
   describe "GET #show" do
     it "returns a success response" do
-      exercise_routine = ExerciseRoutine.create! valid_attributes
-      get :show, params: {id: exercise_routine.to_param}, session: valid_session
+      template = Template.create! valid_attributes
+      get :show, params: {id: template.to_param}, session: valid_session
       expect(response).to be_successful
     end
   end
@@ -66,29 +66,29 @@ RSpec.describe ExerciseRoutinesController, type: :controller do
 
   describe "GET #edit" do
     it "returns a success response" do
-      exercise_routine = ExerciseRoutine.create! valid_attributes
-      get :edit, params: {id: exercise_routine.to_param}, session: valid_session
+      template = Template.create! valid_attributes
+      get :edit, params: {id: template.to_param}, session: valid_session
       expect(response).to be_successful
     end
   end
 
   describe "POST #create" do
     context "with valid params" do
-      it "creates a new ExerciseRoutine" do
+      it "creates a new Template" do
         expect {
-          post :create, params: {exercise_routine: valid_attributes}, session: valid_session
-        }.to change(ExerciseRoutine, :count).by(1)
+          post :create, params: {template: valid_attributes}, session: valid_session
+        }.to change(Template, :count).by(1)
       end
 
-      it "redirects to the created exercise_routine" do
-        post :create, params: {exercise_routine: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(ExerciseRoutine.last)
+      it "redirects to the created template" do
+        post :create, params: {template: valid_attributes}, session: valid_session
+        expect(response).to redirect_to(Template.last)
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'new' template)" do
-        post :create, params: {exercise_routine: invalid_attributes}, session: valid_session
+        post :create, params: {template: invalid_attributes}, session: valid_session
         expect(response).to be_successful
       end
     end
@@ -100,41 +100,41 @@ RSpec.describe ExerciseRoutinesController, type: :controller do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested exercise_routine" do
-        exercise_routine = ExerciseRoutine.create! valid_attributes
-        put :update, params: {id: exercise_routine.to_param, exercise_routine: new_attributes}, session: valid_session
-        exercise_routine.reload
+      it "updates the requested template" do
+        template = Template.create! valid_attributes
+        put :update, params: {id: template.to_param, template: new_attributes}, session: valid_session
+        template.reload
         skip("Add assertions for updated state")
       end
 
-      it "redirects to the exercise_routine" do
-        exercise_routine = ExerciseRoutine.create! valid_attributes
-        put :update, params: {id: exercise_routine.to_param, exercise_routine: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(exercise_routine)
+      it "redirects to the template" do
+        template = Template.create! valid_attributes
+        put :update, params: {id: template.to_param, template: valid_attributes}, session: valid_session
+        expect(response).to redirect_to(template)
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'edit' template)" do
-        exercise_routine = ExerciseRoutine.create! valid_attributes
-        put :update, params: {id: exercise_routine.to_param, exercise_routine: invalid_attributes}, session: valid_session
+        template = Template.create! valid_attributes
+        put :update, params: {id: template.to_param, template: invalid_attributes}, session: valid_session
         expect(response).to be_successful
       end
     end
   end
 
   describe "DELETE #destroy" do
-    it "destroys the requested exercise_routine" do
-      exercise_routine = ExerciseRoutine.create! valid_attributes
+    it "destroys the requested template" do
+      template = Template.create! valid_attributes
       expect {
-        delete :destroy, params: {id: exercise_routine.to_param}, session: valid_session
-      }.to change(ExerciseRoutine, :count).by(-1)
+        delete :destroy, params: {id: template.to_param}, session: valid_session
+      }.to change(Template, :count).by(-1)
     end
 
-    it "redirects to the exercise_routines list" do
-      exercise_routine = ExerciseRoutine.create! valid_attributes
-      delete :destroy, params: {id: exercise_routine.to_param}, session: valid_session
-      expect(response).to redirect_to(exercise_routines_url)
+    it "redirects to the templates list" do
+      template = Template.create! valid_attributes
+      delete :destroy, params: {id: template.to_param}, session: valid_session
+      expect(response).to redirect_to(templates_url)
     end
   end
 
