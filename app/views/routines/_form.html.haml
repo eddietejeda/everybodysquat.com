@@ -35,23 +35,7 @@
           = "Day #{template.group}"
       
       
-      
-    / =form.fields_for :exercise_routines do |form_exercise_routine|
-    /   .columns.col-12
-    /     .col-4
-    /       =form_exercise_routine.fields_for :exercise do |form_exercise|
-    /         = form_exercise.text_field :name
-    /     .col-4
-    /       / -# = form_exercise_routine.label :sets
-    /       = form_exercise_routine.text_field :sets, width: 5
-    /     .col-4
-    /       / -#= form_exercise_routine.label :reps
-    /       = form_exercise_routine.text_field :reps, width: 5
-    /     .col-4
-    /       -#link_to 'Edit', edit_exercise_routine_path(exercise_routine)
-    /       -#link_to 'Destroy', exercise_routine, method: :delete, data: { confirm: 'Are you sure?' }
-
-    %p= link_to 'Add exercise to routine ', "/routines/#{@routine.id}/templates/new"
+    %p= link_to 'Add exercise to routine ', new_template_path(:routine_id => @routine.id) 
     %p= link_to 'Create new exercise', new_exercise_path
                                 
         
