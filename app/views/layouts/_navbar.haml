@@ -35,10 +35,10 @@
         %li.nav-item
           %hr
         -if current_user.is_admin?
-          %li.nav-item{class: ('active' if params[:controller] == 'exercises') }
-            %a{:href => "/exercises"} All Exercises 
           %li.nav-item{class: ('active' if params[:controller] == 'routines') }
             %a{:href => "/routines"} All Routines 
+          %li.nav-item{class: ('active' if params[:controller] == 'exercises') }
+            %a{:href => "/exercises"} All Exercises 
           %li.nav-item{class: ('active' if params[:controller] == 'workouts') }
             %a{:href => "/workouts"} All Workouts  
             
