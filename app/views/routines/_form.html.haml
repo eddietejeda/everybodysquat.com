@@ -1,50 +1,58 @@
-
 #error_explanation
   %ul
     - @routine.errors.full_messages.each do |message|
       %li= message
       
 
-  %p Form Start
   = form_for @routine do |form|
-    .panel-body
-      .field.form-group
+    .columns.col-12
+      .field.form-group.col-12
         = form.label :name
         %br/
         = form.text_field :name, autofocus: true
 
-      .field.form-group
+      .field.form-group.col-12
         = form.label :description
         %br/
         = form.text_field :description
 
+    .columns.col-12
+      .col-3 Exercise
+      .col-3 Sets
+      .col-3 Reps
+      .col-3 Day
 
-
-      -# = options_from_collection_for_select(City.all, :id, :name)
+    -@routine.templates.each do |template|
       .columns.col-12
-        .col-4 Exercise
-        .col-4 Reps
-        .col-4 Sets
-        
-      =form.fields_for :exercise_routines do |form_exercise_routine|
-        .columns.col-12
-          .col-4 
-            =form_exercise_routine.fields_for :exercise do |form_exercise|
-              = form_exercise.text_field :name
-          .col-4
-            / -# = form_exercise_routine.label :sets
-            = form_exercise_routine.text_field :sets, width: 5
-          .col-4 
-            / -#= form_exercise_routine.label :reps
-            = form_exercise_routine.text_field :reps, width: 5
-          .col-4 
-            -#link_to 'Edit', edit_exercise_routine_path(exercise_routine)
-            -#link_to 'Destroy', exercise_routine, method: :delete, data: { confirm: 'Are you sure?' }
+        .col-3
+          [ ]
+          = link_to template.exercise.name, "/templates/#{template.id}/edit"
+        .col-3        
+          = "#{template.sets}"
+        .col-3
+          = "#{template.reps}"
+        .col-3        
+          = "Day #{template.group}"
+      
+      
+      
+    / =form.fields_for :exercise_routines do |form_exercise_routine|
+    /   .columns.col-12
+    /     .col-4
+    /       =form_exercise_routine.fields_for :exercise do |form_exercise|
+    /         = form_exercise.text_field :name
+    /     .col-4
+    /       / -# = form_exercise_routine.label :sets
+    /       = form_exercise_routine.text_field :sets, width: 5
+    /     .col-4
+    /       / -#= form_exercise_routine.label :reps
+    /       = form_exercise_routine.text_field :reps, width: 5
+    /     .col-4
+    /       -#link_to 'Edit', edit_exercise_routine_path(exercise_routine)
+    /       -#link_to 'Destroy', exercise_routine, method: :delete, data: { confirm: 'Are you sure?' }
 
-      -# Adding new Exercise
-      / %p=link_to 'Add exercise to routine', new_exercise_routine_path
-      %p= link_to 'Add exercise to routine ', "/routines/#{@routine.id}/exercises/new"
-      %p= link_to 'Create new exercise', new_exercise_path
+    %p= link_to 'Add exercise to routine ', "/routines/#{@routine.id}/templates/new"
+    %p= link_to 'Create new exercise', new_exercise_path
                                 
         
     .columns.actions

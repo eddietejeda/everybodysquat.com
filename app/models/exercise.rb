@@ -1,12 +1,14 @@
-# == Schema Information
+#------------------------------------------------------------------------------
+# Exercise
 #
-# Table name: exercises
+# Name       SQL Type             Null    Primary Default
+# ---------- -------------------- ------- ------- ----------
+# id         bigint               false   true              
+# name       character varying    false   false             
+# created_at timestamp without time zone false   false             
+# updated_at timestamp without time zone false   false             
 #
-#  id         :bigint(8)        not null, primary key
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  name       :string
-#
+#------------------------------------------------------------------------------
 
 class Exercise < ApplicationRecord
   has_many :exercise_routines

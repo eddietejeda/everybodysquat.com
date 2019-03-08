@@ -1,8 +1,6 @@
-.card
-  %h1 Editing routine
+%h1 Editing routine
+= render 'form'
 
-  = render 'form'
-
-  = link_to 'Show', @routine
-  \|
-  = link_to 'Back', routines_path
+= link_to 'Show', @routine
+\|
+= link_to 'Back', routines_path

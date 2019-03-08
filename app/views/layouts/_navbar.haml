@@ -20,14 +20,8 @@
     
         %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'show') }
           %a{:href => "/#{current_user.username}"} My Profile
-        %li.nav-item{class: ('active' if params[:controller] == 'routines') }
-          %a{:href => "/routines"} Routines 
         %li.nav-item{class: ('active' if params[:controller] == 'workouts') }
-          %a{:href => "/workouts"}  Workouts 
-
-        -if current_user.is_admin?
-          %li.nav-item{class: ('active' if params[:controller] == 'exercises') }
-            %a.badge.data-badge{:href => "/exercises"} Exercises 
+          %a{:href => "/#{current_user.username}/workouts"}  Workouts
         %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'goals') }
           %a{:href => "/#{current_user.username}/goals"}  Goals 
         %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'charts') }
@@ -36,5 +30,17 @@
           %a{:href => "/#{current_user.username}/timeline"}  Timeline
         %li.nav-item
           =link_to('Logout', destroy_user_session_path)
+          
+          
+        %li.nav-item
+          %hr
+        -if current_user.is_admin?
+          %li.nav-item{class: ('active' if params[:controller] == 'exercises') }
+            %a{:href => "/exercises"} All Exercises 
+          %li.nav-item{class: ('active' if params[:controller] == 'routines') }
+            %a{:href => "/routines"} All Routines 
+          %li.nav-item{class: ('active' if params[:controller] == 'workouts') }
+            %a{:href => "/workouts"} All Workouts  
+            
 
   %a.off-canvas-overlay{"data-action" => "click->sidebar#toggle", "data-target" => "sidebar.overlay"}

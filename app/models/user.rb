@@ -1,33 +1,43 @@
-# == Schema Information
+#------------------------------------------------------------------------------
+# User
 #
-# Table name: users
+# Name                   SQL Type             Null    Primary Default
+# ---------------------- -------------------- ------- ------- ----------
+# id                     bigint               false   true              
+# name                   character varying    true    false             
+# website                character varying    true    false             
+# instagram              character varying    true    false             
+# facebook               character varying    true    false             
+# twitter                character varying    true    false             
+# photo                  character varying    true    false             
+# about                  text                 true    false             
+# routine_id             integer              true    false   0         
+# coach_id               integer              true    false   0         
+# is_coach               boolean              false   false   false     
+# is_admin               boolean              false   false   false     
+# email                  character varying    false   false             
+# encrypted_password     character varying    false   false             
+# reset_password_token   character varying    true    false             
+# reset_password_sent_at timestamp without time zone true    false             
+# remember_created_at    timestamp without time zone true    false             
+# sign_in_count          integer              false   false   0         
+# current_sign_in_at     timestamp without time zone true    false             
+# last_sign_in_at        timestamp without time zone true    false             
+# current_sign_in_ip     inet                 true    false             
+# last_sign_in_ip        inet                 true    false             
+# confirmation_token     character varying    true    false             
+# confirmed_at           timestamp without time zone true    false             
+# confirmation_sent_at   timestamp without time zone true    false             
+# unconfirmed_email      character varying    true    false             
+# failed_attempts        integer              false   false   0         
+# unlock_token           character varying    true    false             
+# locked_at              timestamp without time zone true    false             
+# created_at             timestamp without time zone false   false             
+# updated_at             timestamp without time zone false   false             
+# username               character varying    true    false             
+# approved               boolean              false   false   false     
 #
-#  id                     :bigint(8)        not null, primary key
-#  name                   :string
-#  about                  :string
-#  website                :string
-#  instagram              :string
-#  twitter                :string
-#  facebook               :string
-#  coach_id               :string
-#  photo                  :string
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  workouts               :string
-#  is_coach               :boolean
-#  email                  :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
-#  reset_password_token   :string
-#  reset_password_sent_at :datetime
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :inet
-#  last_sign_in_ip        :inet
-#  is_admin               :boolean          default(FALSE), not null
-#  routine_id             :integer
-#
+#------------------------------------------------------------------------------
 
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
@@ -37,7 +47,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, authentication_keys: [:login]
 
   has_many :workouts
-  has_one :routine
+  # has_one :routine
   # belongs_to :routine
   validates :username, presence: :true, uniqueness: { case_sensitive: false }
   validate :validate_username
@@ -45,6 +55,80 @@ class User < ApplicationRecord
   
   
   after_create :send_admin_mail
+  
+  
+
+  def active_workout
+    self.workouts.where("active = true").first
+  end
+  
+  def has_active_workout?
+    active_workout ? true : false
+  end
+  
+
+  def create_workout
+    # self.class.where('id != ? and default', self.id).update_all("default = 'false'")
+    workout = Workout.create({
+      user_id: self.id,
+      routine_id: self.routine_id,
+      active: true
+    })
+
+    setts = []
+
+    Template.where("routine_id = routine_id", {routine_id: self.routine}).each do |exercise_template|
+
+      exercise_template.reps.times do 
+        setts << {
+          workout_id: workout.id,
+          exercise_id: exercise_template.id,
+          weight: 200, # workout.incremented_weight(exercise.id),
+          set_goal: exercise_template.sets,
+          reps_goal: exercise_template.reps,
+          set_completed: 0,
+          reps_completed: 0,
+          # group: exercise_template.group
+        }
+      end
+    end
+    
+        
+    Sett.create(setts)
+    
+    return workout
+  end
+
+  
+  
+  def set_default_routine
+    r = self.routine_id
+    r.routine_id = Routine.first.id
+    r.update!
+  end
+  
+  def is_coach?
+    self.is_coach
+  end
+  
+  def is_trainee?
+    !self.is_coach
+  end
+  
+  def is_admin?
+    self.is_admin
+  end
+  
+  def trainees
+    if self.is_coach?
+      User.where(coach_id: self.id)
+    else
+      logger.info "User is not a coach"
+      User.none
+    end
+  end
+  
+  
   
   
   def validate_username
@@ -72,15 +156,6 @@ class User < ApplicationRecord
   def login
     @login || self.username || self.email
   end
-
-  def active_workout
-    self.workouts.where("active = true").first
-  end
-  
-  def has_active_workout?
-    active_workout ? true : false
-  end
-  
   
   def active_for_authentication? 
     super && approved? 
@@ -103,62 +178,6 @@ class User < ApplicationRecord
       end
     end
   end
-
-  def create_workout
-    
-    # previous = Workout.where(self.id).
-    
-    workout = Workout.create({
-      user_id: self.id,
-      routine_id: self.routine_id,
-      active: true
-    })
-
-    setts = []
-
-    self.routine.exercise_routines.each do |exercise|
-
-      # Sett.where(exercise_id: 10).last.set_goal == Sett.where(exercise_id: 10).last.set_completed
-      
-      exercise.reps.times do 
-        setts << {
-          workout_id: workout.id,
-          exercise_id: exercise.id,
-          weight: workout.incremented_weight(exercise.id),
-          set_goal: exercise.sets,
-          reps_goal: exercise.reps,
-          set_completed: 0,
-          reps_completed: 0
-        }
-      end
-    end
-    
-        
-    Sett.create(setts)
-    
-    return workout
-  end
-
-  
-  def is_coach?
-    self.is_coach
-  end
-  
-  def is_trainee?
-    !self.is_coach
-  end
-  
-  def is_admin?
-    self.is_admin
-  end
-  
-  def trainees
-    if self.is_coach?
-      User.where(coach_id: self.id)
-    else
-      logger.info "User is not a coach"
-      User.none
-    end
-  end
   
 end
+

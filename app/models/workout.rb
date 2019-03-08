@@ -1,15 +1,17 @@
-# == Schema Information
+#------------------------------------------------------------------------------
+# Workout
 #
-# Table name: workouts
+# Name       SQL Type             Null    Primary Default
+# ---------- -------------------- ------- ------- ----------
+# id         bigint               false   true              
+# notes      text                 true    false             
+# user_id    integer              false   false             
+# routine_id integer              false   false             
+# active     boolean              false   false   false     
+# created_at timestamp without time zone false   false             
+# updated_at timestamp without time zone false   false             
 #
-#  id          :bigint(8)        not null, primary key
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  name        :string
-#  user_id     :integer
-#  exercise_id :integer
-#  routine_id  :integer
-#
+#------------------------------------------------------------------------------
 
 class Workout < ApplicationRecord
   has_many :exercises, through: :setts
@@ -22,8 +24,5 @@ class Workout < ApplicationRecord
     Exercise.find( self.setts.select(:exercise_id).distinct.map{|e|e.exercise_id} )
   end
   
-  
-
-  
-  
 end
+

@@ -15,18 +15,6 @@ ActiveRecord::Schema.define(version: 2019_03_02_185502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "exercise_routines", force: :cascade do |t|
-    t.integer "routine_id", null: false
-    t.integer "exercise_id", null: false
-    t.integer "sets", null: false
-    t.integer "reps", null: false
-    t.string "group", null: false
-    t.string "progression_type", null: false
-    t.integer "increment_by", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "exercise_templates", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.datetime "created_at", null: false
@@ -54,6 +42,18 @@ ActiveRecord::Schema.define(version: 2019_03_02_185502) do
     t.integer "workout_id", null: false
     t.integer "exercise_id", null: false
     t.integer "weight", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "templates", force: :cascade do |t|
+    t.integer "routine_id", null: false
+    t.integer "exercise_id", null: false
+    t.integer "sets", null: false
+    t.integer "reps", null: false
+    t.string "group", null: false
+    t.string "progression_type", null: false
+    t.integer "incremention_scheme", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

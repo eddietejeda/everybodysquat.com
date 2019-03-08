@@ -28,6 +28,10 @@ class ProfilesController < ApplicationController
     
   end
 
+  def workouts
+    @workouts = current_user.workouts
+  end
+
       
 
 

@@ -1,17 +1,21 @@
-# == Schema Information
+#------------------------------------------------------------------------------
+# Sett
 #
-# Table name: worksets
+# Name           SQL Type             Null    Primary Default
+# -------------- -------------------- ------- ------- ----------
+# id             bigint               false   true              
+# set_completed  boolean              false   false   false     
+# set_goal       integer              false   false             
+# reps_completed integer              false   false             
+# reps_goal      integer              false   false             
+# workout_id     integer              false   false             
+# exercise_id    integer              false   false             
+# weight         integer              false   false   0         
+# created_at     timestamp without time zone false   false             
+# updated_at     timestamp without time zone false   false             
 #
-#  id             :bigint(8)        not null, primary key
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  set_number     :integer
-#  reps_goal      :integer
-#  reps_completed :integer
-#  workout_id     :integer
-#  exercise_id    :integer
-#  sets           :integer
-#
+#------------------------------------------------------------------------------
+
 
 class Sett < ApplicationRecord
   has_one :workout
@@ -33,3 +37,4 @@ class Sett < ApplicationRecord
   end
   
 end
+

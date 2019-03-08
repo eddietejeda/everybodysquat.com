@@ -48,17 +48,27 @@ Routine.create(routines)
 puts "Creating routines/exercises pairing sample data"
 exercises_routines = []
 (BASELINE_COUNT).times do |i| 
+  
+
+  
   exercises_routines << {
     routine_id: Routine.first(2).map{|r|r.id}.sample,
     exercise_id: Exercise.first(4).map{|e|e.id}.sample,
     group: "A",
     progression_type: "linear",
-    increment_by: 5,
+    incremention_scheme:   
+    [ # day
+      [
+        Array.new(5, 5), # set 1 = total reps, increase amount
+        Array.new(5, 5), # set 2 = total reps, increase amount
+        Array.new(5, 5), # set 2 = total reps, increase amount
+      ],
+    ],
     sets: 5,
     reps: 5
   } 
 end 
-ExerciseRoutine.create(exercises_routines)
+Template.create(exercises_routines)
 
 
 puts "Creating user sample data"
@@ -73,7 +83,7 @@ users = []
     twitter: "twitter.com/john#{i}",
     facebook: "facebook.com/john#{i}",
     photo: "photo.com/john#{i}",
-    email: "email#{i}@localhost.com",
+    email: "email#{i}@localhost",
     routine_id: Routine.first.id,
     coach_id: 0,
     is_coach: false,
