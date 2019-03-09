@@ -8,7 +8,7 @@ class StaticController < ApplicationController
     if current_user
       redirect_to :controller => 'workouts'
     else
-      render "static/index.haml", layout: "application"
+      render "pages/home.haml", layout: "application"
     end
   end
   

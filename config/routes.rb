@@ -18,8 +18,6 @@ Rails.application.routes.draw do
   devise_for :users
 
 
-  get '/' => 'static#home'
-
   get "/:username",           to: "profiles#show"
   get "/:username/workouts",  to: "profiles#workouts"
   get "/:username/timeline",  to: "profiles#timeline"
