@@ -3,7 +3,7 @@
     %a.off-canvas-toggle.btn.btn-link.btn-action{"data-action" => "click->sidebar#toggle"}
       %i.icon.icon-menu
     .btns.d-flex
-      -if current_user
+      -if current_user && false
         / %a.btn.ml-1{:href => "/"} View Log
         -if current_user.has_active_workout?
           %a.btn.btn-primary.ml-1{:href => "/workouts/#{current_user.active_workout.id}/edit"} In Progress
