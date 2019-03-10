@@ -23,16 +23,24 @@ class Sett < ApplicationRecord
   
   
   def set_completed?
-    !self.where(exercise_id: self.exercise_id, workout_id: self.workout_id, set_completed: false)
+    self.set_completed
+  end
 
+
+  def previous_session
+    Sett.where(exercise_id: self.exercise_id).order(:id).last(2).first
   end
   
-  def incremented_weight
 
-    if(self.set_completed)
-      self.weight + ExerciseRoutine.where(exercise_id: exercise_id).first.try(:increment_by).to_i
+  def previous_weight
+    previous_session.try(:weight).to_i
+  end
+  
+  def current_weight
+    if(previous_session.set_completed)
+      previous_weight + Template.where(exercise_id: exercise_id).first.try(:increment_by).to_i
     else
-      self.weight
+      previous_weight
     end
   end
   

@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
 
   get "/:username",           to: "profiles#show"
-  get "/:username/workouts",  to: "profiles#workouts"
+  get "/:username/workouts",  to: "workouts#index"
   get "/:username/timeline",  to: "profiles#timeline"
   get "/:username/account",   to: "profiles#account"
   get "/:username/charts",    to: "profiles#charts"

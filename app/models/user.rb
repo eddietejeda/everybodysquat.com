@@ -47,8 +47,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, authentication_keys: [:login]
 
   has_many :workouts
-  # has_one :routine
-  # belongs_to :routine
+  belongs_to :routine, required: false
   validates :username, presence: :true, uniqueness: { case_sensitive: false }
   validate :validate_username
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
@@ -66,6 +65,9 @@ class User < ApplicationRecord
     active_workout ? true : false
   end
   
+  def previous_workout
+    Workout.where(user_id: self.id).last
+  end
 
   def create_workout
     # self.class.where('id != ? and default', self.id).update_all("default = 'false'")
@@ -77,15 +79,17 @@ class User < ApplicationRecord
 
     setts = []
 
-    Template.where("routine_id = routine_id", {routine_id: self.routine_id}).each do |exercise_template|
+    Template.where("routine_id = routine_id", {routine_id: self.routine_id}).each do |template|
 
-      exercise_template.reps.times do 
+      previous_workout = Workout.last.setts.where(exercise_id: template.exercise_id).order(:id)
+      
+      template.reps.times do |i|
         setts << {
           workout_id: workout.id,
-          exercise_id: exercise_template.id,
-          weight: 200, # workout.incremented_weight(exercise.id),
-          set_goal: exercise_template.sets,
-          reps_goal: exercise_template.reps,
+          exercise_id: template.id,
+          weight: previous_workout.count > 0 ? previous_workout.fetch(i).weight : 0 , # workout.incremented_weight(exercise.id),
+          set_goal: template.sets,
+          reps_goal: template.reps,
           set_completed: 0,
           reps_completed: 0,
           # group: exercise_template.group

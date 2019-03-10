@@ -1,21 +1,53 @@
-%h1 Listing workouts
+/ .card
+/   .card-header
+/     .card-title.h5
+/       Next workout is tomorrow
+/
+.card
+  .card-header
 
-%table
-  %thead
-    %tr
-      %th
-      %th
-      %th
-      %th
+    -if current_user.has_active_workout?
+      %a.btn.btn-primary.ml-1{:href => "/workouts/#{current_user.active_workout.id}/edit"} Continue active workout
+    -else
+      %a.btn.btn-primary.ml-1{:href => "/workouts/create"} Begin new workout
 
-  %tbody
-    - @workouts.each do |workout|
-      %tr
-        
-        %td= link_to 'Show', workout
-        %td= link_to 'Edit', edit_workout_path(workout)
-        %td= link_to 'Destroy', workout, method: :delete, data: { confirm: 'Are you sure?' }
+  
+-@workouts.each do |workout|
+  .card
+    .card-header
+      .card-title.h5
+        =link_to workout.created_at.strftime("%a, %b %d %Y  %H:%M"), edit_workout_path(workout)
+      .card-subtitle.text-gray
+        =greet_user
+      .card-body.columns
+        - workout.exercises.each do |exercise|
+          .column.col-7.col-xs-5.col-md-7
+            = exercise.name
+          .column.col-5.col-xs-7.col-md-5
+            - workout.setts.where(exercise_id: exercise.id).distinct(:exercise_id).each do |sett|
+              .label.label-primary
+                =sett.reps_completed
 
-%br
 
-= link_to 'New Exercise', new_workout_path
+
+/ %h1 Listing workouts
+/
+/ %table
+/   %thead
+/     %tr
+/       %th
+/       %th
+/       %th
+/       %th
+/
+/   %tbody
+/     - @workouts.each do |workout|
+/       %tr
+/
+/         %td= link_to 'Show', workout
+/         %td= link_to 'Edit', edit_workout_path(workout)
+/         %td= link_to 'Destroy', workout, method: :delete, data: { confirm: 'Are you sure?' }
+/
+/ %br
+/
+/ = link_to 'New Exercise', new_workout_path
