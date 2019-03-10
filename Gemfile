@@ -20,6 +20,8 @@ gem "skylight"
 
 gem 'devise'
 gem 'omniauth'
+gem 'searchkick'
+
 # gem 'omniauth-google'
 # gem 'omniauth-facebook'
 gem 'high_voltage', '~> 3.1'
