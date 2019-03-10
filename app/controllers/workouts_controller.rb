@@ -22,7 +22,6 @@ class WorkoutsController < ApplicationController
     else
       flash[:alert] = 'Please select a routine'
       redirect_to '/routines'
-            
     end
       
     

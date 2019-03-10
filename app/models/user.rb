@@ -77,7 +77,7 @@ class User < ApplicationRecord
 
     setts = []
 
-    Template.where("routine_id = routine_id", {routine_id: self.routine}).each do |exercise_template|
+    Template.where("routine_id = routine_id", {routine_id: self.routine_id}).each do |exercise_template|
 
       exercise_template.reps.times do 
         setts << {
