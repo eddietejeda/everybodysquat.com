@@ -27,6 +27,12 @@ Rails.application.routes.draw do
   get "users/:id/routines/:routine_id", to: "users#add_routine_to_user"
 
 
-  
+
+  scope :admin do
+    resources :workouts
+    resources :routines
+    resources :templates
+    resources :setts
+  end  
   
 end
