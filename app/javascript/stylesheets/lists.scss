@@ -1,0 +1,29 @@
+.card-body{
+    display: flex;
+}
+.card-body .left,
+.card-body .right
+{
+    flex: 1 0 auto;
+}
+
+.card-body .dots
+{
+    flex: 0 1 auto;
+}
+
+.dots::before
+{
+    display: inline-block;
+    height: 1em;
+    overflow: hidden;  
+    padding: 0 1em;
+    text-overflow: clip;
+    content:
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+    ". . . . . . . . . . . . . . . . . . . . "
+}
+
+ 

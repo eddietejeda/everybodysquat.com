@@ -4,11 +4,16 @@ class WorkoutsController < ApplicationController
   # helper_method :filtering_params
 
   def index
-    @workouts = Workout.all.order(id: :desc).limit(5)
+    
+    if current_user.is_admin?
+      @workouts = Workout.all.order(id: :desc).limit(5)
+    else
+      @workouts = Workout.where(user_id: current_user.id).order(id: :desc).limit(5)
+    end
   end
 
   def create
- 
+    
     if current_user.routine_id > 0
     
       @workout = current_user.active_workout || current_user.create_workout
@@ -23,8 +28,6 @@ class WorkoutsController < ApplicationController
       flash[:alert] = 'Please select a routine'
       redirect_to '/routines'
     end
-      
-    
     
   end
 

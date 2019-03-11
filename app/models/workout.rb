@@ -14,15 +14,14 @@
 #------------------------------------------------------------------------------
 
 class Workout < ApplicationRecord
-  has_many :exercises, through: :setts
   belongs_to :routine
-  belongs_to :user
   has_many :setts
+  has_many :exercises, through: :setts
 
 
-  def exercises
+  def unique_exercises
     Exercise.find( self.setts.select(:exercise_id).distinct.map{|e|e.exercise_id} )
   end
-  
+
 end
 

@@ -64,9 +64,13 @@ class User < ApplicationRecord
   def has_active_workout?
     active_workout ? true : false
   end
+
+  def most_recent_workout
+    Workout.where(user_id: self.id).last
+  end
   
   def previous_workout
-    Workout.where(user_id: self.id).last
+    Workout.where(user_id: self.id).last(2).first
   end
 
   def create_workout
@@ -87,7 +91,7 @@ class User < ApplicationRecord
         setts << {
           workout_id: workout.id,
           exercise_id: template.id,
-          weight: previous_workout.count > 0 ? previous_workout.fetch(i).weight : 0 , # workout.incremented_weight(exercise.id),
+          weight: (previous_workout.count > 0 ? previous_workout.fetch(i).weight : 255) , # workout.incremented_weight(exercise.id),
           set_goal: template.sets,
           reps_goal: template.reps,
           set_completed: 0,
