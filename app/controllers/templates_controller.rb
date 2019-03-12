@@ -3,6 +3,7 @@ class TemplatesController < ApplicationController
 
   # GET /templates
   def index
+    @exercises = Exercise.all        
     @templates = Template.all
   end
 
@@ -12,6 +13,10 @@ class TemplatesController < ApplicationController
 
   # GET /templates/new
   def new
+    # unless template_params[:routine_id]
+    #   redirect_to :controller => 'routines', :action => 'index'
+    # end
+    @exercises = Exercise.all    
     @template = Template.new
   end
 

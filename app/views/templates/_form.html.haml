@@ -8,21 +8,19 @@
       
 
   .columns.col-12.field.form-group
+
     .col-12
-      - exercises = Exercise.all
-      - if exercises.any?
-        =f.collection_select(:exercise_id, exercises, :id, :name)
+      = f.label :routine_id
+      = f.hidden_field :routine_id,  :value => @template.routine_id
+  
+    .col-12
+      - if @exercises && @exercises.any?
+        =f.collection_select(:exercise_id, @exercises, :id, :name)
       - else
         %p No exercises available
         = link_to 'New Exercise', new_exercise_path
-    .col-12
     
-      = f.label :routine_id
-      %br/
-      = f.hidden_field :routine_id,  :value => @template.routine_id
-
-
-
+    .col-12
       = f.label :sets
       %br/
       = f.text_field :sets
@@ -31,7 +29,6 @@
       = f.label :reps
       %br/
       = f.text_field :reps
-
 
     .col-12
       = f.label :group
