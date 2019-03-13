@@ -68,7 +68,8 @@ class User < ApplicationRecord
   def most_recent_workout
     Workout.where(user_id: self.id).last
   end
-  
+
+
   def previous_workout
     Workout.where(user_id: self.id).last(2).first
   end
@@ -82,6 +83,10 @@ class User < ApplicationRecord
   end
   
   
+  
+  def previous_workout_before(start_date)
+    Workout.where("user_id = :user_id AND created_at < :created_at", {user_id: self.id, created_at: start_date}).first
+  end
   
 
   def create_workout
