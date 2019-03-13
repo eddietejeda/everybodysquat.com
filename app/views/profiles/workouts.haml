@@ -1,10 +1,8 @@
 -@workouts.each do |workout|
   .card
     .card-header
-      .card-title.h1
-        =link_to workout.created_at.strftime("%a, %b %d %Y"), edit_workout_path(workout)
       .card-subtitle.text-gray
-        / Good day
+        =link_to workout.created_at.strftime("%a, %b %d %Y"), edit_workout_path(workout)
       .card-body.columns
         - workout.unique_exercises.each do |exercise|
           .col-6

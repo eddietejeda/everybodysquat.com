@@ -82,9 +82,8 @@ class User < ApplicationRecord
     })
 
     setts = []
-
-    Template.where("routine_id = routine_id", {routine_id: self.routine_id}).each do |template|
-
+    
+    Template.where("routine_id = ?", self.routine_id ).each do |template|
       previous_workout = Workout.last.setts.where(exercise_id: template.exercise_id).order(:id)
       
       template.reps.times do |i|
