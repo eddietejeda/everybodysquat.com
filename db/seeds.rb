@@ -54,19 +54,10 @@ exercise_pattern.each do |group_name, exercise_keys|
       exercise_id: Exercise.where(name: exercise_name).first.id,
       exercise_group: "#{group_name}",
       progression_type: "linear",
-      incremention_scheme:   
-      [ # day
-        [
-          Array.new(5, 5), # set 1 = total reps, increase amount
-          Array.new(5, 5), # set 2 = total reps, increase amount
-          Array.new(5, 5), # set 2 = total reps, increase amount
-        ],
-      ],
+      incremention_scheme: [5, 5, 5, 5, 5],
       sets: 5,
       reps: 5
     } 
-    
-    # byebug
   end
 end 
 Template.create(exercises_routines)

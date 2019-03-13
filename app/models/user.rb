@@ -72,6 +72,17 @@ class User < ApplicationRecord
   def previous_workout
     Workout.where(user_id: self.id).last(2).first
   end
+  
+  def previous_workout_weight(exercise_id)
+    self.previous_workout.setts.where(exercise_id: exercise_id).max_by(&:weight).try(:weight) || 0
+  end
+
+  def next_weight(routine_id, exercise_id, exercise_group, set)
+    previous_workout_weight(exercise_id).to_i + Routine.find(routine_id).templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first.incremention_scheme.fetch(set).to_i
+  end
+  
+  
+  
 
   def create_workout
 
@@ -104,21 +115,21 @@ class User < ApplicationRecord
     setts = []
     
     Template.where("routine_id = :routine_id AND exercise_group = :exercise_group", 
-      { routine_id: self.routine_id, exercise_group: exercise_group} ).each do |template|
-      previous_workout = Workout.last.setts.where(exercise_id: template.exercise_id).order(:id)
+      { routine_id: self.routine_id, exercise_group: exercise_group } ).each do |template|
       
-      template.reps.times do |i|
+      template.sets.times do |set_number|
+
         setts << {
           workout_id: workout.id,
           exercise_id: template.id,
-          weight: (previous_workout.count > 0 ? previous_workout.fetch(i).weight : 255) , # workout.incremented_weight(exercise.id),
+          weight: self.next_weight(template.routine_id, template.exercise_id, template.exercise_group, set_number),
           set_goal: template.sets,
           reps_goal: template.reps,
           set_completed: 0,
           reps_completed: 0,
-          # group: exercise_template.group
         }
       end
+      
     end
     
         

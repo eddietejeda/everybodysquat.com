@@ -8,7 +8,7 @@
           .col-6
             =exercise.name
           .col-4
-            =current_user.previous_workout.setts.where(exercise_id: 1).last.try(:weight)
+            =current_user.previous_workout_weight(exercise.id)
           .col-2
             -workout.routine.try(:name)
 
