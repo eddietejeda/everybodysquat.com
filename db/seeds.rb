@@ -41,7 +41,7 @@ Routine.create(routines_query)
 puts "Creating routines/exercises pairing sample data"
 exercise_pattern ={
   "Workout A": [0, 1, 2],
-  "Workout B": [0, 4, 4]  
+  "Workout B": [0, 3, 4]  
 }
 exercises_routines = []
 exercise_pattern.each do |group_name, exercise_keys|
@@ -53,10 +53,12 @@ exercise_pattern.each do |group_name, exercise_keys|
       routine_id: Routine.first.id,
       exercise_id: Exercise.where(name: exercise_name).first.id,
       exercise_group: "#{group_name}",
-      progression_type: "linear",
+      progression_type: "linear", #
+      # progression_type: "percent/fixed",
       incremention_scheme: [5, 5, 5, 5, 5],
       sets: 5,
-      reps: 5
+      reps: 5,
+#      weight_type: "kg" 
     } 
   end
 end 

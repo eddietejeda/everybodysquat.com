@@ -119,11 +119,12 @@ class User < ApplicationRecord
 
     setts = []
     
+    # We copy the template to a Sett
     Template.where("routine_id = :routine_id AND exercise_group = :exercise_group", 
       { routine_id: self.routine_id, exercise_group: exercise_group } ).each do |template|
       
       template.sets.times do |set_number|
-
+        
         setts << {
           workout_id: workout.id,
           exercise_id: template.id,
@@ -137,7 +138,7 @@ class User < ApplicationRecord
       
     end
     
-        
+    
     Sett.create(setts)
     
     return workout
