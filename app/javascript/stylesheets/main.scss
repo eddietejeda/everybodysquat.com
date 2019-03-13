@@ -46,8 +46,9 @@
     overflow-y:auto;
     padding:.5rem 1.5rem;
     position:fixed;
-    top:3.5rem;
-    width:12rem
+    top:4.5rem;
+    width:12rem;
+    background-color: #f7f8f9
 }
 .main-sidebar .accordion{
     margin-bottom:.75rem
@@ -190,11 +191,21 @@
     user-select:all
 }
 .main-content .panel{
-    height:75vh
+//    height:75vh;
+    overflow: visible;
 }
 .main-content .panel .tile{
     margin:.75rem 0
 }
+
+.panel{
+  border: 0;
+}
+
+.panel .panel-body{
+  overflow: visible;
+}
+
 .main-content .parallax{
     margin:2rem auto
 }

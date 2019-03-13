@@ -3,32 +3,39 @@
     %a.off-canvas-toggle.btn.btn-link.btn-action{"data-action" => "click->sidebar#toggle"}
       %i.icon.icon-menu
     .btns
-      -if current_user && current_user.has_active_workout?
-        %a.btn.btn-primary.ml-1{:href => "/workouts/stop"} 
-          End Workout
-      -else
-        %a.btn.btn-primary.ml-1{:href => "/workouts/create"} 
-          Begin workout
+      -if current_user
+        -if current_user.has_active_workout?
+          %a.btn.btn-primary.ml-1{:href => "/workouts/stop"} 
+            End Workout
+        -else
+          %a.btn.btn-primary.ml-1{:href => "/workouts/create"} 
+            Begin workout
 
   #sidebar.main-sidebar.off-canvas-sidebar{"data-target" => "sidebar.menu"}
     -if user_signed_in?
   
       .main-brand
-        %a.main-logo{:href => "/#"}
-          %h2 EveryBody
-          %small.label.label-secondary.text-bold squat
+        / %a.main-logo{:href => "/#"}
+        /   %h2 everybody
+        /   %small.label.label-secondary.text-bold squat
+      .panel
+        .panel-header.text-center
+          %a{:href => "/#{current_user.username}"}
+            %figure.avatar.avatar-lg
+              %img{:alt => "#{current_user.name}", :src => "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest current_user.email}"}/
+            .panel-title.h5.mt-10 
+              =current_user.username
+            .panel-subtitle=current_user.name
+
       %ul.nav.main-nav
         -if current_user
-    
-          %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'show') }
-            %a{:href => "/#{current_user.username}"} My Profile
-          %li.nav-item{class: ('active' if params[:controller] == 'workouts') }
+          %li.nav-item{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
             %a{:href => "/#{current_user.username}/workouts"}  Workouts
-          %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'goals') }
+          %li.nav-item{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'goals') }
             %a{:href => "/#{current_user.username}/goals"}  Goals 
-          %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'charts') }
+          %li.nav-item{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'charts') }
             %a{:href => "/#{current_user.username}/charts"}  Charts
-          %li.nav-item{class: ('active' if params[:controller] == 'users' && params[:action] == 'timeline') }
+          %li.nav-item{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'timeline') }
             %a{:href => "/#{current_user.username}/timeline"}  Timeline
           %li.nav-item
             =link_to('Logout', destroy_user_session_path)

@@ -3,6 +3,9 @@
 Rails.application.routes.draw do
   # root to: 'workouts#index'
   
+  devise_for :users
+  
+  
   resources :routines,    only: %i[index new edit update create show], path: '/routines'
   resources :exercises,   only: %i[index new edit update create show], path: '/exercises'
   resources :templates,   only: %i[index new edit update create show], path: '/templates'
@@ -14,12 +17,8 @@ Rails.application.routes.draw do
       get 'create', to: 'workouts#create'
     end
   end
-
-  devise_for :users
-
-
-  get "/:username",           to: "profiles#show"
-  get "/:username/workouts",  to: "workouts#index"
+  get "/:username",           to: "profiles#profile"
+  get "/:username/workouts",  to: "profiles#workouts"
   get "/:username/timeline",  to: "profiles#timeline"
   get "/:username/account",   to: "profiles#account"
   get "/:username/charts",    to: "profiles#charts"

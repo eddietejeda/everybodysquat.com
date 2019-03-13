@@ -1,0 +1,16 @@
+-@workouts.each do |workout|
+  .card
+    .card-header
+      .card-title.h1
+        =link_to workout.created_at.strftime("%a, %b %d %Y"), edit_workout_path(workout)
+      .card-subtitle.text-gray
+        / Good day
+      .card-body.columns
+        - workout.unique_exercises.each do |exercise|
+          .col-6
+            =exercise.name
+          .col-4
+            =current_user.previous_workout.setts.where(exercise_id: 1).last.try(:weight)
+          .col-2
+            -workout.routine.try(:name)
+

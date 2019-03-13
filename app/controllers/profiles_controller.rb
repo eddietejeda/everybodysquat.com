@@ -5,7 +5,7 @@ class ProfilesController < ApplicationController
   # validate :reserved_username
 
 
-  def show
+  def account
     @user = User.where("username = '#{params[:username]}'").first
     
     unless @user
@@ -29,7 +29,7 @@ class ProfilesController < ApplicationController
   end
 
   def workouts
-    @workouts = current_user.workouts
+    @workouts = current_user.workouts.order(id: :desc)
   end
 
       
