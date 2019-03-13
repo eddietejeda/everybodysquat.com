@@ -14,7 +14,7 @@
       .field.form-group.col-12
         = form.label :description
         %br/
-        = form.text_field :description
+        = form.text_area :description, cols: "20"
 
     .columns.col-12
       .col-3 Exercise
@@ -32,7 +32,7 @@
         .col-3
           = "#{template.reps}"
         .col-3        
-          = "Day #{template.group}"
+          = "Day #{template.exercise_group}"
       
       
     %p= link_to 'Add exercise to routine ', new_template_path(:routine_id => @routine.id) 

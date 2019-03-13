@@ -1,15 +1,15 @@
 - cache workout do
   .card
     .card-header
-      .card-title.h1
+      .card-title.h5
         =link_to workout.created_at.strftime("%a, %b %d %Y"), edit_workout_path(workout)
       .card-subtitle.text-gray
-        Good day
+        =greet_user
       .card-body.columns
         - workout.unique_exercises.each do |exercise|
           .column
             .columns
-              %h2
+              %h5
                 = exercise.name
           .column.col-12
             / .columns
@@ -21,14 +21,14 @@
             - workout.setts.where(exercise_id: exercise.id).order(:id).each do |sett|
               .columns.col-12{"data-controller" => "sett", "data-sett-id" => sett.id}
                 .left.col-10
-                  %h4{style: "padding: 15px 0 "}
-                    ="#{sett.reps_goal} x #{sett.current_weight}lbs"
+                  %p
+                    ="#{sett.reps_goal} reps at #{sett.current_weight}lbs"
                 .dots
                   / %small.tile-subtitle.text-gray
                   /   %input{type: "number", min: 0, max: 2000, step: 2.5, value: sett.current_weight, "data-target" => "sett.weight", "data-action" => "change->sett#updateWeight"}
                 
                 .right.col-2
-                  %button.btn.btn-x-lg.s-circle{"data-target" => "sett.button", "data-action" => "click->sett#updateReps", :class => ("btn-primary" if sett.reps_completed > 0)}
+                  %button.btn.btn{"data-target" => "sett.button", "data-action" => "click->sett#updateReps", :class => ("btn-primary" if sett.reps_completed > 0)}
                     .div{"data-target" => "sett.reps", "value" => "0"}
                       ="#{sett.reps_completed}x#{sett.reps_goal}"
 

@@ -74,16 +74,37 @@ class User < ApplicationRecord
   end
 
   def create_workout
-    # self.class.where('id != ? and default', self.id).update_all("default = 'false'")
+
+    # get all possible exercise groups    
+    all_exercise_groups = self.routine.exercise_groups 
+    
+    #if nothing, it's 0
+    previous_workout_group = self.most_recent_workout.try(:exercise_group)
+
+    # byebug
+
+    # default to zero, but lets look inside. 
+    current_group_pos = 0
+    if !previous_workout_group.blank?
+      # find the previous workout in the list
+      previous_workout_pos = all_exercise_groups.index(previous_workout_group)
+
+      # find the previous workout in the list
+      current_group_pos = (previous_workout_pos == all_exercise_groups.length - 1) ? 0 : previous_workout_pos + 1
+    end  
+    
+    exercise_group = all_exercise_groups.fetch(current_group_pos)
     workout = Workout.create({
       user_id: self.id,
       routine_id: self.routine_id,
-      active: true
+      active: true,
+      exercise_group: exercise_group
     })
 
     setts = []
     
-    Template.where("routine_id = ?", self.routine_id ).each do |template|
+    Template.where("routine_id = :routine_id AND exercise_group = :exercise_group", 
+      { routine_id: self.routine_id, exercise_group: exercise_group} ).each do |template|
       previous_workout = Workout.last.setts.where(exercise_id: template.exercise_id).order(:id)
       
       template.reps.times do |i|

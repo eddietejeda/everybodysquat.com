@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2019_03_02_185502) do
   create_table "routines", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.text "description", default: "", null: false
+    t.string "exercise_groups", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -51,8 +52,8 @@ ActiveRecord::Schema.define(version: 2019_03_02_185502) do
     t.integer "exercise_id", null: false
     t.integer "sets", null: false
     t.integer "reps", null: false
-    t.string "group", null: false
     t.string "progression_type", null: false
+    t.string "exercise_group", null: false
     t.integer "incremention_scheme", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -103,6 +104,7 @@ ActiveRecord::Schema.define(version: 2019_03_02_185502) do
     t.text "notes", default: ""
     t.integer "user_id", null: false
     t.integer "routine_id", null: false
+    t.string "exercise_group", default: "", null: false
     t.boolean "active", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

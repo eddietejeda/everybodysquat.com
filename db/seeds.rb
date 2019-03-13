@@ -13,109 +13,81 @@ Exercise.delete_all
 Workout.delete_all
 Sett.delete_all
 
-BASELINE_COUNT = 10
 
 
-exercise_list = [ "Bench", "Squat", "Deadlift", "Overhead Press", "Bent-Over Row", 
-                  "Power Clean", "Clean", "Snatch", "Curl", "Tricep Dip"]
-        
 puts "Creating exercises sample data"
-exercises = []
-(BASELINE_COUNT).times do |i| 
-  exercises << {
-    name: exercise_list.shift || "exercise #{i}"
+
+exercise_list = [ "Squat", "Bench", "Bent-Over Row", "Overhead Press", "Deadlift", ]
+exercises_query = []
+exercise_list.each do |exercise| 
+  exercises_query << {
+    name: exercise
   } 
 end 
-Exercise.create(exercises)
+Exercise.create(exercises_query)
 
 
 
 puts "Creating routine sample data"
-routines = []
-(BASELINE_COUNT/2).times do |i| 
-  routines << {
-    name: "#{5+i}x#{5+i}",
-    description: "M-W-F",
-    # group: [1,2].sample,
-    # exercise_target_reps: 5
-    # pattern: ["Monday", "Wednesday", "Friday"]
-
-  } 
-end 
-Routine.create(routines)
+routines_query = {
+  name: "5 x 5",
+  description: "5x5 is a linear progression program for novice lifters",
+  exercise_groups: ["Workout A", "Workout B"]
+}
+ 
+Routine.create(routines_query)
 
 
 puts "Creating routines/exercises pairing sample data"
+exercise_pattern ={
+  "Workout A": [0, 1, 2],
+  "Workout B": [0, 4, 4]  
+}
 exercises_routines = []
-(BASELINE_COUNT).times do |i| 
-  
+exercise_pattern.each do |group_name, exercise_keys|
 
-  
-  exercises_routines << {
-    routine_id: Routine.first(2).map{|r|r.id}.sample,
-    exercise_id: Exercise.first(4).map{|e|e.id}.sample,
-    group: "A",
-    progression_type: "linear",
-    incremention_scheme:   
-    [ # day
-      [
-        Array.new(5, 5), # set 1 = total reps, increase amount
-        Array.new(5, 5), # set 2 = total reps, increase amount
-        Array.new(5, 5), # set 2 = total reps, increase amount
+  exercise_keys.each do |exercise_key|
+    exercise_name = exercise_list.fetch(exercise_key)
+
+    exercises_routines << {
+      routine_id: Routine.first.id,
+      exercise_id: Exercise.where(name: exercise_name).first.id,
+      exercise_group: "#{group_name}",
+      progression_type: "linear",
+      incremention_scheme:   
+      [ # day
+        [
+          Array.new(5, 5), # set 1 = total reps, increase amount
+          Array.new(5, 5), # set 2 = total reps, increase amount
+          Array.new(5, 5), # set 2 = total reps, increase amount
+        ],
       ],
-    ],
-    sets: 5,
-    reps: 5
-  } 
+      sets: 5,
+      reps: 5
+    } 
+    
+    # byebug
+  end
 end 
 Template.create(exercises_routines)
 
 
 puts "Creating user sample data"
-users = []
-(BASELINE_COUNT/2).times do |i|
-  users << {
-    username: "eddie#{i}",
-    name: "John #{i}",
-    about: "Lorem ipsum #{i}",
-    website: "www.hell#{i}.com",
-    instagram: "instagram.com/john#{i}",
-    twitter: "twitter.com/john#{i}",
-    facebook: "facebook.com/john#{i}",
-    photo: "photo.com/john#{i}",
-    email: "email#{i}@localhost",
+user = {
+    username: "root",
+    name: "Super User",
+    about: "",
+    website: "",
+    instagram: "",
+    twitter: "",
+    facebook: "",
+    photo: "",
+    email: "admin@everybodysquat.com",
     routine_id: Routine.first.id,
     coach_id: 0,
     is_coach: false,
-    is_admin: false,
-    password: "hello-WORLD-1"
-  } 
-end 
-User.create(users)
-
-#create random user
-c = User.last
-c.routine_id  = Routine.first.id
-c.is_admin    = false
-c.is_coach    = false
-c.coach_id    = User.first.id
-c.password    = "hello-WORLD-1"
-c.save!
-
-
-#create admin/coach
-u = User.first
-u.routine_id = Routine.first.id
-u.is_admin = true
-u.is_coach = true
-u.password = "hello-WORLD-1"
-u.save!
-
-
-
-puts "Creating workouts sample data"
-
-User.all.each do |u|
-  u.create_workout
-  u.create_workout
-end
+    is_admin: true,
+    approved: true,
+    password: "this should change as soon as possible. you wil not want to type this again!"
+} 
+User.create(user)
