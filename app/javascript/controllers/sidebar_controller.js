@@ -9,14 +9,12 @@ export default class extends ApplicationController {
 
   
   toggle(){
-    console.log('animate====', this.menuTarget.style.transform);
     if (this.menuTarget.style.transform === 'translateX(0px)'){
       console.log('if');
       this.menuTarget.style.transform = `translateX(-100%)`;
       this.overlayTarget.style.display = `none`;
     }
     else{
-      console.log('else');
       this.menuTarget.style.transform = `translateX(0px)`;
       this.overlayTarget.style.display = `block`;
     }

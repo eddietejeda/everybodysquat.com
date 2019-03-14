@@ -1,10 +1,17 @@
 .card{
   position: relative;
   text-decoration: none;
+  background-color: #38618c;
+  color: white;
 }
 .card a{
   position: relative;
   text-decoration: none;
+  text-color: white;
+}
+
+a:visited{
+  color: white;
 }
 
 .inactive{
@@ -13,6 +20,23 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(200, 200, 200, 0.2) !important;
+  background: rgba(250, 250, 250, .6) !important;
 }
 
+
+h5::after{
+  content: "";
+  /* position: absolute; */
+  /* bottom: 0; */
+  background-color: #ff5964;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 3px;
+  width: 50%;
+  left: 20px;
+}
+
+.btn.btn-primary{
+  background-color: #ff5964 !important;
+}

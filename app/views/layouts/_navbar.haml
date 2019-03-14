@@ -1,55 +1,97 @@
-#sidebar.main-sidebar{"data-controller" => "sidebar"}
-  #navbar.main-navbar
-    %a.off-canvas-toggle.btn.btn-link.btn-action{"data-action" => "click->sidebar#toggle"}
-      %i.icon.icon-menu
-    .btns
+/ %main{style: "position: fixed; top: 0; width: 100%; height: 70px; background-color:white; z-index: 999"}
+/ %h1
+/   Fullscreen menu
+/   %span with cool links
+%input#myInput{:type => "checkbox"}/
+%label{:for => "myInput"}
+  %span.bar.top
+  %span.bar.middle
+  %span.bar.bottom
+%aside
+  / .aside-section.aside-left
+  /   .aside-content
+  /     %p Some text that will make you click the cta
+  /     %button.button CTA
+  .aside-section.aside-left
+    %ul.aside-list
       -if current_user
         -if current_user.has_active_workout?
-          %a.btn.btn-primary.ml-1{:href => "/workouts/stop"} 
-            End Workout
+          %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
+            %a.btn.btn-primary{:href => "/workouts/resume"}  Resume
+            %a.btn.btn-primary{:href => "/workouts/stop"}  End Workout
         -else
-          %a.btn.btn-primary.ml-1{:href => "/workouts/create"} 
-            Begin workout
+          %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
+            %a{:href => "/workouts/create"}  New Workout
+        %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
+          %a{:href => "/#{current_user.username}/workouts"}  Workouts
+        %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'goals') }
+          %a{:href => "/#{current_user.username}/goals"}  Goals
+        %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'charts') }
+          %a{:href => "/#{current_user.username}/charts"}  Charts
+        %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'timeline') }
+          %a{:href => "/#{current_user.username}/timeline"}  Timeline
 
-  #sidebar.main-sidebar.off-canvas-sidebar{"data-target" => "sidebar.menu"}
-    -if user_signed_in?
-  
-      .main-brand
-        / %a.main-logo{:href => "/#"}
-        /   %h2 everybody
-        /   %small.label.label-secondary.text-bold squat
-      .panel
-        .panel-header.text-center
-          %a{:href => "/#{current_user.username}"}
-            %figure.avatar.avatar-lg
-              %img{:alt => "#{current_user.name}", :src => "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest current_user.email}"}/
-            .panel-title.h5.mt-10 
-              =current_user.username
-            .panel-subtitle=current_user.name
 
-      %ul.nav.main-nav
-        -if current_user
-          %li.nav-item{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
-            %a{:href => "/#{current_user.username}/workouts"}  Workouts
-          %li.nav-item{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'goals') }
-            %a{:href => "/#{current_user.username}/goals"}  Goals 
-          %li.nav-item{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'charts') }
-            %a{:href => "/#{current_user.username}/charts"}  Charts
-          %li.nav-item{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'timeline') }
-            %a{:href => "/#{current_user.username}/timeline"}  Timeline
-          %li.nav-item
-            =link_to('Logout', destroy_user_session_path)
-          
-          
-          %li.nav-item
-            %hr
-          -if current_user.is_admin?
-            %li.nav-item{class: ('active' if params[:controller] == 'routines') }
-              %a{:href => "/routines"} All Routines 
-            %li.nav-item{class: ('active' if params[:controller] == 'exercises') }
-              %a{:href => "/exercises"} All Exercises 
-            %li.nav-item{class: ('active' if params[:controller] == 'workouts') }
-              %a{:href => "/workouts"} All Workouts  
-            
+        / -if current_user.is_admin?
+        /   %li.aside-anchor{class: ('active' if params[:controller] == 'routines') }
+        /     %a{:href => "/routines"} All Routines
+        /   %li.aside-anchor{class: ('active' if params[:controller] == 'exercises') }
+        /     %a{:href => "/exercises"} All Exercises
+        /   %li.aside-anchor{class: ('active' if params[:controller] == 'workouts') }
+        /     %a{:href => "/workouts"} All Workouts
 
-    %a.off-canvas-overlay{"data-action" => "click->sidebar#toggle", "data-target" => "sidebar.overlay"}
+/ #sidebar.main-sidebar{"data-controller" => "sidebar"}
+/   #navbar.main-navbar
+/     %a.off-canvas-toggle.btn.btn-link.btn-action{"data-action" => "click->sidebar#toggle"}
+/       %i.icon.icon-menu
+/     .btns
+/       -if current_user
+/         -if current_user.has_active_workout?
+/           %a.btn.btn-primary.ml-1{:href => "/workouts/stop"}
+/             End Workout
+/         -else
+/           %a.btn.btn-primary.ml-1{:href => "/workouts/create"}
+/             Begin workout
+/
+/   #sidebar.main-sidebar.off-canvas-sidebar{"data-target" => "sidebar.menu"}
+/     -if user_signed_in?
+/
+/       .main-brand
+/         / %a.main-logo{:href => "/#"}
+/         /   %h2 everybody
+/         /   %small.label.label-secondary.text-bold squat
+/       .panel
+/         .panel-header.text-center
+/           %a{:href => "/#{current_user.username}"}
+/             %figure.avatar.avatar-lg
+/               %img{:alt => "#{current_user.name}", :src => "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest current_user.email}"}/
+/             .panel-title.h5.mt-10
+/               =current_user.username
+/             .panel-subtitle=current_user.name
+/
+/       %ul.nav.main-nav
+/         -if current_user
+/           %li.nav-item{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
+/             %a{:href => "/#{current_user.username}/workouts"}  Workouts
+/           %li.nav-item{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'goals') }
+/             %a{:href => "/#{current_user.username}/goals"}  Goals
+/           %li.nav-item{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'charts') }
+/             %a{:href => "/#{current_user.username}/charts"}  Charts
+/           %li.nav-item{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'timeline') }
+/             %a{:href => "/#{current_user.username}/timeline"}  Timeline
+/           %li.nav-item
+/             =link_to('Logout', destroy_user_session_path)
+/
+/
+/           %li.nav-item
+/             %hr
+/           -if current_user.is_admin?
+/             %li.nav-item{class: ('active' if params[:controller] == 'routines') }
+/               %a{:href => "/routines"} All Routines
+/             %li.nav-item{class: ('active' if params[:controller] == 'exercises') }
+/               %a{:href => "/exercises"} All Exercises
+/             %li.nav-item{class: ('active' if params[:controller] == 'workouts') }
+/               %a{:href => "/workouts"} All Workouts
+/
+/
+/     %a.off-canvas-overlay{"data-action" => "click->sidebar#toggle", "data-target" => "sidebar.overlay"}

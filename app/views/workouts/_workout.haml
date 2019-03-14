@@ -1,5 +1,6 @@
 - cache workout do
   .card
+    %div{class: ("inactive" if workout.active == false)}
     .card-header
       .card-title.h5
         =link_to workout.created_at.strftime("%a, %b %d %Y"), edit_workout_path(workout)
@@ -26,7 +27,7 @@
                 .dots
                   / %small.tile-subtitle.text-gray
                   /   %input{type: "number", min: 0, max: 2000, step: 2.5, value: sett.current_weight, "data-target" => "sett.weight", "data-action" => "change->sett#updateWeight"}
-                
+              
                 .right.col-2
                   %button.btn.btn{"data-target" => "sett.button", "data-action" => "click->sett#updateReps", :class => ("btn-primary" if sett.reps_completed > 0)}
                     .div{"data-target" => "sett.reps", "value" => "0"}

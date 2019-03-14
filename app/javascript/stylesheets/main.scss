@@ -1,3 +1,6 @@
+body{
+  font-family: "Montserrat", sans-serif;  
+}
 /*! Spectre.css Docs | MIT License | github.com/picturepan2/spectre */
 #content{
 //  margin-top:100px;
@@ -74,14 +77,15 @@
 .main-content{
     -ms-flex:1 1 auto;
     flex:1 1 auto;
-    padding:0 4rem;
-    width:calc(100vw - 12rem);
+//    padding:0 4rem;
+//    width:calc(100vw - 12rem);
     margin-top: 5rem;
 }
 .main-content>.container{
-    margin-left:0;
-    max-width:800px;
-    padding-bottom:1.5rem
+//    margin-left:0;
+  margin: 0 auto;
+  max-width:800px;
+  padding-bottom:1.5rem
 }
 .main-content .anchor{
     color:#6362dc;

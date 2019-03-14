@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     collection do
       get 'stop', to: 'workouts#stop'
       get 'create', to: 'workouts#create'
+      get 'resume', to: 'workouts#resume'
     end
   end
   get "/:username",           to: "profiles#profile"

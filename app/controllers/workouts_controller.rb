@@ -31,6 +31,14 @@ class WorkoutsController < ApplicationController
     
   end
 
+  def resume
+    if current_user.active_workout
+      redirect_to "/workouts/#{current_user.active_workout.id}/edit"
+    else
+      redirect_to "/#{current_user.username}/workouts"
+    end
+  end
+  
   def update
     p workout_params[:title]
     if Workout.find(params[:id]).update(workout_params.to_h)

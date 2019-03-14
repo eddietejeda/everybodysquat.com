@@ -3,7 +3,7 @@
     =link_to edit_workout_path(workout) do 
       %div{class: ("inactive" if workout.active == false)}
       .card-header
-        .card-subtitle.text-gray
+        .card-subtitle
           =workout.created_at.strftime("%a, %b %d %Y")
         .card-body.columns
           - workout.unique_exercises.each do |exercise|
