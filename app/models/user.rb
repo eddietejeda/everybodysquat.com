@@ -73,13 +73,18 @@ class User < ApplicationRecord
   def previous_workout
     Workout.where(user_id: self.id).last(2).first
   end
-  
+
+
+  def previous_exercise_setts(exercise_id)
+    Sett.where(workout_id: self.previous_workout.id, exercise_id: exercise_id).order(created_at: :desc)
+  end
+
   def previous_workout_weight(exercise_id)
-    self.previous_workout.setts.where(exercise_id: exercise_id).max_by(&:weight).try(:weight) || 0
+    self.previous_exercise_setts(exercise_id).max_by(&:weight).try(:weight).to_i
   end
 
   def next_weight(routine_id, exercise_id, exercise_group, set)
-    previous_workout_weight(exercise_id).to_i + Routine.find(routine_id).templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first.incremention_scheme.fetch(set).to_i
+    previous_workout_weight(exercise_id) + Routine.find(routine_id).templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first.incremention_scheme.fetch(set).to_i
   end
   
   
@@ -105,7 +110,7 @@ class User < ApplicationRecord
       # find the previous workout in the list
       previous_workout_pos = all_exercise_groups.index(previous_workout_group)
 
-      # find the previous workout in the list
+      # find the previous workout in the list, if it's the last item on the list, start back at 0
       current_group_pos = (previous_workout_pos == all_exercise_groups.length - 1) ? 0 : previous_workout_pos + 1
     end  
     
@@ -118,13 +123,12 @@ class User < ApplicationRecord
     })
 
     setts = []
-    
     # We copy the template to a Sett
     Template.where("routine_id = :routine_id AND exercise_group = :exercise_group", 
       { routine_id: self.routine_id, exercise_group: exercise_group } ).each do |template|
       
       template.sets.times do |set_number|
-        
+
         setts << {
           workout_id: workout.id,
           exercise_id: template.id,
