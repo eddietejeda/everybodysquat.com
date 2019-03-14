@@ -29,7 +29,7 @@ export default class extends ApplicationController {
     }, {
       fullWidth: true,
       chartPadding: {
-        right: 10
+        right: 0
       },
       lineSmooth: Chartist.Interpolation.cardinal({
         fillHoles: true,
