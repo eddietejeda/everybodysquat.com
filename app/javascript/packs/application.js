@@ -12,6 +12,7 @@ import "../stylesheets/menu.scss";
 import "../stylesheets/devise.scss";
 import "../stylesheets/workouts.scss";
 import "../stylesheets/newmenu.scss";
+import "../stylesheets/login.scss";
 
 import "../images/index";
 const application = Application.start();

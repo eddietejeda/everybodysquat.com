@@ -1,38 +1,42 @@
-/ For future reference: https://tympanus.net/Development/CreativeButtons/
-%a{onclick: "window.history.go(-1); return false;"} 
-.back-button
-  .chevron-arrow-left
-  %span.back-text{style: "line-height: 1em"}
-    Back
-    
+.menu-button
+  -if current_user
 
-%input#myInput{:type => "checkbox"}/
-%label{:for => "myInput"}
-  %span.bar.top
-  %span.bar.middle
-  %span.bar.bottom
-%aside
-  / .aside-section.aside-left
-  /   .aside-content
-  /     %p Some text that will make you click the cta
-  /     %button.button CTA
-  .aside-section.aside-left
-    %ul.aside-list
-      -if current_user
-        -if current_user.has_active_workout?
-          %li{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
-            %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/resume"}  Continue
-            %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/stop"}  Stop
+    / For future reference: https://tympanus.net/Development/CreativeButtons/
+    %a{onclick: "window.history.go(-1); return false;"} 
+    .back-button
+      .chevron-arrow-left
+      %span.back-text{style: "line-height: 1em"}
+        Back
+    
+    %input#myInput{:type => "checkbox"}/
+    %label{:for => "myInput"}
+      %span.bar.top
+      %span.bar.middle
+      %span.bar.bottom
+  %aside
+    .aside-section.aside-left
+      %ul.aside-list
+        -if current_user
+          -if current_user.has_active_workout?
+            %li{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
+              %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/resume"}  Continue
+              %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/stop"}  Stop
+          -else
+            %li{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
+              %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/create"}  New Workout
+          %li
+            %br
+          %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
+            %a{:href => "/#{current_user.username}/workouts"}  Workouts
+          %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'goals') }
+            %a{:href => "/#{current_user.username}/goals"}  Goals
+          %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'charts') }
+            %a{:href => "/#{current_user.username}/charts"}  Charts
+          %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'timeline') }
+            %a{:href => "/#{current_user.username}/timeline"}  Timeline
+          %li.aside-anchor
+            =link_to('Logout', destroy_user_session_path, method: :get)
+
         -else
-          %li{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
-            %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/create"}  New Workout
-        %li
-          %br
-        %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
-          %a{:href => "/#{current_user.username}/workouts"}  Workouts
-        %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'goals') }
-          %a{:href => "/#{current_user.username}/goals"}  Goals
-        %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'charts') }
-          %a{:href => "/#{current_user.username}/charts"}  Charts
-        %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'timeline') }
-          %a{:href => "/#{current_user.username}/timeline"}  Timeline
+          %li.aside-anchor
+            =link_to('Login', new_user_session_path) 
