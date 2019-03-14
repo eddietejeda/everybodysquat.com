@@ -1,11 +1,19 @@
 - cache workout do
-  .card
-    %div{class: ("inactive" if workout.active == false)}
+  .card{class: ("inactive" if workout.active == false)}
     .card-header
+      -if workout.active
+        .complete-workout.btn{style: "position: absolute; top: 0; right: 0"}
+          %a{href: '/workouts/stop'}
+            Finish    
+      -else
+        .complete-workout.btn{style: "position: absolute; top: 0; right: 0"}
+          %a{href: '/workouts/resume'}
+            Resume    
       .card-title.h5
         =link_to workout.created_at.strftime("%a, %b %d %Y"), edit_workout_path(workout)
       .card-subtitle.text-gray
-        =greet_user
+        -if workout.active
+          =greet_user
       .card-body.columns
         - workout.unique_exercises.each do |exercise|
           .column
@@ -34,6 +42,7 @@
                       ="#{sett.reps_completed}x#{sett.reps_goal}"
 
       .card-footer
+        
         / .btn-group.btn-group-block
         /   -if current_user.has_active_workout? && current_user.active_workout.id == workout.id
         /     %button.btn.btn-error

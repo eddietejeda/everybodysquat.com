@@ -1,7 +1,22 @@
--@workouts.each do |workout|
+-if !current_user.has_active_workout?
   .card
+    .card-body.columns
+      .column
+        .col-12
+          %p Your next workout is scheduled for March 15, 2019.
+          %p We recommend you stick to your program, but if you can start a new workout session now.
+          %p 
+            .btn
+              %a{href: "/workouts/create"}
+                Create New
+        
+        
+  
+
+
+-@workouts.each do |workout|
+  .card{class: ("inactive" if workout.active == false)}
     =link_to edit_workout_path(workout) do 
-      %div{class: ("inactive" if workout.active == false)}
       .card-header
         .card-subtitle
           =workout.created_at.strftime("%a, %b %d %Y")
