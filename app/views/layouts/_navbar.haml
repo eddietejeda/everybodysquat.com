@@ -8,13 +8,13 @@
           .chevron-arrow-left
           %span.back-text{style: "line-height: 1em"}
             Back
-    -else 
-      -#if params[:controller] == 'profiles'
+    -elsif params[:controller] == 'profiles'
       %a{href: '/'} 
         .back-button
           .chevron-arrow-left
           %span.back-text{style: "line-height: 1em"}
             Back
+
   
     %input#navinput{:type => "checkbox"}/
     %label{:for => "navinput"}
