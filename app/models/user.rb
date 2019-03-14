@@ -124,6 +124,7 @@ class User < ApplicationRecord
 
     setts = []
     # We copy the template to a Sett
+    
     Template.where("routine_id = :routine_id AND exercise_group = :exercise_group", 
       { routine_id: self.routine_id, exercise_group: exercise_group } ).each do |template|
       
@@ -131,7 +132,7 @@ class User < ApplicationRecord
 
         setts << {
           workout_id: workout.id,
-          exercise_id: template.id,
+          exercise_id: template.exercise_id,
           weight: self.next_weight(template.routine_id, template.exercise_id, template.exercise_group, set_number),
           set_goal: template.sets,
           reps_goal: template.reps,
