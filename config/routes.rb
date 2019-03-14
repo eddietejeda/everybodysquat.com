@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       get 'resume', to: 'workouts#resume'
     end
   end
-  get "/:username",           to: "profiles#profile"
+  get "/:username",           to: "profiles#account"
   get "/:username/workouts",  to: "profiles#workouts"
   get "/:username/timeline",  to: "profiles#timeline"
   get "/:username/account",   to: "profiles#account"

@@ -6,11 +6,9 @@
     .panel-body
       .field.form-group
         = f.label :username
-        %br/
         = f.text_field :username, autofocus: true, autocomplete: "login"
       .field.form-group
         = f.label :email
-        %br/
         = f.email_field :email, autocomplete: "email"
       .field.form-group
         = f.label :password
@@ -25,7 +23,6 @@
         %br/
         = f.password_field :password_confirmation, autocomplete: "new-password"
 
-    
-      = render "devise/shared/links"
     .panel-footer
       = f.submit value: "Sign up", class: "btn btn-primary btn-block"
+      = render "devise/shared/links"

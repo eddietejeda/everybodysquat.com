@@ -6,10 +6,10 @@
     .panel-body
       .field.form-group
         = f.label :email
-        %br/
         = f.email_field :email, autofocus: true, autocomplete: "email"
 
-    
-      = render "devise/shared/links"
+        
+        We will email instructions to reset your password
     .panel-footer
-      = f.submit value: "Send me reset password instructions", class: "btn btn-primary btn-block"
+      = f.submit value: "Reset Password", class: "btn btn-primary btn-block"
+      = render "devise/shared/links"

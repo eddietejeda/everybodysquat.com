@@ -1,12 +1,7 @@
 -if resource.errors.any?
   .column.col-12
-    .text-center
-      %p
-        = I18n.t("errors.messages.not_saved",                 |
-          count: resource.errors.count,                       |
-          resource: resource.class.model_name.human.downcase) |
-    
+    .text-center    
       -resource.errors.full_messages.reverse.each do |message|
         .column
-          .col-12.label.label-primary
+          .col-12{ style: "background: transparent; color: black; text-decoration: underline" }
             =message
