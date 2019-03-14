@@ -57,7 +57,7 @@ class WorkoutsController < ApplicationController
       w.active = false
       w.save!
     end
-    redirect_to '/workouts'
+    redirect_to "/#{current_user.username}/workouts"
   end
 
 

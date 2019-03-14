@@ -1,18 +1,20 @@
 -@workouts.each do |workout|
   .card
-    .card-header
-      .card-subtitle.text-gray
-        =link_to workout.created_at.strftime("%a, %b %d %Y"), edit_workout_path(workout)
-      .card-body.columns
-        - workout.unique_exercises.each do |exercise|
-          .col-6
-            =exercise.name
-          .col-4
-            =workout.routine.try(:name)
-          .col-2
-            - w = current_user.previous_workout_before(workout.created_at)
-            -if w
-              =w.setts.first.weight
-            -else
-              nothing
+    =link_to edit_workout_path(workout) do 
+      %div{class: ("inactive" if workout.active == false)}
+      .card-header
+        .card-subtitle.text-gray
+          =workout.created_at.strftime("%a, %b %d %Y")
+        .card-body.columns
+          - workout.unique_exercises.each do |exercise|
+            .col-6
+              =exercise.name
+            .col-4
+              =workout.routine.try(:name)
+            .col-2
+              - w = current_user.previous_workout_before(workout.created_at)
+              -if w
+                = w.setts.first.weight
+              -else
+                nothing
 
