@@ -28,6 +28,10 @@ class Workout < ApplicationRecord
     # self.previous_exercise_setts(exercise_id).max_by(&:weight).try(:weight).to_i
     self.setts.where("exercise_id = :exercise_id", { exercise_id: exercise_id }).max_by(&:weight).try(:weight).to_i
   end
+  
+  def formated_date
+    self.created_at.strftime("%A, %b %d %Y")
+  end
 
 end
 

@@ -1,25 +1,28 @@
 - cache workout do
   .card{class: ("inactive" if workout.active == false)}
     .card-header
-      -if workout.active
-        .complete-workout.btn{style: "position: absolute; top: 0; right: 0"}
-          %a{href: '/workouts/stop'}
-            Finish    
-      -else
-        .complete-workout.btn{style: "position: absolute; top: 0; right: 0"}
-          %a{href: '/workouts/resume'}
-            Resume    
-      .card-title.h5
-        =link_to workout.created_at.strftime("%a, %b %d %Y"), edit_workout_path(workout)
+      .card-title.h5.column
+        .columns
+          .col5
+            =link_to workout.formated_date, edit_workout_path(workout)
+          .col5.right{style: "position: absolute; right: 35px"}
+            -if workout.active
+              %span.complete-workout.btn
+                %a{href: '/workouts/stop'}
+                  Finish    
+            -else
+              %span.complete-workout.btn
+                %a{href: '/workouts/resume'}
+                  Resume    
+
       .card-subtitle.text-gray
-        -if workout.active
-          =greet_user
+        / -if workout.active
+        /   =greet_user
       .card-body.columns
         - workout.unique_exercises.each do |exercise|
-          .column
-            .columns
-              %h5
-                = exercise.name
+          .columns{style: "border-bottom: 2px solid white"}
+            %h5
+              = exercise.name
           .column.col-12
             / .columns
             / .col-1
@@ -27,19 +30,22 @@
             /   Current
             / .col-6
 
-            - workout.setts.where(exercise_id: exercise.id).order(:id).each do |sett|
-              .columns.col-12{"data-controller" => "sett", "data-sett-id" => sett.id}
-                .left.col-10
+            - workout.setts.where(exercise_id: exercise.id).order(:id).each_with_index do |sett, index|
+              .columns.col-12{"data-controller" => "sett", "data-sett-id" => sett.id, style: "font-size: 15pt"}
+                .left.col-4
                   %p
-                    ="#{sett.reps_goal} reps at #{sett.current_weight}lbs"
-                .dots
-                  / %small.tile-subtitle.text-gray
-                  /   %input{type: "number", min: 0, max: 2000, step: 2.5, value: sett.current_weight, "data-target" => "sett.weight", "data-action" => "change->sett#updateWeight"}
-              
-                .right.col-2
+                    ="Set #{index+1} "              
+                .col-4
+                  %p
+                    -#="#{sett.reps_goal} reps at #{sett.current_weight}lbs"
+                    ="#{sett.current_weight} lbs"
+                    / %small.tile-subtitle.text-gray
+                    /   %input{type: "number", min: 0, max: 2000, step: 2.5, value: sett.current_weight, "data-target" => "sett.weight", "data-action" => "change->sett#updateWeight"}
+
+                .right.col-4
                   %button.btn.btn{"data-target" => "sett.button", "data-action" => "click->sett#updateReps", :class => ("btn-primary" if sett.reps_completed > 0)}
                     .div{"data-target" => "sett.reps", "value" => "0"}
-                      ="#{sett.reps_completed}x#{sett.reps_goal}"
+                      ="#{sett.reps_completed} x #{sett.reps_goal}"
 
       .card-footer
         

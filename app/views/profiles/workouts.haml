@@ -19,12 +19,12 @@
     =link_to edit_workout_path(workout) do 
       .card-header
         .card-subtitle
-          =workout.created_at.strftime("%a, %b %d %Y")
+          =workout.formated_date
         .card-body.columns
           - workout.unique_exercises.each do |exercise|
             .col-6
               =exercise.name
             .col-4
-              =workout.routine.try(:name)
+              ="#{workout.current_exercise_weight(exercise.id)} lbs"
             .col-2
-              =workout.current_exercise_weight(exercise.id)
+              =workout.routine.try(:name)

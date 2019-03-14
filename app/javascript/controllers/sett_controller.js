@@ -10,8 +10,8 @@ export default class extends ApplicationController {
   updateReps(){
     var current, goal, reps_completed;  
     [current, goal] = this.repsTarget.innerHTML.trim().split("x").map(Number);
-    reps_completed = (current == goal) ? 0 : current + 1;
-    this.repsTarget.innerHTML = `${reps_completed}x${goal}`;
+    reps_completed = (current == 0) ? goal : current - 1;
+    this.repsTarget.innerHTML = `${Math.abs(reps_completed)} x ${goal}`;
     this.buttonTarget.classList.add('btn-primary');
     this.railsUpdate(`/setts/${this.data.get("id")}`, "reps_completed", reps_completed);
 
