@@ -2,16 +2,22 @@
   
 .menu-button
   -if current_user
-
-    / For future reference: https://tympanus.net/Development/CreativeButtons/
-    %a{onclick: "window.history.go(-1); return false;"} 
-      .back-button
-        .chevron-arrow-left
-        %span.back-text{style: "line-height: 1em"}
-          Back
+    -if params[:controller] == 'workouts'
+      %a{href: "/#{current_user.username}/workouts"} 
+        .back-button
+          .chevron-arrow-left
+          %span.back-text{style: "line-height: 1em"}
+            Back
+    -else 
+      -#if params[:controller] == 'profiles'
+      %a{href: '/'} 
+        .back-button
+          .chevron-arrow-left
+          %span.back-text{style: "line-height: 1em"}
+            Back
   
-    %input#myInput{:type => "checkbox"}/
-    %label{:for => "myInput"}
+    %input#navinput{:type => "checkbox"}/
+    %label{:for => "navinput"}
       %span.bar.top
       %span.bar.middle
       %span.bar.bottom
@@ -21,13 +27,14 @@
         -if current_user
           -if current_user.has_active_workout?
             %li{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
-              %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/resume"}  Continue
-              %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/stop"}  Stop
+              %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/resume"}  Resume Workout
           -else
             %li{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
               %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/create"}  New Workout
           %li
             %br
+          %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'show') }
+            %a{:href => "/"}  Home
           %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
             %a{:href => "/#{current_user.username}/workouts"}  Workouts
           %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'goals') }
