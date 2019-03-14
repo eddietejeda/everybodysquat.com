@@ -1,6 +1,31 @@
 -if current_user
-  %h1
-    =greet_user
+  %div{style: "position: relative; height: 200px"}
+    %h1
+      =greet_user
+
+  %div.column
+    .cols-12
+      %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/resume"}  Resume Current Workout
+    .cols-12
+      %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/stop"}  End Curretn Workout
+
+  .card
+    .card-header
+      .card-title.h5
+        Monthly Progress
+      .card-body
+        .chart{"data-controller" => "chart"}
+          .show{"data-target" => "chart.show"}
+        
+
+
+  .card
+    .card-header
+      .card-title.h5
+        Archivements
+      .card-body
+        You have completed.
+    
 
 -else
 

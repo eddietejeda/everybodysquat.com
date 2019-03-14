@@ -37,6 +37,16 @@ h5::after{
   left: 20px;
 }
 
-.btn.btn-primary{
+.btn-primary.btn-large{
   background-color: #ff5964 !important;
+  font-size: 30px !important;
+  height: 2.8rem !important;
+  line-height: 2.2rem !important;
+}
+
+.btn-primary, .btn{
+  font-size: 1.5rem;
+  background-color: #ff5964 !important;
+  border-color: #ff5964 !important;
+  color: white;
 }
