@@ -4,10 +4,19 @@
       =greet_user
 
   %div.column
-    .cols-12
-      %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/resume"}  Resume Current Workout
-    .cols-12
-      %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/stop"}  End Curretn Workout
+    .columns.col-12
+      %p.center 
+        You have an active workout. 
+        %br
+        What would you like to do?
+    .columns.col-12
+      .col-3
+      .col-3
+        %a.btn{:href => "/workouts/resume"}  Resume
+      .col-1
+      .col-3
+        %a.btn{:href => "/workouts/stop"}  Stop
+      .col-2
 
   .card
     .card-header

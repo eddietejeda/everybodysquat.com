@@ -1,13 +1,15 @@
+%header
+  
 .menu-button
   -if current_user
 
     / For future reference: https://tympanus.net/Development/CreativeButtons/
     %a{onclick: "window.history.go(-1); return false;"} 
-    .back-button
-      .chevron-arrow-left
-      %span.back-text{style: "line-height: 1em"}
-        Back
-    
+      .back-button
+        .chevron-arrow-left
+        %span.back-text{style: "line-height: 1em"}
+          Back
+  
     %input#myInput{:type => "checkbox"}/
     %label{:for => "myInput"}
       %span.bar.top
