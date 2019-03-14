@@ -75,7 +75,7 @@ class User < ApplicationRecord
   end
 
   def previous_workout_weight(exercise_id)
-    self.previous_exercise_setts(exercise_id).max_by(&:weight).try(:weight).to_i
+    self.previous_exercise_setts(exercise_id).max_by(&:weight).try(:weight).to_i || current_user.bar_weight
   end
 
   def next_weight(routine_id, exercise_id, exercise_group, set_number)
@@ -84,6 +84,11 @@ class User < ApplicationRecord
   
   def previous_workout_before(start_date)
     Workout.where("user_id = :user_id AND created_at < :created_at", { user_id: self.id, created_at: start_date } ).first
+  end
+  
+  def bar_weight
+    # this should be stored in a setting somewhere
+    return 45
   end
 
   def create_workout
