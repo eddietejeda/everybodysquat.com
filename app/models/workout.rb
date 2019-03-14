@@ -23,5 +23,11 @@ class Workout < ApplicationRecord
     Exercise.find( self.setts.select(:exercise_id).distinct.map{|e|e.exercise_id} )
   end
 
+
+  def current_exercise_weight(exercise_id)
+    # self.previous_exercise_setts(exercise_id).max_by(&:weight).try(:weight).to_i
+    self.setts.where("exercise_id = :exercise_id", { exercise_id: exercise_id }).max_by(&:weight).try(:weight).to_i
+  end
+
 end
 

@@ -12,9 +12,4 @@
             .col-4
               =workout.routine.try(:name)
             .col-2
-              - w = current_user.previous_workout_before(workout.created_at)
-              -if w
-                = w.setts.first.weight
-              -else
-                nothing
-
+              =workout.current_exercise_weight(exercise.id)

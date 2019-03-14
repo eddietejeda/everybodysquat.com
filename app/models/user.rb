@@ -52,11 +52,8 @@ class User < ApplicationRecord
   validate :validate_username
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
   
-  
   after_create :send_admin_mail
   
-  
-
   def active_workout
     self.workouts.where("active = true").first
   end
@@ -69,11 +66,9 @@ class User < ApplicationRecord
     Workout.where(user_id: self.id).last
   end
 
-
   def previous_workout
     Workout.where(user_id: self.id).last(2).first
   end
-
 
   def previous_exercise_setts(exercise_id)
     Sett.where(workout_id: self.previous_workout.id, exercise_id: exercise_id).order(created_at: :desc)
@@ -83,19 +78,15 @@ class User < ApplicationRecord
     self.previous_exercise_setts(exercise_id).max_by(&:weight).try(:weight).to_i
   end
 
-  def next_weight(routine_id, exercise_id, exercise_group, set)
-    previous_workout_weight(exercise_id) + Routine.find(routine_id).templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first.incremention_scheme.fetch(set).to_i
+  def next_weight(routine_id, exercise_id, exercise_group, set_number)
+    previous_workout_weight(exercise_id) + Routine.find(routine_id).templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first.incremention_scheme.fetch(set_number).to_i
   end
-  
-  
   
   def previous_workout_before(start_date)
-    Workout.where("user_id = :user_id AND created_at < :created_at", {user_id: self.id, created_at: start_date}).first
+    Workout.where("user_id = :user_id AND created_at < :created_at", { user_id: self.id, created_at: start_date } ).first
   end
-  
 
   def create_workout
-
     # get all possible exercise groups    
     all_exercise_groups = self.routine.exercise_groups 
     
@@ -124,7 +115,6 @@ class User < ApplicationRecord
 
     setts = []
     # We copy the template to a Sett
-    
     Template.where("routine_id = :routine_id AND exercise_group = :exercise_group", 
       { routine_id: self.routine_id, exercise_group: exercise_group } ).each do |template|
       
