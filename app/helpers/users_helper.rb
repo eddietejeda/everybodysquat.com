@@ -21,4 +21,9 @@ module UsersHelper
     # "Good Morning"
   end  
   
+  
+  def formated_date(current_time)
+    current_time.strftime("%A, %b %d %Y")
+  end
+  
 end

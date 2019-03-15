@@ -62,34 +62,66 @@ class User < ApplicationRecord
     active_workout ? true : false
   end
 
+
+  # most recent workout and previous might seem similar but it's important not to confuse them
+  # most_recent_work gets the most recent workout, wether there is an active one or not
   def most_recent_workout
     Workout.where(user_id: self.id).last
   end
 
+  # previous_workout is looking for the previous before the current one.
   def previous_workout
     Workout.where(user_id: self.id).last(2).first
   end
+  
+  # previous_workout_before the workout before the a specific date
+  # TODO: is this performant? 
+  def previous_workout_before(before_date)
+    Workout.where("user_id = :user_id AND created_at < :created_at", { user_id: self.id, created_at: before_date } ).first
+  end
 
-  def previous_exercise_setts(exercise_id)
+
+  def previous_workout_exercise_setts(exercise_id)
     Sett.where(workout_id: self.previous_workout.id, exercise_id: exercise_id).order(created_at: :desc)
   end
 
-  def previous_workout_weight(exercise_id)
-    self.previous_exercise_setts(exercise_id).max_by(&:weight).try(:weight).to_i || current_user.bar_weight
+  def previous_workout_exercise_weight(exercise_id)
+    self.previous_workout_exercise_setts(exercise_id).max_by(&:weight).try(:weight).to_i || current_user.bar_weight
   end
 
   def next_weight(routine_id, exercise_id, exercise_group, set_number)
-    previous_workout_weight(exercise_id) + Routine.find(routine_id).templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first.incremention_scheme.fetch(set_number).to_i
+    previous_workout_exercise_weight(exercise_id) + Routine.find(routine_id).templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first.incremention_scheme.fetch(set_number).to_i
   end
   
-  def previous_workout_before(start_date)
-    Workout.where("user_id = :user_id AND created_at < :created_at", { user_id: self.id, created_at: start_date } ).first
+  def next_workout_date
+    # this is not pretty, but I needed to get this out quickly to test other things
+    # TODO: rewrite to take multiple algorithms for different programs. this is currently 5x5
+    # Routine.find(self.routine_id).templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first.incremention_scheme.fetch(set_number).to_i
+    week_array = [0,1,0,1,0,1,0] # this is basically 5x5/M-W-F
+
+    wtoday = Time.now.wday
+    days_ahead = 1
+    if self.most_recent_workout.created_at.today? || self.most_recent_workout.created_at.yesterday?
+      week_array.map do |key, value|
+        wnext = (wnext == 6) ? 0 : (wtoday + key + 1)
+        if week_array.fetch(wnext) == 1
+          return Time.now + days_ahead.days
+        else
+          days_ahead = days_ahead + 1
+        end
+      end
+    end
+    
+    return Time.now + 1.days
   end
+  
   
   def bar_weight
     # this should be stored in a setting somewhere
     return 45
   end
+
+
 
   def create_workout
     # get all possible exercise groups    
@@ -146,6 +178,8 @@ class User < ApplicationRecord
 
   
   
+  
+
   def set_default_routine
     r = self.routine_id
     r.routine_id = Routine.first.id

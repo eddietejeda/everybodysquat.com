@@ -36,19 +36,17 @@
           .col-2  
   -else
     .card
-      .card-body.columns
-        .column.col-12
-          %p.center 
-            Your next scheduled workout is March 20, 2019
-        .columns.col-12
-          .col-3
-          .col-3
-          .col-3
-            %a.btn{:href => "/workouts/create"}  Begin Workout
-          .col-2
-
-        
-        
+      .card-header
+        .card-title.h5
+          Next workout
+        .card-body
+          .columns.col-12
+            %p
+              Your next scheduled workout is 
+              ="#{formated_date(current_user.next_workout_date)}"
+            %p   
+              %a.btn{:href => "/workouts/create"}  Begin Workout
+              
 
   .card
     .card-header
