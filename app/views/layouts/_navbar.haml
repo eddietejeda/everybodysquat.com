@@ -1,7 +1,8 @@
 %header
   .logo-cropper
     .logo
-      %img{src: "#{asset_pack_path('images/logo.png')}", style: "width: 30px"}
+      %a{href: '/'}
+        %img{src: "#{asset_pack_path('images/logo.png')}", style: "width: 30px"}
   
 .menu-button
   -if current_user
