@@ -6,7 +6,7 @@
   .aside-section {
     top: 0;
     bottom: 0;
-    position: absolute;
+    position: fixed;
   }
 
   .aside-left {
@@ -52,8 +52,8 @@
     margin-top: 150px;
     text-align: center;
   //  padding-left: 50px;
-    width: 50%;
-    margin: 150px auto;
+    width: 40%;
+    margin: 100px auto;
   }
 
   .aside-content {
@@ -156,7 +156,7 @@
   
 
   label {
-    top: 10px;
+    top: 0px;
     right: 0;
     display: inline-block;
     padding: 7px 10px;
@@ -173,7 +173,7 @@
   }
 
   .back-button{
-    top: 15px;
+    top: 6px;
     left: 0;
     display: inline-block;
     padding: 7px 10px;
