@@ -43,7 +43,8 @@
           .columns.col-12
             %p
               Your next scheduled workout is 
-              ="#{formated_date(current_user.next_workout_date)}"
+              ="#{formated_date(Time.now + 2.days)}"
+              -#"#{formated_date(current_user.next_workout_date)}"
             %p   
               %a.btn{:href => "/workouts/create"}  Begin Workout
               
