@@ -9,11 +9,11 @@
             -if workout.active
               %span.complete-workout.btn
                 %a{href: '/workouts/stop'}
-                  Finish    
+                  Finish
             -else
               %span.complete-workout.btn
                 %a{href: '/workouts/resume'}
-                  Edit    
+                  Edit
 
       .card-subtitle.text-gray
         / -if workout.active
@@ -34,7 +34,7 @@
               .columns.col-12{"data-controller" => "sett", "data-sett-id" => sett.id, style: "font-size: 15pt"}
                 .left.col-4
                   %p
-                    ="Set #{index+1} "              
+                    ="Set #{index+1} "
                 .col-4
                   %p
                     -#="#{sett.reps_goal} reps at #{sett.current_weight}lbs"
@@ -43,24 +43,8 @@
                     /   %input{type: "number", min: 0, max: 2000, step: 2.5, value: sett.current_weight, "data-target" => "sett.weight", "data-action" => "change->sett#updateWeight"}
 
                 .right.col-4
-                  %button.btn.btn{"data-target" => "sett.button", "data-action" => "click->sett#updateReps", :class => ("btn-primary" if sett.reps_completed > 0)}
+                  %button.btn.btn{"data-target" => "sett.button", "data-action" => "click->sett#updateReps", :class => ("btn-primary-light-red" if sett.reps_completed < sett.reps_goal)}
                     .div{"data-target" => "sett.reps", "value" => "0"}
                       ="#{sett.reps_completed} x #{sett.reps_goal}"
 
       .card-footer
-        
-        / .btn-group.btn-group-block
-        /   -if current_user.has_active_workout? && current_user.active_workout.id == workout.id
-        /     %button.btn.btn-error
-        /       %a{:href => "/workouts/stop" }
-        /         End Workout
-        /   -else
-        /     %button.btn
-        /       %a{:href => "/workouts/#{workout.id}/edit" }
-        /         Edit Workout
-        /
-        /   %button.btn
-        /     Analyze
-        /   %button.btn Share
-        /
-        /
