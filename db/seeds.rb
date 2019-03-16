@@ -67,7 +67,7 @@ Template.create(exercises_routines)
 
 puts "Creating user sample data"
 user = {
-    username: "root",
+    username: "admin",
     name: "Super User",
     about: "",
     website: "",
@@ -75,7 +75,7 @@ user = {
     twitter: "",
     facebook: "",
     photo: "",
-    email: "admin@everybodysquat.com",
+    email: "admin@localhost",
     routine_id: Routine.first.id,
     coach_id: 0,
     is_coach: false,
