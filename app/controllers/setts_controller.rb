@@ -13,7 +13,7 @@ class SettsController < ApplicationController
   private
   
   def sett_params
-    params.permit(:reps_completed, :weight)
+    params.permit(:id, :reps_completed, :weight)
   end
   
 end
