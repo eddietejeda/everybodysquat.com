@@ -51,9 +51,8 @@
     margin: 0;
     margin-top: 150px;
     text-align: center;
-  //  padding-left: 50px;
     width: 40%;
-    margin: 100px auto;
+    margin: 60px auto;
   }
 
   .aside-content {
@@ -116,6 +115,13 @@
     font-weight: 500;
   }
 
+  @media (max-width: 320px) {
+    .aside-list{
+      .aside-anchor{
+        font-size: 18pt !important;
+      }      
+    }
+  }
 
 
   input[type="checkbox"] {
@@ -229,9 +235,10 @@
     .aside-left {
       display: block;
     }
-
-  //  .aside-right {
-  //    width: 100%;
-  //  }
   }
+  
 }
+
+
+
+

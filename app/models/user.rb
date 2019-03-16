@@ -165,6 +165,8 @@ class User < ApplicationRecord
           reps_goal: template.reps,
           set_completed: 0,
           reps_completed: 0,
+          user_id: self.id
+          
         }
       end
       

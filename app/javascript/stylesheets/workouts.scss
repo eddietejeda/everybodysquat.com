@@ -84,3 +84,13 @@ h5::after{
 .right{
   text-align: right;
 }
+
+@media (max-width: 320px) {
+  .aside-list{
+    .btn-large {
+      font-size: 9pt !important;
+      line-height: 1.2rem !important;
+      height: 1.8rem !important;
+    }
+  }
+}
