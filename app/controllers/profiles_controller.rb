@@ -1,16 +1,18 @@
 # frozen_string_literal: true
+require 'digest'
+
 
 class ProfilesController < ApplicationController
   # helper_method :filtering_params
   # validate :reserved_username
 
 
-  def account
+  def settings
     @user = User.where("username = '#{params[:username]}'").first
     
+    @user_email_hash = Digest::MD5.hexdigest(@user.email)
+    
     unless @user
-      # raise ActionController::RoutingError.new('Not Found')
-      # render :status => 404
       render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
     end
     

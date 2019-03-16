@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get "/:username/workouts",  to: "profiles#workouts"
   get "/:username/timeline",  to: "profiles#timeline"
   get "/:username/account",   to: "profiles#account"
+  get "/:username/settings",   to: "profiles#settings"
   get "/:username/charts",    to: "profiles#charts"
   get "/:username/goals",     to: "profiles#goals"
   get "users/:id/routines/:routine_id", to: "users#add_routine_to_user"

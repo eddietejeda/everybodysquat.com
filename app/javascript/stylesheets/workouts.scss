@@ -3,16 +3,21 @@
   text-decoration: none;
   background-color: #38618c;
   color: white;
-}
-.card a{
-  position: relative;
-  text-decoration: none;
-  text-color: white;
+
+
+  a{
+    position: relative;
+    text-decoration: none;
+    color: white !important;
+  }
+  
+
+  a:visited{
+    color: white !important;
+  }
+
 }
 
-a:visited{
-  color: white;
-}
 
 .inactive{
 //  position: absolute;
