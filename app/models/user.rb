@@ -88,31 +88,39 @@ class User < ApplicationRecord
   def previous_workout_exercise_weight(exercise_id)
     self.previous_workout_exercise_setts(exercise_id).max_by(&:weight).try(:weight).to_i || current_user.bar_weight
   end
+  
+  def previous_workout_exercise_successful(exercise_id)
+    self.previous_workout_exercise_setts(exercise_id).map{|e|e.reps_completed == e.reps_goal}.all? {|a|a}
+  end
 
   def next_weight(routine_id, exercise_id, exercise_group, set_number)
-    previous_workout_exercise_weight(exercise_id) + Routine.find(routine_id).templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first.incremention_scheme.fetch(set_number).to_i
+    successful = previous_workout_exercise_successful(exercise_id)
+    Rails.logger.info {"next_weight(#{routine_id}, #{exercise_id}, #{exercise_group}, #{set_number}): #{successful} "}    
+    if successful
+      previous_workout_exercise_weight(exercise_id) + Routine.find(routine_id).templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first.incremention_scheme.fetch(set_number).to_i
+    else
+      previous_workout_exercise_weight(exercise_id)
+    end
   end
   
   def next_workout_date
     # this is not pretty, but I needed to get this out quickly to test other things
     # TODO: rewrite to take multiple algorithms for different programs. this is currently 5x5
     # Routine.find(self.routine_id).templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first.incremention_scheme.fetch(set_number).to_i
-    week_array = [0,1,0,1,0,1,0] # this is basically 5x5/M-W-F
+    week_array = [false,true,false,true,false,true,false] # this is basically 5x5/M-W-F
+    wday = Time.now.wday
 
-    wtoday = Time.now.wday
-    days_ahead = 1
-    if self.most_recent_workout.created_at.today? || self.most_recent_workout.created_at.yesterday?
-      week_array.map do |key, value|
-        wnext = (wnext == 6) ? 0 : (wtoday + key + 1)
-        if week_array.fetch(wnext) == 1
-          return Time.now + days_ahead.days
-        else
-          days_ahead = days_ahead + 1
-        end
+    week_array.each_with_index do |value, key|
+      wnext = (wday + key)%week_array.count
+      if week_array.fetch(wnext)
+        return Time.now + key.days
       end
     end
     
+    # We should never be here.
+    Rails.logger.error {"User.next_workout_date not finding the next workout date and defaulting to tomorrow"}
     return Time.now + 1.days
+    
   end
   
   
