@@ -32,19 +32,38 @@
 
             - workout.setts.where(exercise_id: exercise.id).order(:id).each_with_index do |sett, index|
               .columns.col-12{"data-controller" => "sett", "data-sett-id" => sett.id, style: "font-size: 15pt"}
-                .left.col-4
+                .left.col-3
                   %p
                     ="Set #{index+1} "
-                .col-4
+                .col-3
                   %p
                     -#="#{sett.reps_goal} reps at #{sett.current_weight}lbs"
                     ="#{sett.current_weight} lbs"
                     / %small.tile-subtitle.text-gray
                     /   %input{type: "number", min: 0, max: 2000, step: 2.5, value: sett.current_weight, "data-target" => "sett.weight", "data-action" => "change->sett#updateWeight"}
 
-                .right.col-4
+                .col-1{"data-controller" => "video"}
+                  -if ENV['FEATURE_VIDEO']
+                    %button.btn.btn{"data-target" => "video.button", "data-value" => "0", "data-action" => "click->video#toggleVideoRecord"}
+                      .icon.icon-check
+                    
+                .right.col-5
                   %button.btn.btn{"data-target" => "sett.button", "data-action" => "click->sett#updateReps", :class => ("btn-primary-light-red" if sett.reps_completed < sett.reps_goal)}
                     .div{"data-target" => "sett.reps", "value" => "0"}
                       ="#{sett.reps_completed} x #{sett.reps_goal}"
 
       .card-footer
+
+        / #gUMArea
+        /   %div
+        /     Record:
+        /     = succeed "Video" do
+        /       %input#mediaVideo{:checked => "checked", :name => "media", :type => "radio", :value => "video"}/
+        /     = succeed "audio" do
+        /       %input{:name => "media", :type => "radio", :value => "audio"}/
+        /   %button#gUMbtn.btn.btn-default Request Stream
+        / #btns
+        /   %button#start.btn.btn-default Start
+        /   %button#stop.btn.btn-default Stop
+        / %div
+        /   %ul#ul.list-unstyled
