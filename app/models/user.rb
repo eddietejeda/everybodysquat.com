@@ -124,6 +124,12 @@ class User < ApplicationRecord
   end
   
   
+  def highest_weight_sett(exercise_id)
+    Sett.where(user_id: self.id, exercise_id: exercise_id).where("set_goal > 0").order(weight: :desc).limit(1).first || Sett.none
+  end
+  
+  
+  
   def bar_weight
     # this should be stored in a setting somewhere
     return 45

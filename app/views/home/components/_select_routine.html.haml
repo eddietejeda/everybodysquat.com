@@ -1,0 +1,13 @@
+-if current_user.workouts.count == 0
+  .card
+    .card-header
+      .card-title.h5
+        Select a training program
+      .card-body
+        .columns.col-12
+          %p
+            Welcome to everybodysquat, where our goal to get everybody to squat 1x their body-weight.
+          %p
+            Want to lift more? We can help you with that as well.
+          %p   
+            %a.btn{:href => "/workouts/create"}  Get Started

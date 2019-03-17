@@ -1,0 +1,28 @@
+-if current_user.has_active_workout?
+  .card
+    .card-body.columns
+      .column.col-12
+        %p.center 
+          You have an active workout. Would you like to resume?
+      .columns.col-12
+        .col-3
+        .col-3
+          %a.btn{:href => "/workouts/resume"}  Resume
+        .col-1
+        .col-3
+          %a.btn{:href => "/workouts/stop"}  Stop
+        .col-2  
+-else
+  .card
+    .card-header
+      .card-title.h5
+        Next workout
+      .card-body
+        .columns.col-12
+          %p
+            Your next scheduled workout is 
+            ="#{formated_date(Time.now + 2.days)}"
+            -#"#{formated_date(current_user.next_workout_date)}"
+          %p   
+            %a.btn{:href => "/workouts/create"}  Begin Workout
+            
