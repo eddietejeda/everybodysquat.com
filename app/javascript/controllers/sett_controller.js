@@ -1,6 +1,7 @@
 import { ApplicationController } from "../support/application-controller";
 import pluralize from "pluralize";
 import safetext from "../support/safetext";
+import cookies from "../support/cookies";
 
 
 export default class extends ApplicationController {
@@ -22,7 +23,8 @@ export default class extends ApplicationController {
     }
 
     this.railsUpdate(`/setts/${this.data.get("id")}`, "reps_completed", reps_completed);
-
+    cookies.setValue('restTime', 1);
+    
   }
   
   updateWeight(){

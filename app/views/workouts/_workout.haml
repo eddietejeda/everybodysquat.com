@@ -3,17 +3,8 @@
     .card-header
       .card-title.h5.column
         .columns
-          .col5
+          .col-12
             =link_to workout.formated_date, edit_workout_path(workout)
-          .col5.right{style: "position: absolute; right: 35px"}
-            -if workout.active
-              %span.complete-workout.btn
-                %a{href: '/workouts/stop'}
-                  Finish
-            -else
-              %span.complete-workout.btn
-                %a{href: '/workouts/resume'}
-                  Edit
 
       .card-subtitle.text-gray
         / -if workout.active
@@ -29,6 +20,7 @@
             / .col-5
             /   Current
             / .col-6
+            
 
             - workout.setts.where(exercise_id: exercise.id).order(:id).each_with_index do |sett, index|
               .columns.col-12{"data-controller" => "sett", "data-sett-id" => sett.id, style: "font-size: 15pt"}
@@ -53,6 +45,29 @@
                       ="#{sett.reps_completed} x #{sett.reps_goal}"
 
       .card-footer
+      #notification{"data-controller" => "timer", "data-timer-workout-created" => "#{workout.created_at.to_i}", style: "padding: 10px"}
+        .column
+          .columns.col-12
+            .col-1
+            .col-3
+              Rest Time:
+              %br
+              %span#settTimer{"data-target" => "timer.sett", "data-action" => "timer->sett#setTimer"}
+                0:00              
+            .col-4
+              Workout: 
+              %br
+              %span#workoutTimer{"data-target" => "timer.workout", "data-action" => "timer->sett#workoutTimer"}
+                0:00
+            .col-4.right
+              -if workout.active
+                %span.complete-workout.btn
+                  %a{href: '/workouts/stop'}
+                    Finish
+              -else
+                %span.complete-workout.btn
+                  %a{href: '/workouts/resume'}
+                    Edit
 
         / #gUMArea
         /   %div
