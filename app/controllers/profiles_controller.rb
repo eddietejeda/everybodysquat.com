@@ -31,7 +31,20 @@ class ProfilesController < ApplicationController
   end
 
   def workouts
-    @workouts = current_user.workouts.order(id: :desc)
+    offset = profile_params[:page].to_i * 10
+    
+    @workouts = current_user.workouts.order(id: :desc).offset(offset).limit(10)
+    
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render :json => @workouts.as_json  }
+    end
+  end
+  
+  private
+    
+  def profile_params
+    params.permit(:page)    
   end
 
       
