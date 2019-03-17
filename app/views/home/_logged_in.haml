@@ -1,0 +1,95 @@
+%div{style: "position: relative; height: 100px"}
+  %h1
+    =greet_user
+
+
+-if current_user.workouts.count > 1
+  .card
+    .card-header
+      .card-title.h5
+        Select a training program
+      .card-body
+        .columns.col-12
+          %p
+            Welcome to everybodysquat, where our goal to get everybody to squat 1x their body-weight.
+          %p
+            Want to lift more? We can help you with that as well.
+          %p   
+            %a.btn{:href => "/workouts/create"}  Get Started
+            
+
+
+-if current_user.has_active_workout?
+  .card
+    .card-body.columns
+      .column.col-12
+        %p.center 
+          You have an active workout. Would you like to resume?
+      .columns.col-12
+        .col-3
+        .col-3
+          %a.btn{:href => "/workouts/resume"}  Resume
+        .col-1
+        .col-3
+          %a.btn{:href => "/workouts/stop"}  Stop
+        .col-2  
+-else
+  .card
+    .card-header
+      .card-title.h5
+        Next workout
+      .card-body
+        .columns.col-12
+          %p
+            Your next scheduled workout is 
+            ="#{formated_date(Time.now + 2.days)}"
+            -#"#{formated_date(current_user.next_workout_date)}"
+          %p   
+            %a.btn{:href => "/workouts/create"}  Begin Workout
+            
+
+.card
+  .card-header
+    .card-title.h5
+      Personal Records
+    .card-body
+      .columns.col-12
+        .col-6{style: "text-align: right; padding-right: 10px"}
+          Squat
+        .col-6{style: "text-align: left; padding-left: 10px"}
+          255 x 2
+        .col-6{style: "text-align: right; padding-right: 10px"}
+          Bench Press
+        .col-6{style: "text-align: left; padding-left: 10px"}
+          255 x 3
+        .col-6{style: "text-align: right; padding-right: 10px"}
+          Deadlift
+        .col-6{style: "text-align: left; padding-left: 10px"}
+          255 x 1
+        .col-6{style: "text-align: right; padding-right: 10px"}
+          Overhead Press
+        .col-6{style: "text-align: left; padding-left: 10px"}
+          255 x 1
+
+      
+
+.card
+  .card-header
+    .card-title.h5
+      Monthly Progress
+    .card-body
+      .chart{"data-controller" => "chart"}
+        .show{"data-target" => "chart.show"}
+    
+
+
+.card
+  .card-header
+    .card-title.h5
+      Archivements
+    .card-body
+      %p
+        1. You squatted your body-weight
+      %p
+        2. Deadlifted 3 plates
+

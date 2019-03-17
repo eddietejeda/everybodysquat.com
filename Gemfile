@@ -24,7 +24,7 @@ gem 'searchkick'
 
 # gem 'omniauth-google'
 # gem 'omniauth-facebook'
-gem 'high_voltage', '~> 3.1'
+# gem 'high_voltage', '~> 3.1'
 gem "haml-rails", "~> 1.0"
 
 group :development, :test do
