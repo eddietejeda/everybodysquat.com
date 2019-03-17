@@ -3,7 +3,7 @@
   text-decoration: none;
   background-color: #38618c;
   color: white;
-
+  border-bottom: 3px solid #ff5964;
 
   a{
     position: relative;
@@ -21,7 +21,8 @@
 
 .inactive{
 //  position: absolute;
-  background-color: #3F6F8F !important;
+//  background-color: #3F6F8F !important;
+  border-bottom: 0 !important;
   
   .btn{
     background-color: #fd9a99 !important;

@@ -62,9 +62,11 @@ class WorkoutsController < ApplicationController
   def stop
     if current_user.has_active_workout?
       w = current_user.active_workout
+      w.completed_at = DateTime.now
       w.active = false
       w.save!
     end
+    cookies.delete :restTime
     redirect_to "/"
   end
 

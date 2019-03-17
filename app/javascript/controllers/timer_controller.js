@@ -15,17 +15,21 @@ export default class extends ApplicationController {
   
   settTimer(){
     
+    let restTime = parseInt(cookies.getValue('restTime')) - 1;
+    let minutes = "5";
+    let seconds = "01";
     
-    let restTime = parseInt(cookies.getValue('restTime')) + 1
-    
-    cookies.setValue('restTime', restTime);
+    if (cookies.getValue('restTime') && !parseInt(this.data.get("workoutCompleted"))){
+      cookies.setValue('restTime', restTime);
 
+      minutes = Math.floor(restTime / 60) % 60;
+      seconds = parseInt(restTime % 60);
 
-    let minutes = Math.floor(restTime / 60) % 60;
-    let seconds = parseInt(restTime % 60);
+      this.settTarget.innerHTML = `${minutes}m ${seconds}s`;
+
+    }
     
     
-    this.settTarget.innerHTML = `${minutes}:${seconds}`;
     
     
 
@@ -33,10 +37,11 @@ export default class extends ApplicationController {
 
   workoutTimer(){
     setInterval( () => {
-      
       // get total seconds between the times
-      console.log(parseInt(this.data.get("workoutCreated")), parseInt(new Date().getTime())/1000  );
-      var delta = Math.abs( parseInt(this.data.get("workoutCreated"))  - parseInt(new Date().getTime())/1000  ) ;
+      
+      let completed_at = parseInt(this.data.get("workoutCompleted")) || parseInt(new Date().getTime())/1000;
+      
+      var delta = Math.abs( parseInt(this.data.get("workoutCreated"))  - completed_at  ) ;
 
       // calculate (and subtract) whole days
       var days = Math.floor(delta / 86400);
@@ -59,14 +64,10 @@ export default class extends ApplicationController {
       }
       response.push(`${hours}h ${minutes}m`);
 
-      
-      console.log("response", response);
       this.workoutTarget.innerHTML = response.join(" ");
-      
-      
       this.settTimer();
-      
-    } ,  1000);
+    },  1000);
+    
   }
 
 
