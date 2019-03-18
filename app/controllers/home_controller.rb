@@ -2,20 +2,19 @@
 
 class HomeController < ApplicationController
 
-
   skip_before_action :authenticate_user!, :only => [:index]
 
   def index
     if current_user
 
       @achivements = []
-    
-      exercise_list = current_user.routine.exercises.group(:id)
-
+      #
+      # exercise_list = current_user.routine.exercises.group(:id)
+      #
       @prs = []
-      exercise_list.each do |e|
-        @prs << current_user.highest_weight_sett(e.id)
-      end
+      # exercise_list.each do |e|
+      #   @prs << current_user.highest_weight_sett(e.id)
+      # end
 
     else
       render "home/splash.haml", layout: "application"
