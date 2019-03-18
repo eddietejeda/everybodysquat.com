@@ -2,24 +2,26 @@
 
 class HomeController < ApplicationController
 
+
   skip_before_action :authenticate_user!, :only => [:index]
 
   def index
-    # if current_user
-    #   redirect_to "/#{current_user.username}/workouts"
-    # else
-    #   render "home/index.haml", layout: "application"
-    # end
-    
+    if current_user
 
-    @achivements = ["Squatted your own body weight of 170lbs  "]
+      @achivements = []
     
-    exercise_list = current_user.routine.exercises.group(:id)
+      exercise_list = current_user.routine.exercises.group(:id)
 
-    @prs = []
-    exercise_list.each do |e|
-      @prs << current_user.highest_weight_sett(e.id)
+      @prs = []
+      exercise_list.each do |e|
+        @prs << current_user.highest_weight_sett(e.id)
+      end
+
+    else
+      render "home/splash.haml", layout: "application"
     end
+
+
     
   end
   
@@ -32,6 +34,11 @@ class HomeController < ApplicationController
     
   def tutorials
     
+    if Dir.glob("#{Rails.root}/app/views/tutorials/**/**").map{|e|       e.split('tutorials/').last}.include?("#{home_params[:exercise]}/#{home_params[:page]}")
+      render file: "tutorials/#{home_params[:exercise]}/#{home_params[:page]}"
+    else
+      render :status => 404
+    end
     
   end
   

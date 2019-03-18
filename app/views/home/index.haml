@@ -1,4 +1,13 @@
--if current_user
-  =render "logged_in"
--else
-  =render "logged_out"
+%div{style: "position: relative; height: 100px"}
+  %h1
+    =greet_user
+
+=render "home/components/select_routine"
+            
+=render "home/components/next_workout"
+
+=render "home/components/personal_records"
+
+=render "home/components/monthly_progress"
+
+=render "home/components/achivements"
