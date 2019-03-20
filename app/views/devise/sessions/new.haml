@@ -1,4 +1,4 @@
-= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|  
+= form_for(resource, as: resource_name, url: session_path(resource_name), html: { data: { type: "html", action: "ajax:success->devise#onLoginSuccess" } }, remote: true, authenticity_token: true) do |f|  
   .panel
     .panel-header.text-center
       .panel-title.h5.mt-10 Login
