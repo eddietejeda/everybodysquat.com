@@ -3,12 +3,14 @@
     .card-body.columns
       .column
         .col-12
-          %p Your next workout is scheduled for March 15, 2019.
+          %p 
+            Your next workout is scheduled for 
+            %b="#{formated_date(current_user.next_workout_date)}"
           %p We recommend you stick to your program, but if you can start a new workout session now.
           %p 
             .btn
               %a{href: "/workouts/create"}
-                Create New
+                Begin Workout
         
         
   
