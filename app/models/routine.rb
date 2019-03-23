@@ -21,5 +21,23 @@ class Routine < ApplicationRecord
   accepts_nested_attributes_for :templates
   
   
+  def increment_weight(weight, exercise_id, exercise_group, set_number)
+    template = current_user.routine.templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first
+    
+    new_weight = weight
+    if template.workout_progression == 'linear'
+      if template.set_progression == 'fixed'
+        new_weight = weight + template.incremention_scheme.fetch(set_number).to_i
+      else
+        Rails.logger.error{"Set progression scheme does not exist"}
+      end
+    else
+      Rails.logger.error{"Workout progression scheme does not exist"}      
+    end
+    
+    new_weight
+  end
+  
+  
 end
 
