@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_17_215907) do
+ActiveRecord::Schema.define(version: 2019_03_20_214209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bodies", force: :cascade do |t|
+    t.integer "user_id", default: 0
+    t.integer "weight", default: 0
+    t.integer "fat_percent", default: 0
+    t.integer "muscle_percent", default: 0
+    t.integer "water_percent", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "exercise_templates", force: :cascade do |t|
     t.string "name", default: "", null: false
@@ -36,7 +46,6 @@ ActiveRecord::Schema.define(version: 2019_03_17_215907) do
   end
 
   create_table "setts", force: :cascade do |t|
-    t.boolean "set_completed", default: false, null: false
     t.integer "set_goal", null: false
     t.integer "reps_completed", null: false
     t.integer "reps_goal", null: false
@@ -51,27 +60,25 @@ ActiveRecord::Schema.define(version: 2019_03_17_215907) do
   create_table "templates", force: :cascade do |t|
     t.integer "routine_id", null: false
     t.integer "exercise_id", null: false
-    t.integer "sets", null: false
-    t.integer "reps", null: false
-    t.string "progression_type", null: false
     t.string "exercise_group", null: false
+    t.string "workout_progression", null: false
+    t.string "set_progression", null: false
     t.integer "incremention_scheme", default: [], array: true
+    t.integer "reps", default: [], array: true
+    t.integer "sets", null: false
+    t.string "weight_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name", default: ""
-    t.string "website", default: ""
-    t.string "instagram", default: ""
-    t.string "facebook", default: ""
-    t.string "twitter", default: ""
-    t.string "photo", default: ""
     t.text "about", default: ""
     t.integer "routine_id", default: 0
     t.integer "coach_id", default: 0
-    t.boolean "is_coach", default: false, null: false
-    t.boolean "is_admin", default: false, null: false
+    t.boolean "coach", default: false, null: false
+    t.boolean "admin", default: false, null: false
+    t.integer "bar_weight", default: 0
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -102,11 +109,12 @@ ActiveRecord::Schema.define(version: 2019_03_17_215907) do
   end
 
   create_table "workouts", force: :cascade do |t|
-    t.text "notes", default: ""
     t.integer "user_id", null: false
     t.integer "routine_id", null: false
-    t.string "exercise_group", default: "", null: false
     t.boolean "active", default: false, null: false
+    t.string "exercise_group", default: "", null: false
+    t.jsonb "training_maxes", default: "{}", null: false
+    t.text "notes", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "completed_at"

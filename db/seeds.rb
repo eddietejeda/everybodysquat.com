@@ -43,26 +43,26 @@ exercise_pattern ={
   "Workout A": [0, 1, 2],
   "Workout B": [0, 3, 4]  
 }
-exercises_routines = []
+templates = []
 exercise_pattern.each do |group_name, exercise_keys|
 
   exercise_keys.each do |exercise_key|
     exercise_name = exercise_list.fetch(exercise_key)
 
-    exercises_routines << {
-      routine_id: Routine.first.id,
-      exercise_id: Exercise.where(name: exercise_name).first.id,
-      exercise_group: "#{group_name}",
-      progression_type: "linear", #
-      # progression_type: "percent/fixed",
-      incremention_scheme: [5, 5, 5, 5, 5],
-      sets: 5,
-      reps: 5,
-#      weight_type: "kg" 
-    } 
+    templates << {
+      routine_id:           Routine.first.id,
+      exercise_id:          Exercise.where(name: exercise_name).first.id,
+      exercise_group:       group_name,
+      workout_progression:  "linear",
+      set_progression:      "fixed",
+      incremention_scheme:  [5, 5, 5, 5, 5],
+      reps:                 [5, 5, 5, 5, 5],
+      sets:                 5,
+      weight_type:          "kg"
+    }
   end
 end 
-Template.create(exercises_routines)
+Template.create(templates)
 
 
 puts "Creating user sample data"
@@ -70,16 +70,11 @@ user = {
     username: "admin",
     name: "Super User",
     about: "",
-    website: "",
-    instagram: "",
-    twitter: "",
-    facebook: "",
-    photo: "",
     email: "admin@localhost",
     routine_id: Routine.first.id,
     coach_id: 0,
-    is_coach: false,
-    is_admin: true,
+    coach: false,
+    admin: true,
     approved: true,
     password: "this should change as soon as possible. you wil not want to type this again!"
 } 

@@ -6,18 +6,17 @@ class AddDeviseToUsers < ActiveRecord::Migration[5.2]
 
       ## Personal information
       t.string  :name,                  null: true, default: ''
-      t.string  :website,               null: true, default: ''
-      t.string  :instagram,             null: true, default: ''
-      t.string  :facebook,              null: true, default: ''
-      t.string  :twitter,               null: true, default: ''
-      t.string  :photo,                 null: true, default: ''
       t.text    :about,                 null: true, default: ''
 
       t.integer :routine_id,            null: true,  default: 0
       t.integer :coach_id,              null: true,  default: 0
-      t.boolean :is_coach,              null: false, default: false
-      t.boolean :is_admin,              null: false, default: false
+      t.boolean :coach,                 null: false, default: false
+      t.boolean :admin,                 null: false, default: false
       
+      
+      ## Training settings
+      t.integer :bar_weight,            null: true,  default: 0
+
       ## Database authenticatable
       t.string :email,                  null: false,  default: ''
       t.string :encrypted_password,     null: false,  default: ''
