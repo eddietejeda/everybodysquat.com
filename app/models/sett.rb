@@ -28,7 +28,9 @@ class Sett < ApplicationRecord
 
 
   def previous_session
-    Sett.where(exercise_id: self.exercise_id).order(:id).last(2).first
+    id = Sett.select(:workout_id).where(user_id: self.user_id, exercise_id: self.exercise_id).distinct(:workout_id).order(workout_id: :asc).limit(2).first.try(:workout_id)
+    
+    Workout.find(id)
   end
   
 
@@ -36,8 +38,15 @@ class Sett < ApplicationRecord
     previous_session.try(:weight).to_i
   end
   
-  def current_weight
-    if(previous_session.set_completed)
+  def previous_set(sett_id)
+    Sett.find(sett_id)
+  end
+
+  
+
+  # This is not used
+  def current_weight(sett_id)    
+    if(previous_set(sett_id).reps_completed == previous_set(sett_id).reps_goal)
       previous_weight + Template.where(exercise_id: exercise_id).first.try(:increment_by).to_i
     else
       previous_weight

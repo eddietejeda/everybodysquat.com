@@ -32,6 +32,10 @@ class Workout < ApplicationRecord
   def formated_date
     self.created_at.strftime("%A, %b %d %Y")
   end
+  
+  def current_training_max(exercise_id)
+    self.training_maxes.find{|e|e["exercise_id"] == exercise_id}.to_h["weight"]    
+  end
 
 end
 
