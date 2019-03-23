@@ -74,34 +74,65 @@ class User < ApplicationRecord
     Workout.where(user_id: self.id).last(2).first
   end
   
+  def most_recent_workout_by_group(group_name)
+    Workout.where(user_id: self.id, exercise_group: group_name).order(:id).last
+  end
+
   # previous_workout_before the workout before the a specific date
   # TODO: is this performant? 
   def previous_workout_before(before_date)
-    Workout.where("user_id = :user_id AND created_at < :created_at", { user_id: self.id, created_at: before_date } ).first
+    Workout.where("user_id = :user_id AND created_at < :created_at", { 
+      user_id: self.id, created_at: before_date 
+    }).first
   end
-
 
   def previous_workout_exercise_setts(exercise_id)
-    Sett.where(workout_id: self.previous_workout.id, exercise_id: exercise_id).order(created_at: :desc)
+    previous_workout ? Sett.where(workout_id: previous_workout.id, exercise_id: exercise_id).order(created_at: :desc) : Sett.none
   end
 
-  def previous_workout_exercise_weight(exercise_id)
-    self.previous_workout_exercise_setts(exercise_id).max_by(&:weight).try(:weight).to_i || current_user.bar_weight
+  def weight_of_previous_workout_exercise(exercise_id)
+    previous_workout.training_maxes.find{|e| 
+      e["exercise_id"] == exercise_id  
+    }.to_h["weight"] || 45
   end
   
-  def previous_workout_exercise_successful(exercise_id)
-    self.previous_workout_exercise_setts(exercise_id).map{|e|e.reps_completed == e.reps_goal}.all? {|a|a}
+  def should_increase_weight(exercise_id)
+    successful_sets = previous_workout_exercise_setts(exercise_id).to_a.map{|e|
+      (e.reps_completed == e.reps_goal) && (e.reps_completed > 0)
+    }
+    previous_workout_exercise_setts(exercise_id).exists? && successful_sets.all? {|a|a}
   end
 
-  def next_weight(routine_id, exercise_id, exercise_group, set_number)
-    successful = previous_workout_exercise_successful(exercise_id)
-    Rails.logger.info {"next_weight(#{routine_id}, #{exercise_id}, #{exercise_group}, #{set_number}): #{successful} "}    
-    if successful
-      previous_workout_exercise_weight(exercise_id) + Routine.find(routine_id).templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first.incremention_scheme.fetch(set_number).to_i
+
+  def weight_of_next_training_max(exercise_id, exercise_group)
+
+    if should_increase_weight(exercise_id)
+      current_exercise_training_max(exercise_id, exercise_group) + 5
+    elsif should_decrease_weight(exercise_id)
+      current_exercise_training_max(exercise_id, exercise_group) - 20
     else
-      previous_workout_exercise_weight(exercise_id)
+      # stay the same
+      current_exercise_training_max(exercise_id, exercise_group) || current_user.bar_weight
     end
   end
+  
+  
+  def current_exercise_training_max(exercise_id, exercise_group)
+    most_recent_workout_by_group(exercise_group).try(:training_maxes).to_a.find{|e|
+      e.to_h["exercise_id"] == exercise_id
+    }.to_h["weight"].to_i    
+  end
+  
+  #TODO:
+  def should_decrease_weight(exercise_id)
+    false
+  end
+  
+  def weight_for_next_set(exercise_id, exercise_group, set_number)
+    previous = weight_of_previous_workout_exercise(exercise_id)
+    should_increase_weight(exercise_id) ? current_user.routine.increment_weight(previous, exercise_id, exercise_group, set_number) : previous
+  end
+  
   
   def next_workout_date
     # this is not pretty, but I needed to get this out quickly to test other things
@@ -119,13 +150,12 @@ class User < ApplicationRecord
     
     # We should never be here.
     Rails.logger.error {"User.next_workout_date not finding the next workout date and defaulting to tomorrow"}
-    return Time.now + 1.days
-    
+    Time.now + 1.days
   end
   
   
   def highest_weight_sett(exercise_id)
-    Sett.where(user_id: self.id, exercise_id: exercise_id).where("set_goal > 0").order(weight: :desc).limit(1).first || Sett.none
+    Sett.where(user_id: current_user.id, exercise_id: exercise_id).where("set_goal > 0").order(weight: :desc).limit(1).first || Sett.none
   end
   
   
@@ -137,64 +167,75 @@ class User < ApplicationRecord
 
 
 
-  def create_workout
+
+  def next_exercise_group_name
     # get all possible exercise groups    
     all_exercise_groups = self.routine.exercise_groups 
     
-    #if nothing, it's 0
+    #we use try() just in case there is no previous workout
     previous_workout_group = self.most_recent_workout.try(:exercise_group)
-
-    # byebug
 
     # default to zero, but lets look inside. 
     current_group_pos = 0
     if !previous_workout_group.blank?
       # find the previous workout in the list
       previous_workout_pos = all_exercise_groups.index(previous_workout_group)
-
       # find the previous workout in the list, if it's the last item on the list, start back at 0
       current_group_pos = (previous_workout_pos == all_exercise_groups.length - 1) ? 0 : previous_workout_pos + 1
     end  
     
-    exercise_group = all_exercise_groups.fetch(current_group_pos)
-    workout = Workout.create({
-      user_id: self.id,
-      routine_id: self.routine_id,
-      active: true,
-      exercise_group: exercise_group
+    all_exercise_groups.fetch(current_group_pos)
+  end
+  
+  def template_exercises_by_group(exercise_group)
+    Template.where("routine_id = :routine_id AND exercise_group = :exercise_group", { 
+      routine_id: self.routine_id, exercise_group: exercise_group 
     })
+  end
 
-    setts = []
-    # We copy the template to a Sett
-    Template.where("routine_id = :routine_id AND exercise_group = :exercise_group", 
-      { routine_id: self.routine_id, exercise_group: exercise_group } ).each do |template|
-      
-      template.sets.times do |set_number|
-
-        setts << {
-          workout_id: workout.id,
-          exercise_id: template.exercise_id,
-          weight: self.next_weight(template.routine_id, template.exercise_id, template.exercise_group, set_number),
-          set_goal: template.sets,
-          reps_goal: template.reps,
-          set_completed: 0,
-          reps_completed: 0,
-          user_id: self.id
-          
-        }
-      end
-      
-    end
-    
-    
-    Sett.create(setts)
-    
-    return workout
+  def adjust_training_maxes_by_group(exercise_group)   
+    template_exercises_by_group(exercise_group).map{|e|
+      {
+        exercise_id: e.exercise_id, 
+        weight: weight_of_next_training_max(e.exercise_id, exercise_group)
+      }
+    }
   end
 
   
-  
-  
+  def create_workout
+    exercise_group_name = next_exercise_group_name()
+    exercises_list_grouped = template_exercises_by_group(exercise_group_name)
+    
+    workout = Workout.create({
+      user_id: current_user.id,
+      routine_id: current_user.routine_id,
+      active: true,
+      exercise_group: exercise_group_name,
+      training_maxes: adjust_training_maxes_by_group(exercise_group_name)
+    })
+
+
+    # We copy the template to a Sett
+    setts = []
+    exercises_list_grouped.each do |template|
+      template.sets.times do |set_number|
+        setts << {
+          workout_id: workout.id,
+          exercise_id: template.exercise_id,
+          weight: weight_for_next_set(template.exercise_id, template.exercise_group, set_number),
+          set_goal: template.sets,
+          reps_goal: template.reps.fetch(set_number),
+          reps_completed: 0,
+          user_id: current_user.id
+        }
+      end
+    end
+    Sett.create(setts)
+    
+    workout
+  end
+
 
   def set_default_routine
     r = self.routine_id
@@ -203,15 +244,15 @@ class User < ApplicationRecord
   end
   
   def is_coach?
-    self.is_coach
+    self.coach
   end
   
   def is_trainee?
-    !self.is_coach
+    !self.coach
   end
   
   def is_admin?
-    self.is_admin
+    self.admin
   end
   
   def trainees
@@ -223,20 +264,15 @@ class User < ApplicationRecord
     end
   end
   
-  
-  
-  
   def validate_username
     if User.where(email: username).exists?
       errors.add(:username, :invalid)
     end
   end
 
-
   def send_admin_mail
     UserMailer.new_user_waiting_for_approval(email).deliver
   end
-  
   
   def self.send_reset_password_instructions(attributes={})
     recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
