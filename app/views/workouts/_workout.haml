@@ -1,6 +1,12 @@
 - cache workout do
-  #notification.card{"data-controller" => "timer", "data-timer-workout-created" => "#{workout.created_at.to_i}", "data-timer-workout-completed" => "#{workout.completed_at.to_i}", class: ("archived" if workout.active == false)}
+  -if workout.active == true
+    %h3
+      Current Workout
+  -else
+    %h3
+      Previous Workout
 
+  #notification.card{"data-controller" => "timer", "data-timer-workout-created" => "#{workout.created_at.to_i}", "data-timer-workout-completed" => "#{workout.completed_at.to_i}", class: ("archived" if workout.active == false)}
     .column
       .columns.col-12
       .columns.col-12{style: "text-align: center;"}
@@ -17,17 +23,15 @@
           Workout: 
           %br
           %span#workoutTimer{"data-target" => "timer.workout", "data-action" => "timer->sett#workoutTimer"}
-            0:00
+            -if workout.completed_at
+              ="#{workout.created_at - workout.completed_at}"
         .col-3.right
           -if workout.active
             %span.complete-workout.btn
               %a{href: '/workouts/stop'}
                 Finish
-          -else
-            / %span.complete-workout.btn
-            /   %a{href: '/workouts/resume'}
-            /     Edit
 
+      
   .card{class: ("inactive" if workout.active == false)}
     .card-header
       .card-title.h5.column
@@ -41,19 +45,23 @@
           .columns{style: "border-bottom: 2px solid white"}
             %h5
               = exercise.name
+              /
+              / Training Max
+              / %input{type: "number", min: 0, max: 2000, step: 2.5, value: sett.weight, "data-target" => "sett.weight", "data-action" => "change->sett#updateWeight"}
+
+          / .columns.col-12
+          /   Training Max:
+          /   =workout.current_training_max(exercise.id)
           .column.col-12{style: "font-size: 15pt"}
             - workout.setts.where(exercise_id: exercise.id).order(:id).each_with_index do |sett, index|
               .columns.col-12{"data-controller" => "sett", "data-sett-id" => sett.id, "data-sett-active" => "#{workout.active.to_s}", "data-sett-completed-at" => workout.completed_at}
-              
-              
                 .left.col-3
                   %p
                     ="Set #{index+1} "
                 .col-3
-                  %p
-                    ="#{sett.current_weight} lbs"
-                    / %small.tile-subtitle.text-gray
-                    /   %input{type: "number", min: 0, max: 2000, step: 2.5, value: sett.current_weight, "data-target" => "sett.weight", "data-action" => "change->sett#updateWeight"}
+                  %p  
+                    ="#{sett.weight} lbs"
+                    
 
                 .col-1{"data-controller" => "video"}
                   -if ENV['FEATURE_VIDEO']
@@ -64,6 +72,7 @@
                   %button.btn.btn{"data-target" => "sett.button", "data-action" => "click->sett#updateReps", :class => ("btn-primary-light-red" if sett.reps_completed < sett.reps_goal)}
                     .div{"data-target" => "sett.reps", "value" => "0"}
                       ="#{sett.reps_completed} x #{sett.reps_goal}"
+                
 
       .card-footer
       / #gUMArea

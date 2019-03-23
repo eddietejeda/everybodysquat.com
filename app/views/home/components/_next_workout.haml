@@ -5,13 +5,10 @@
         %p.center 
           You have an active workout. Would you like to resume?
       .columns.col-12
-        .col-3
-        .col-3
+        .col-6.col-sm-12
           %a.btn{:href => "/workouts/resume"}  Resume
-        .col-1
-        .col-3
+        .col-6.col-sm-12
           %a.btn{:href => "/workouts/stop"}  Stop
-        .col-2  
 -else
   .card
     .card-header
@@ -23,6 +20,11 @@
             Your next scheduled workout is 
             ="#{formated_date(Time.now + 2.days)}"
             -#"#{formated_date(current_user.next_workout_date)}"
-          %p   
-            %a.btn{:href => "/workouts/create"}  Begin Workout
-            
+        .column
+          .columns
+            .col-6.col-sm-12
+              %p   
+                %a.btn{:href => "/workouts/create"}  Begin Workout
+            .col-6.col-sm-12
+              %p   
+                %a.btn{:href => "/profile/workouts"}  Workout History

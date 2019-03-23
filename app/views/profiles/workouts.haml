@@ -13,8 +13,14 @@
         
   
 
-
+-displayed = false
 -@workouts.each do |workout|
+  -if workout.active == true
+    Today
+  -if workout.active == false && displayed == false
+    Previous Workouts
+    -displayed = true
+    
   .card{class: ("inactive" if workout.active == false)}
     =link_to edit_workout_path(workout) do 
       .card-header
