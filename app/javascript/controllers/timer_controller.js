@@ -14,7 +14,6 @@ export default class extends ApplicationController {
   }
   
   settTimer(){
-    
     let restTime = parseInt(cookies.getValue('restTime')) - 1;
     let minutes = "5";
     let seconds = "01";
@@ -23,16 +22,10 @@ export default class extends ApplicationController {
       cookies.setValue('restTime', restTime);
 
       minutes = Math.floor(restTime / 60) % 60;
-      seconds = parseInt(restTime % 60);
+      seconds = Math.abs(parseInt(restTime % 60));
 
-      this.settTarget.innerHTML = `${minutes}m ${seconds}s`;
-
+      this.settTarget.innerHTML = `${minutes.pad(2)}:${seconds.pad(2)}`;
     }
-    
-    
-    
-    
-
   }
 
   workoutTimer(){
@@ -62,15 +55,21 @@ export default class extends ApplicationController {
       if (days){
         response.push(`${days}d`);
       }
-      response.push(`${hours}:${minutes}:${seconds}`);
+      response.push(`${hours.pad(2)}:${minutes.pad(2)}:${seconds.pad(2)}`);
 
       this.workoutTarget.innerHTML = response.join(" ");
       this.settTimer();
     },  1000);
     
   }
-
+  
+  
 
 }
 
 
+
+Number.prototype.pad = function(size) {
+  var sign = Math.sign(this) === -1 ? '-' : '';
+  return sign + new Array(size).concat([Math.abs(this)]).join('0').slice(-size);
+}
