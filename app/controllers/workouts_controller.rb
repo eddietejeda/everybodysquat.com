@@ -67,7 +67,7 @@ class WorkoutsController < ApplicationController
       w.save!
     end
     cookies.delete :restTime
-    redirect_to "/"
+    redirect_to "/workouts/#{w.id}/edit"
   end
 
 
