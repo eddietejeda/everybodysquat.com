@@ -62,7 +62,7 @@ export default class extends ApplicationController {
       if (days){
         response.push(`${days}d`);
       }
-      response.push(`${hours}h ${minutes}m`);
+      response.push(`${hours}:${minutes}:${seconds}`);
 
       this.workoutTarget.innerHTML = response.join(" ");
       this.settTimer();
