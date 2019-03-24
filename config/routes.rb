@@ -6,38 +6,28 @@ Rails.application.routes.draw do
   
   devise_for :users
   
-  
-  resources :routines,    only: %i[index new edit update create show], path: '/routines'
-  resources :exercises,   only: %i[index new edit update create show], path: '/exercises'
-  resources :templates,   only: %i[index new edit update create show], path: '/templates'
-  resources :setts,       only: %i[update], path: '/setts'
-
-  resources :workouts, only: %i[index new create update destroy edit stop], path: '/workouts' do
+  resources :workouts,    only: %i[index edit create stop resume destroy] do
     collection do
-      get 'stop', to: 'workouts#stop'
-      get 'create', to: 'workouts#create'
-      get 'resume', to: 'workouts#resume'
+      get 'create',       to: 'workouts#create'
+      get 'stop',         to: 'workouts#stop'
+      get 'resume',       to: 'workouts#resume'
     end
   end
   
-  get "/:username/workouts",  to: "profiles#workouts"
-  get "/:username/timeline",  to: "profiles#timeline"
-  get "/:username/account",   to: "profiles#account"
-  get "/:username/settings",  to: "profiles#settings"
-  get "/:username/charts",    to: "profiles#charts"
-  get "/:username/charts_json",    to: "profiles#charts_json"
-  get "/:username/goals",     to: "profiles#goals"
-  get "/users/:id/routines/:routine_id", to: "users#add_routine_to_user"
+  resources :setts,       only: %i[update]
+  resources :routines,    only: %i[index]
+  resources :exercises,   only: %i[index]
+  resources :templates,   only: %i[index]
+  resources :charts,      only: %i[index]
+  resources :settings,    only: %i[index]
 
+  resources :api,         :defaults => {:format => :json} do
+    collection do
+      get 'charts',       to: 'api#charts'
+    end
+  end
 
-  get "/tutorials/:exercise/:page",   to: "home#tutorials"
-  get "/:username",                   to: "home#index"
+  get "/tutorials/:exercise/:page",   to: "tutorials#index"
 
-  # scope :admin do
-  #   resources :workouts
-  #   resources :routines
-  #   resources :templates
-  #   resources :setts
-  # end
   
 end

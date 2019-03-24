@@ -17,7 +17,7 @@ export default class extends ApplicationController {
   
   
   load() {
-    fetch("/admin/charts_json")
+    fetch("/api/charts.json")
       .then(response => response.json())
       .then(content => {
         var ctx = this.showTarget.getContext('2d');

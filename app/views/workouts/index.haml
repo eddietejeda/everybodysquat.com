@@ -1,21 +1,43 @@
-/ This list page should only appear for admin
-%h1 Listing workouts
+-if !current_user.has_active_workout?
+  .card
+    .card-body.columns
+      .column
+        .col-12
+          %p 
+            Your next workout is scheduled for 
+            %b="#{formated_date(current_user.next_workout_date)}"
+          %p We recommend you stick to your program, but if you can start a new workout session now.
+          %p 
+            .btn
+              %a{href: "/workouts/create"}
+                Begin Workout
+        
+        
+  
 
-%table
-  %thead
-    %tr
-      %th
-      %th
-      %th
+-displayed = false
+-@workouts.each do |workout|
+  -if workout.active == true
+    Today
+  -if workout.active == false && displayed == false
+    Previous Workouts
+    -displayed = true
+    
+  .card{class: ("inactive" if workout.active == false)}
+    =link_to edit_workout_path(workout) do 
+      .card-header
+        .card-subtitle
+          =workout.formated_date
+        .card-body.columns
+          - workout.unique_exercises.each do |exercise|
+            .col-6
+              =exercise.name
+            .col-4
+              ="#{workout.current_exercise_weight(exercise.id)} lbs"
+            .col-2
+              =workout.routine.try(:name)
 
-  %tbody
-    - @workouts.each do |workout|
-      %tr
-        %td= link_to "#{workout.created_at.strftime("%a, %b %d %Y")}", edit_workout_path(workout) 
-        %td
-          =" . . . . "
-        %td= link_to 'Destroy', workout, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Workout', new_workout_path
+.card
+  .card-body.columns
+    .column
+      Load More

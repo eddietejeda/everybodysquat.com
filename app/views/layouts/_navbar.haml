@@ -37,16 +37,16 @@
               %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/create"}  New Workout
           %li
             %br
-          %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'show') }
+          %li.aside-anchor{class: ('active' if params[:controller] == 'profiles') }
             %a{:href => "/"}  Home
-          %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
-            %a{:href => "/#{current_user.username}/workouts"}  Workouts
-          %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'charts') }
-            %a{:href => "/#{current_user.username}/charts"}  Charts
-          %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'timeline') }
-            %a{:href => "/#{current_user.username}/timeline"}  Timeline
-          %li.aside-anchor{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'settings') }
-            %a{:href => "/#{current_user.username}/settings"}  Settings
+          %li.aside-anchor{class: ('active' if params[:controller] == 'workouts') }
+            %a{:href => "/workouts"}  Workouts
+          %li.aside-anchor{class: ('active' if params[:controller] == 'charts') }
+            %a{:href => "/charts"}  Charts
+          %li.aside-anchor{class: ('active' if params[:controller] == 'timeline') }
+            %a{:href => "/timeline"}  Timeline
+          %li.aside-anchor{class: ('active' if params[:controller] == 'settings') }
+            %a{:href => "/settings"}  Settings
           %li.aside-anchor
             =link_to('Logout', destroy_user_session_path, method: :get)
 

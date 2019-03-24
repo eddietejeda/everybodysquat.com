@@ -4,10 +4,13 @@ class WorkoutsController < ApplicationController
   # helper_method :filtering_params
 
   def index
-    if current_user.is_admin?
-      @workouts = Workout.all.order(id: :desc).limit(5)
-    else
-      @workouts = Workout.where(user_id: current_user.id).order(id: :desc).limit(5)
+    offset = profile_params[:page].to_i * 10
+    
+    @workouts = current_user.workouts.order(id: :desc).offset(offset).limit(10)
+    
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render :json => @workouts.as_json  }
     end
   end
 
@@ -81,6 +84,11 @@ class WorkoutsController < ApplicationController
 
   def workout_params
     params.require(:workout).permit(:id, :title, :completed, :completed_filter)
+  end
+
+
+  def profile_params
+    params.permit(:page)    
   end
 
 
