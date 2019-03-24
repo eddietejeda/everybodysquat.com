@@ -1,6 +1,8 @@
 import "spectre.css/dist/spectre.css";
 import "spectre.css/dist/spectre-exp.css";
 import "spectre.css/dist/spectre-icons.css";
+import "chart.js/dist/Chart"
+
 
 import { Application } from "stimulus";
 import { definitionsFromContext } from "stimulus/webpack-helpers";
