@@ -21,6 +21,10 @@ class Routine < ApplicationRecord
   accepts_nested_attributes_for :templates
   
   
+  def distinct_exercises
+    self.exercises.distinct
+  end
+  
   def increment_weight(weight, exercise_id, exercise_group, set_number)
     template = current_user.routine.templates.where(exercise_id: exercise_id, exercise_group: exercise_group).first
     

@@ -4,7 +4,6 @@ class WorkoutsController < ApplicationController
   # helper_method :filtering_params
 
   def index
-    
     if current_user.is_admin?
       @workouts = Workout.all.order(id: :desc).limit(5)
     else
@@ -13,7 +12,6 @@ class WorkoutsController < ApplicationController
   end
 
   def create
-    
     if current_user.routine_id > 0
     
       @workout = current_user.active_workout || current_user.create_workout
@@ -40,12 +38,11 @@ class WorkoutsController < ApplicationController
   end
   
   def update
-    p workout_params[:title]
+    Rails.logger.info{ workout_params[:title] }
     if Workout.find(params[:id]).update(workout_params.to_h)
       head :ok
     else
       flash[:alert] = 'Workout title cannot be blank'
-      # load_and_render_index
     end
   end
   
@@ -62,6 +59,14 @@ class WorkoutsController < ApplicationController
   def stop
     if current_user.has_active_workout?
       w = current_user.active_workout
+
+
+      results = current_user.workouts.last.unique_exercises.map do |e|
+        {"#{e.id}".to_i => Sett.where(workout_id: w.id, exercise_id: e.id).maximum('weight')}
+      end
+            
+      w.results = results.as_json
+
       w.completed_at = DateTime.now
       w.active = false
       w.save!
