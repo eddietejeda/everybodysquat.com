@@ -14,16 +14,21 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :setts,       only: %i[update]
-  resources :routines,    only: %i[index]
-  resources :exercises,   only: %i[index]
-  resources :templates,   only: %i[index]
-  resources :charts,      only: %i[index]
-  resources :settings,    only: %i[index]
+  resources :setts,         only: %i[update]
+  resources :routines,      only: %i[index]
+  resources :exercises,     only: %i[index]
+  resources :templates,     only: %i[index]
+  resources :charts,        only: %i[index]
+  resources :settings,      only: %i[index]
+  resources :achievements,  only: %i[index]
+  resources :settings,      only: %i[index]
+  resources :timeline,      only: %i[index]
 
-  resources :api,         :defaults => {:format => :json} do
+  
+  resources :api,           :defaults => {:format => :json} do
     collection do
-      get 'charts',       to: 'api#charts'
+      get 'charts',         to: 'api#charts'
+      get 'workouts',       to: 'api#workouts'
     end
   end
 

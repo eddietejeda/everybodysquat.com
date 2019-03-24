@@ -236,6 +236,11 @@ class User < ApplicationRecord
     workout
   end
 
+  def personal_records
+    current_user.routine.distinct_exercises.map do |e|
+      current_user.highest_weight_sett(e.id)
+    end
+  end
 
 
 

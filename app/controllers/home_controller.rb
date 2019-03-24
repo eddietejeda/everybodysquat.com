@@ -6,16 +6,8 @@ class HomeController < ApplicationController
 
   def index
     if current_user
-
+      @personal_records = current_user.personal_records
       @achivements = []
-      #
-      # exercise_list = current_user.routine.exercises.group(:id)
-      #
-      @prs = []
-      # exercise_list.each do |e|
-      #   @prs << current_user.highest_weight_sett(e.id)
-      # end
-
     else
       render "home/splash.haml", layout: "application"
     end
