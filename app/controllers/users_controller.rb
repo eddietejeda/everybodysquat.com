@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   # validate :reserved_username
 
   def index
-    redirect_to "/{#{current_user.username}}"
+    redirect_to root_path
   end
 
   def add_routine_to_user
