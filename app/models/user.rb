@@ -204,36 +204,7 @@ class User < ApplicationRecord
 
   
   def create_workout
-    exercise_group_name = next_exercise_group_name()
-    exercises_list_grouped = template_exercises_by_group(exercise_group_name)
-    
-    workout = Workout.create({
-      user_id: current_user.id,
-      routine_id: current_user.routine_id,
-      active: true,
-      exercise_group: exercise_group_name,
-      training_maxes: adjust_training_maxes_by_group(exercise_group_name)
-    })
-
-
-    # We copy the template to a Sett
-    setts = []
-    exercises_list_grouped.each do |template|
-      template.sets.times do |set_number|
-        setts << {
-          workout_id: workout.id,
-          exercise_id: template.exercise_id,
-          weight: weight_for_next_set(template.exercise_id, template.exercise_group, set_number),
-          set_goal: template.sets,
-          reps_goal: template.reps.fetch(set_number),
-          reps_completed: 0,
-          user_id: current_user.id
-        }
-      end
-    end
-    Sett.create(setts)
-    
-    workout
+    CreateUserWorkout.new(current_user).call
   end
 
   def personal_records
@@ -242,74 +213,8 @@ class User < ApplicationRecord
     end
   end
 
-
-
-  def get_progress_charts
-    color_list = [
-      '#11144c',
-      '#3a9679',
-      '#e16262',
-      '#e3c4a8',
-      '#4592af',
-      '#226089',
-      '#b7fbff',
-      '#fff6be',
-      '#ffe0a3',
-      '#ffa1ac',
-      '#fabc60'
-
-    ]
-    
-    
-    datasets = current_user.routine.exercises.distinct.map do |e|
-      {
-        label: e.name,
-        data: Workout.select("created_at AS x, results->>'#{e.id}' AS y").where("user_id = :user_id", {user_id: 1}).order(:created_at).map{|f|
-          { "x" => f["x"].strftime('%F %T'), "y" => f["y"] } 
-        },
-        fill: false,
-        backgroundColor: color_list.pop,
-        borderColor: color_list.pop
-        
-      }
-    end
-    
-    
-    response = {
-      type: 'line',
-      data: {
-        datasets: datasets
-      },
-      options: {
-        responsive: true,
-        title: {
-          display: true,
-          text: "Progress"
-        },
-        scales: {
-          xAxes: [{
-              type: "time",
-              time: {
-                format: "YYYY-MM-DD",
-                tooltipFormat: 'lll'
-              },
-              scaleLabel: {
-                display: true,
-                labelString: 'Date'
-              }
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'Weight'
-            }
-          }]
-        }
-      } 
-    }
-    
-    response
-    
+  def chart_user_workouts
+    CreateUserWorkoutChart.new(current_user).call
   end
   
   def set_default_routine

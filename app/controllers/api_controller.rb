@@ -6,7 +6,7 @@ class ApiController < ApplicationController
 
   
   def charts
-    render :json => current_user.get_progress_charts.as_json, layout: false
+    render :json => current_user.chart_user_workouts.as_json, layout: false
   end    
 
 
