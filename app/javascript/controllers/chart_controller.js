@@ -21,6 +21,8 @@ export default class extends ApplicationController {
       .then(response => response.json())
       .then(content => {
         var ctx = this.showTarget.getContext('2d');
+        Chart.defaults.global.defaultFontColor = '#fff';
+        Chart.defaults.global.defaultColor = 'rgba(0,0,0,0.1)';
         new Chart(ctx, content);
       })
   }

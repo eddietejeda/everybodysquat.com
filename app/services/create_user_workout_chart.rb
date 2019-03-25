@@ -12,7 +12,7 @@ class CreateUserWorkoutChart
       '#4592af',
       '#226089',
       '#b7fbff',
-      '#fff6be',
+      # '#fff6be',
       '#ffe0a3',
       '#ffa1ac',
       '#fabc60'
@@ -40,10 +40,11 @@ class CreateUserWorkoutChart
       },
       options: {
         responsive: true,
-        title: {
-          display: true,
-          text: "Progress"
-        },
+        maintainAspectRatio: false,        
+        # title: {
+        #   display: true,
+        #   text: "Progress"
+        # },
         scales: {
           xAxes: [{
               type: "time",
@@ -54,13 +55,22 @@ class CreateUserWorkoutChart
               scaleLabel: {
                 display: true,
                 labelString: 'Date'
-              }
+              },
+              gridLines: {
+                display: true ,
+                color: "#FFFFFF"
+              }              
+              
           }],
           yAxes: [{
             scaleLabel: {
               display: true,
               labelString: 'Weight'
-            }
+            },
+            gridLines: {
+              display: true ,
+              color: "#FFFFFF"
+            },
           }]
         }
       } 
