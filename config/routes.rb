@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   
   resources :workouts,    only: %i[index edit create stop resume destroy] do
     collection do
-      get 'create',       to: 'workouts#create'
+      get '/',            to: 'workouts#index'
+      get 'start',        to: 'workouts#start'
       get 'stop',         to: 'workouts#stop'
       get 'resume',       to: 'workouts#resume'
     end
