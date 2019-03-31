@@ -31,12 +31,18 @@ class CreateUserWorkoutChart
 
 
     datasets = @user.routine.exercises.distinct.map do |e|
-      {
+      
+      query = " SELECT   created_at AS x, max_weight->>'weight' AS y
+                FROM     workouts, jsonb_array_elements(results) AS max_weight
+                WHERE    results @> '[{\"exercise_id\": #{e.id}, \"success\": true}]'  AND 
+                      	 max_weight->>'exercise_id' = '#{e.id}' AND
+                         user_id = #{@user.id}
+                ORDER BY created_at ASC"
+        {
         label: e.name,
-        data: Workout.select("created_at AS x, results->>'#{e.id}' AS y").where("user_id = :user_id", 
-          {user_id: @user.id}).order(:created_at).map{|f|
-            { "x" => f["x"].strftime('%F %T'), "y" => f["y"] } 
-        },
+        data: Workout.find_by_sql(query).map{|f|
+            { "x" => f["x"].strftime('%F %T'), "y" => f["y"] } if f["y"]
+        }.compact,
         fill: false,
         backgroundColor: color_list.pop,
         borderColor: color_list.pop 
