@@ -1,4 +1,4 @@
--if current_user.workouts.count == 0
+-if current_user.workouts.count == 0 && ENV['ENABLE_MULTIPLE_ROUTINE']
   .card
     .card-header
       .card-title.h5
@@ -10,4 +10,4 @@
           %p
             Want to lift more? We can help you with that as well.
           %p   
-            %a.btn{:href => "/workouts/create"}  Get Started
+            %a.btn{:href => start_workouts_path}  Get Started
