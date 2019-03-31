@@ -9,7 +9,6 @@ class CompleteUserWorkout
     if @user.has_active_workout?
       workout = @user.active_workout
       workout.results = generate_results(workout)
-      workout.training_maxes = training_max_results(workout)
       workout.completed_at = DateTime.now
       workout.active = false
       workout.save!
@@ -18,13 +17,13 @@ class CompleteUserWorkout
   end
   
   
-  def generate_results(workout)
-    workout.distinct_exercises.map do |exercise|
-      {"#{exercise.id}".to_i => Sett.where(workout_id: workout.id, exercise_id: exercise.id).maximum('weight')}.as_json
-    end
-  end
+  # def generate_results(workout)
+  #   workout.distinct_exercises.map do |exercise|
+  #     {"#{exercise.id}".to_i => Sett.where(workout_id: workout.id, exercise_id: exercise.id).maximum('weight')}.as_json
+  #   end
+  # end
   
-  def training_max_results(workout)
+  def generate_results(workout)
     
     workout.distinct_exercises.map do |exercise|
 

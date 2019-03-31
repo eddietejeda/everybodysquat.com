@@ -51,7 +51,7 @@
 
           / .columns.col-12
           /   Training Max:
-          /   =workout.current_training_max(exercise.id)
+          /   =workout.current_results(exercise.id)
           .column.col-12{style: "font-size: 15pt"}
             - workout.setts.where(exercise_id: exercise.id).order(:id).each_with_index do |sett, index|
               .columns.col-12{"data-controller" => "sett", "data-sett-id" => sett.id, "data-sett-active" => "#{workout.active.to_s}", "data-sett-completed-at" => workout.completed_at}

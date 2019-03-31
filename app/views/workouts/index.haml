@@ -1,27 +1,27 @@
 -if !current_user.has_active_workout?
   .card
     .card-body.columns
-      .column
+      .column.col-12
         .col-12
-          %p 
-            Your next workout is scheduled for 
-            %b="#{formated_date(current_user.next_workout_date)}"
-          %p We recommend you stick to your program, but if you can start a new workout session now.
-          %p 
-            .btn
-              %a{href: start_workouts_path}
-                Begin Workout
+          Your next workout is scheduled for 
+          %b="#{formated_date(current_user.next_workout_date)}"
+      .column
+        .column
+          .columns
+            %a.col-12.btn{:href => start_workouts_path}  New Workout
+
         
         
   
-
 -displayed = false
 -@workouts.each do |workout|
   -if workout.active == true
-    Today
+    %h3{style: 'margin-top: 0'}
+      Today
   -if workout.active == false && displayed == false
-    Previous Workouts
-    -displayed = true
+    %h3{style: 'margin-top: 100px'}
+      =" Week #1"
+      -displayed = true
     
   .card{class: ("inactive" if workout.active == false)}
     =link_to edit_workout_path(workout) do 
@@ -37,7 +37,8 @@
             .col-2
               =workout.routine.try(:name)
 
-.card
-  .card-body.columns
+-if @workouts.count > 10
+  .column
     .column
-      Load More
+      .columns
+        %a.col-12.btn{style: "color: white", href: start_workouts_path}  Load More

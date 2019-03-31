@@ -130,7 +130,9 @@ class User < ApplicationRecord
       current_user.highest_weight_sett(exercise.id).try("id")
     }
     
-    Sett.find(response)
+    
+    
+    response.any? ? Sett.find(response) : []
     
   end
 

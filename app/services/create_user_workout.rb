@@ -16,7 +16,7 @@ class CreateUserWorkout
       routine_id:       @user.routine_id,
       active:           true,
       exercise_group:   exercise_group_name,
-      training_maxes:   adjust_workout_maxes(template_exercises_list)
+      results:          adjust_workout_results(template_exercises_list)
     })
 
 
@@ -58,7 +58,7 @@ class CreateUserWorkout
     def adjust_weight_for_set(workout, exercise_id, set_number)
       # TODO: At the moment, each set has the same training max.
       # But is the method that would add logic to determine how how increase each set by
-      workout.training_maxes.find{|goal| goal["exercise_id"] == exercise_id}.to_h["weight"]
+      workout.results.find{|goal| goal["exercise_id"] == exercise_id}.to_h["weight"]
     end
     
 
@@ -116,7 +116,7 @@ class CreateUserWorkout
     end
 
     # def weight_of_previous_workout_exercise(exercise_id)
-    #   previous_workout.training_maxes{|e|
+    #   previous_workout.results{|e|
     #     e["exercise_id"] == exercise_id
     #   }.to_h["weight"] || 45
     # end
@@ -124,7 +124,7 @@ class CreateUserWorkout
   
 
 
-    def adjust_workout_maxes(template_exercises_list)
+    def adjust_workout_results(template_exercises_list)
       template_exercises_list.map{|template_exercise|
         {
           exercise_id:      template_exercise.exercise_id, 
@@ -154,7 +154,7 @@ class CreateUserWorkout
   
   
     def should_increase_weight?(exercise_id)
-      # :training_maxes => [
+      # :results => [
       # [0] {
       #        "weight" => 0,
       #       "success" => false,
@@ -173,11 +173,11 @@ class CreateUserWorkout
       # TODO: This code: '{"exercise_id": '+exercise_id.to_s+', "success": true}' was easier than
       # doing a bunch of string escaping. Maybe there is a better way?
       query_params = {
-        training_maxes: '[{"exercise_id": '+exercise_id.to_s+'}]',
+        results: '[{"exercise_id": '+exercise_id.to_s+'}]',
         created_at: DateTime.now - 7.days
       }
 
-      Workout.where("training_maxes @> :training_maxes AND created_at > :created_at", query_params).order(id: :desc).limit(1).any?
+      Workout.where("results @> :results AND created_at > :created_at", query_params).order(id: :desc).limit(1).any?
     end
   
   
@@ -185,17 +185,17 @@ class CreateUserWorkout
     def should_decrease_weight?(exercise_id)
 
       query_params = {
-        training_maxes: '[{"exercise_id": '+exercise_id.to_s+', "success": false}]',
+        results: '[{"exercise_id": '+exercise_id.to_s+', "success": false}]',
         created_at: DateTime.now - 7.days
       }
             
-      Workout.where("training_maxes @> :training_maxes AND created_at > :created_at", query_params).order(id: :desc).limit(3).count > 2
+      Workout.where("results @> :results AND created_at > :created_at", query_params).order(id: :desc).limit(3).count > 2
     end
   
     def previous_successful_training_max(exercise_id)
-      query_params = { training_maxes: '[{"exercise_id": '+exercise_id.to_s+', "success": true}]' }
+      query_params = { results: '[{"exercise_id": '+exercise_id.to_s+', "success": true}]' }
 
-      amount = Workout.where("training_maxes @> :training_maxes", query_params).order(id: :desc).limit(1).last.try(:training_maxes).to_a.find{|e| e.to_h["exercise_id"] == exercise_id }.to_h["weight"].to_i    
+      amount = Workout.where("results @> :results", query_params).order(id: :desc).limit(1).last.try(:results).to_a.find{|e| e.to_h["exercise_id"] == exercise_id }.to_h["weight"].to_i    
       amount < @user.bar_weight ? @user.bar_weight : amount
     end
 

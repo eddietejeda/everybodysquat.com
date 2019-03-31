@@ -21,6 +21,15 @@ class CreateUserWorkoutChart
     ]
 
 
+    # query_params = {
+    #   training_maxes: '[{"exercise_id": 1, "success": true}]',
+    # }
+    #
+    # Workout.where("training_maxes @> [{"exercise_id": 1, "success": true}]", query_params).order(id: :desc).limit(3).count > 2
+    #
+
+
+
     datasets = @user.routine.exercises.distinct.map do |e|
       {
         label: e.name,
@@ -48,7 +57,8 @@ class CreateUserWorkoutChart
               type: "time",
               time: {
                 format: "YYYY-MM-DD",
-                tooltipFormat: 'lll'
+                tooltipFormat: 'lll',
+                unit: 'day'
               },
               scaleLabel: {
                 display: true,
@@ -57,10 +67,19 @@ class CreateUserWorkoutChart
               gridLines: {
                 display: true ,
                 color: "#FFFFFF"
+              },
+              ticks: {
+                  beginAtZero: true
               }              
               
           }],
           yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              fixedStepSize: 1,
+              precision:0
+              
+            },            
             scaleLabel: {
               display: true,
               labelString: 'Weight'
