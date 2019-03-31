@@ -6,8 +6,8 @@ class HomeController < ApplicationController
 
   def index
     if current_user
-      @personal_records = current_user.personal_records
-      @achivements = []
+      @personal_records     = current_user.personal_records
+      @personal_achivements = current_user.personal_achivements
     else
       render "home/splash.haml", layout: "application"
     end
@@ -16,24 +16,24 @@ class HomeController < ApplicationController
     
   end
   
-
-  def achivements
-    
-    
-    
-  end
-    
-  def tutorials
-    
-    if Dir.glob("#{Rails.root}/app/views/tutorials/**/**").map{|e|       e.split('tutorials/').last}.include?("#{home_params[:exercise]}/#{home_params[:page]}")
-      render file: "tutorials/#{home_params[:exercise]}/#{home_params[:page]}"
-    else
-      render :status => 404
-    end
-    
-  end
-  
-  
+  #
+  # def achivements
+  #
+  #
+  #
+  # end
+  #
+  # def tutorials
+  #
+  #   if Dir.glob("#{Rails.root}/app/views/tutorials/**/**").map{|e|       e.split('tutorials/').last}.include?("#{home_params[:exercise]}/#{home_params[:page]}")
+  #     render file: "tutorials/#{home_params[:exercise]}/#{home_params[:page]}"
+  #   else
+  #     render :status => 404
+  #   end
+  #
+  # end
+  #
+  #
   
 
   private

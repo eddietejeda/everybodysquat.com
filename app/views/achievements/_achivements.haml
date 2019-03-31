@@ -1,11 +1,11 @@
 
--if @achivements.any?
+-if @personal_achivements.any?
   .card
     .card-header
       .card-title.h5
         Achivements
       .card-body
         %ol
-          -@achivements.each do |item|
+          -@personal_achivements.each do |item|
             %li=item
 
