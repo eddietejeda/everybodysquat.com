@@ -41,8 +41,8 @@ class Sett < ApplicationRecord
   def previous_set(sett_id)
     Sett.find(sett_id)
   end
-
   
+
 
   # This is not used
   def current_weight(sett_id)    

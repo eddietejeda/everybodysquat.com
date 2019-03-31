@@ -74,63 +74,33 @@ class User < ApplicationRecord
     Workout.where(user_id: self.id).last(2).first
   end
   
-  def most_recent_workout_by_group(group_name)
-    Workout.where(user_id: self.id, exercise_group: group_name).order(:id).last
-  end
 
-  # previous_workout_before the workout before the a specific date
-  # TODO: is this performant? 
-  def previous_workout_before(before_date)
-    Workout.where("user_id = :user_id AND created_at < :created_at", { 
-      user_id: self.id, created_at: before_date 
-    }).first
-  end
-
-  def previous_workout_exercise_setts(exercise_id)
-    previous_workout ? Sett.where(workout_id: previous_workout.id, exercise_id: exercise_id).order(created_at: :desc) : Sett.none
-  end
-
-  def weight_of_previous_workout_exercise(exercise_id)
-    previous_workout.training_maxes.find{|e| 
-      e["exercise_id"] == exercise_id  
-    }.to_h["weight"] || 45
+  def complete_workout
+    CompleteUserWorkout.new(current_user).call
   end
   
-  def should_increase_weight(exercise_id)
-    successful_sets = previous_workout_exercise_setts(exercise_id).to_a.map{|e|
+  def create_workout
+    CreateUserWorkout.new(current_user).call
+  end
+
+  def chart_user_workouts
+    CreateUserWorkoutChart.new(current_user).call
+  end
+  
+  
+  def bar_weight
+    # this should be stored in a setting somewhere
+    return 45
+  end
+  
+  
+
+  # TODO: stale?
+  def workout_exercise_was_succcessful(workout_id, exercise_id)
+    successful_sets = Workout.find(workout_id).setts.where(exercise_id: exercise_id).map{|e|
       (e.reps_completed == e.reps_goal) && (e.reps_completed > 0)
     }
-    previous_workout_exercise_setts(exercise_id).exists? && successful_sets.all? {|a|a}
-  end
-
-
-  def weight_of_next_training_max(exercise_id, exercise_group)
-
-    if should_increase_weight(exercise_id)
-      current_exercise_training_max(exercise_id, exercise_group) + 5
-    elsif should_decrease_weight(exercise_id)
-      current_exercise_training_max(exercise_id, exercise_group) - 20
-    else
-      # stay the same
-      current_exercise_training_max(exercise_id, exercise_group) || current_user.bar_weight
-    end
-  end
-  
-  
-  def current_exercise_training_max(exercise_id, exercise_group)
-    most_recent_workout_by_group(exercise_group).try(:training_maxes).to_a.find{|e|
-      e.to_h["exercise_id"] == exercise_id
-    }.to_h["weight"].to_i    
-  end
-  
-  #TODO:
-  def should_decrease_weight(exercise_id)
-    false
-  end
-  
-  def weight_for_next_set(exercise_id, exercise_group, set_number)
-    previous = weight_of_previous_workout_exercise(exercise_id)
-    should_increase_weight(exercise_id) ? current_user.routine.increment_weight(previous, exercise_id, exercise_group, set_number) : previous
+    self.where(exercise_id: exercise_id).exists? && successful_sets.all? {|a|a}
   end
   
   
@@ -152,60 +122,7 @@ class User < ApplicationRecord
     Rails.logger.error {"User.next_workout_date not finding the next workout date and defaulting to tomorrow"}
     Time.now + 1.days
   end
-  
-  
-  def highest_weight_sett(exercise_id)
-    Sett.where(user_id: current_user.id, exercise_id: exercise_id).where("set_goal > 0").order(weight: :desc).limit(1).first || Sett.none
-  end
-  
-  
-  
-  def bar_weight
-    # this should be stored in a setting somewhere
-    return 45
-  end
 
-
-
-
-  def next_exercise_group_name
-    # get all possible exercise groups    
-    all_exercise_groups = self.routine.exercise_groups 
-    
-    #we use try() just in case there is no previous workout
-    previous_workout_group = self.most_recent_workout.try(:exercise_group)
-
-    # default to zero, but lets look inside. 
-    current_group_pos = 0
-    if !previous_workout_group.blank?
-      # find the previous workout in the list
-      previous_workout_pos = all_exercise_groups.index(previous_workout_group)
-      # find the previous workout in the list, if it's the last item on the list, start back at 0
-      current_group_pos = (previous_workout_pos == all_exercise_groups.length - 1) ? 0 : previous_workout_pos + 1
-    end  
-    
-    all_exercise_groups.fetch(current_group_pos)
-  end
-  
-  def template_exercises_by_group(exercise_group)
-    Template.where("routine_id = :routine_id AND exercise_group = :exercise_group", { 
-      routine_id: self.routine_id, exercise_group: exercise_group 
-    })
-  end
-
-  def adjust_training_maxes_by_group(exercise_group)   
-    template_exercises_by_group(exercise_group).map{|e|
-      {
-        exercise_id: e.exercise_id, 
-        weight: weight_of_next_training_max(e.exercise_id, exercise_group)
-      }
-    }
-  end
-
-  
-  def create_workout
-    CreateUserWorkout.new(current_user).call
-  end
 
   def personal_records
     current_user.routine.distinct_exercises.map do |e|
@@ -213,10 +130,12 @@ class User < ApplicationRecord
     end
   end
 
-  def chart_user_workouts
-    CreateUserWorkoutChart.new(current_user).call
+
+  def highest_weight_sett(exercise_id)
+    Sett.where(user_id: current_user.id, exercise_id: exercise_id).where("set_goal > 0").order(weight: :desc).limit(1).first || Sett.none
   end
-  
+
+
   def set_default_routine
     r = self.routine_id
     r.routine_id = Routine.first.id
@@ -235,15 +154,7 @@ class User < ApplicationRecord
     self.admin
   end
   
-  def trainees
-    if self.is_coach?
-      User.where(coach_id: self.id)
-    else
-      logger.info "User is not a coach"
-      User.none
-    end
-  end
-  
+
   def validate_username
     if User.where(email: username).exists?
       errors.add(:username, :invalid)
@@ -291,4 +202,3 @@ class User < ApplicationRecord
   end
   
 end
-
