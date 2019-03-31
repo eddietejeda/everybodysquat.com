@@ -16,40 +16,29 @@ class CompleteUserWorkout
     end
   end
   
-  
-  # def generate_results(workout)
-  #   workout.distinct_exercises.map do |exercise|
-  #     {"#{exercise.id}".to_i => Sett.where(workout_id: workout.id, exercise_id: exercise.id).maximum('weight')}.as_json
-  #   end
-  # end
+
   
   def generate_results(workout)
     
     workout.distinct_exercises.map do |exercise|
-
       setts = Sett.where(user_id: @user.id, workout_id: workout.id, exercise_id: exercise.id)
-
+      # byebug
       {
         exercise_id:      exercise.id,
-        weight:           setts.maximum('weight'),
-        reps:             setts.maximum('reps_completed'),
-        sets:             setts.count,
+        weight:           setts.max_by{|s|s.weight}.weight,
+        reps:             setts.max_by{|s|s.weight}.reps_completed,
+        sets:             setts.map{|s|s.reps_goal == s.reps_completed}.count(true),
         success:          exercise_setts_succcessful?(workout.id, exercise.id)
       }
-
-      # {"#{exercise.id}".to_i => Sett.where(workout_id: workout.id, exercise_id: exercise.id).maximum('weight')}.as_json
-
     end
-    
-
   end
   
   
   
   def exercise_setts_succcessful?(workout_id, exercise_id)
-    successful_sets = Workout.find(workout_id).setts.where(exercise_id: exercise_id).map{|e|
+    successful_sets = Workout.find(workout_id).setts.where(exercise_id: exercise_id).map do |e|
       (e.reps_completed == e.reps_goal) && (e.reps_completed > 0)
-    }
+    end
     Sett.where(workout_id: workout_id, exercise_id: exercise_id).exists? && successful_sets.all? {|a|a}
   end
   
