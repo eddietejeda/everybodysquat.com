@@ -9,7 +9,7 @@
           %p We recommend you stick to your program, but if you can start a new workout session now.
           %p 
             .btn
-              %a{href: "/workouts/create"}
+              %a{href: start_workouts_path}
                 Begin Workout
         
         
@@ -29,7 +29,7 @@
         .card-subtitle
           =workout.formated_date
         .card-body.columns
-          - workout.unique_exercises.each do |exercise|
+          - workout.distinct_exercises.each do |exercise|
             .col-6
               =exercise.name
             .col-4

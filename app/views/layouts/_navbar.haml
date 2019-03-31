@@ -7,13 +7,13 @@
 .menu-button
   -if current_user
     -if params[:controller] == 'workouts'
-      %a{href: "/#{current_user.username}/workouts"} 
+      %a{href: workouts_path} 
         .back-button
           .chevron-arrow-left
           %span.back-text{style: "line-height: 1em"}
             Back
     -elsif params[:controller] == 'profiles'
-      %a{href: '/'} 
+      %a{href: workouts_path} 
         .back-button
           .chevron-arrow-left
           %span.back-text{style: "line-height: 1em"}

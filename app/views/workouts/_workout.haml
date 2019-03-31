@@ -41,7 +41,7 @@
             
       .card-subtitle.text-gray
       .card-body.columns
-        - workout.unique_exercises.each do |exercise|
+        - workout.distinct_exercises.each do |exercise|
           .columns{style: "border-bottom: 2px solid white"}
             %h5
               = exercise.name
