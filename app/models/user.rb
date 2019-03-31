@@ -76,15 +76,15 @@ class User < ApplicationRecord
   
 
   def complete_workout
-    CompleteUserWorkout.new(current_user).call
+    CompleteUserWorkout.new(self).call
   end
   
   def create_workout
-    CreateUserWorkout.new(current_user).call
+    CreateUserWorkout.new(self).call
   end
 
   def chart_user_workouts
-    CreateUserWorkoutChart.new(current_user).call
+    CreateUserWorkoutChart.new(self).call
   end
   
   
@@ -126,8 +126,8 @@ class User < ApplicationRecord
 
   def personal_records
     
-    response = current_user.routine.distinct_exercises.map {|exercise|
-      current_user.highest_weight_sett(exercise.id).try("id")
+    response = self.routine.distinct_exercises.map {|exercise|
+      self.highest_weight_sett(exercise.id).try("id")
     }
     
     
@@ -144,7 +144,7 @@ class User < ApplicationRecord
 
 
   def highest_weight_sett(exercise_id)
-    Sett.where(user_id: current_user.id, exercise_id: exercise_id).where("reps_completed > 0").order(weight: :desc).limit(1).first || Sett.none
+    Sett.where(user_id: self.id, exercise_id: exercise_id).where("reps_completed > 0").order(weight: :desc).limit(1).first || Sett.none
   end
 
 
