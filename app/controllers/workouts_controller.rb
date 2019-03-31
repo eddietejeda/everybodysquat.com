@@ -14,7 +14,15 @@ class WorkoutsController < ApplicationController
     end
   end
 
-  def create
+  def show
+    @workout = Workout.find(params[:id])
+  end
+
+  def edit
+    @workout = Workout.find(params[:id])
+  end
+
+  def start
     if current_user.routine_id > 0
     
       @workout = current_user.active_workout || current_user.create_workout
@@ -23,22 +31,31 @@ class WorkoutsController < ApplicationController
       unless @workout
         flash[:alert] = 'Cannot create a new task'
       end
-      redirect_to "/workouts/#{@workout.id}/edit" #edit_workout_path(@workout)
+      redirect_to edit_workout_path(@workout) #"/workouts/#{@workout.id}/edit" #edit_workout_path(@workout)
       
     else
       flash[:alert] = 'Please select a routine'
-      redirect_to '/routines'
+      redirect_to routines_path
     end
     
   end
 
   def resume
     if current_user.active_workout
-      redirect_to "/workouts/#{current_user.active_workout.id}/edit"
+      redirect_to edit_workout_path(current_user.active_workout.id) #"/workouts/#{current_user.active_workout.id}/edit"
     else
-      redirect_to "/#{current_user.username}/workouts"
+      redirect_to workouts_path #"/#{current_user.username}/workouts"
     end
   end
+
+  
+  def stop
+    completed = current_user.active_workout
+    current_user.complete_workout
+    cookies.delete :restTime
+    redirect_to edit_workout_path(completed)
+  end
+
   
   def update
     Rails.logger.info{ workout_params[:title] }
@@ -49,36 +66,6 @@ class WorkoutsController < ApplicationController
     end
   end
   
-  
-  def show
-    @workout = Workout.find(params[:id])
-  end
-
-  def edit
-    @workout = Workout.find(params[:id])
-  end
-
-  
-  def stop
-    if current_user.has_active_workout?
-      w = current_user.active_workout
-
-
-      results = current_user.workouts.last.unique_exercises.map do |e|
-        {"#{e.id}".to_i => Sett.where(workout_id: w.id, exercise_id: e.id).maximum('weight')}
-      end
-            
-      w.results = results.as_json
-
-      w.completed_at = DateTime.now
-      w.active = false
-      w.save!
-    end
-    cookies.delete :restTime
-    redirect_to "/workouts/#{w.id}/edit"
-  end
-
-
 
   private
 
