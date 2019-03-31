@@ -6,11 +6,13 @@
 # id                  bigint               false   true              
 # routine_id          integer              false   false             
 # exercise_id         integer              false   false             
-# sets                integer              false   false             
-# reps                integer              false   false             
-# group               character varying    false   false             
-# progression_type    character varying    false   false             
+# exercise_group      character varying    false   false             
+# workout_progression character varying    false   false             
+# set_progression     character varying    false   false             
 # incremention_scheme integer              true    false   {}        
+# reps                integer              true    false   {}        
+# sets                integer              false   false             
+# weight_type         character varying    false   false             
 # created_at          timestamp without time zone false   false             
 # updated_at          timestamp without time zone false   false             
 #

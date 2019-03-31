@@ -1,15 +1,19 @@
 #------------------------------------------------------------------------------
 # Workout
 #
-# Name       SQL Type             Null    Primary Default
-# ---------- -------------------- ------- ------- ----------
-# id         bigint               false   true              
-# notes      text                 true    false             
-# user_id    integer              false   false             
-# routine_id integer              false   false             
-# active     boolean              false   false   false     
-# created_at timestamp without time zone false   false             
-# updated_at timestamp without time zone false   false             
+# Name           SQL Type             Null    Primary Default
+# -------------- -------------------- ------- ------- ----------
+# id             bigint               false   true              
+# user_id        integer              false   false             
+# routine_id     integer              false   false             
+# active         boolean              false   false   false     
+# exercise_group character varying    false   false             
+# notes          text                 true    false             
+# created_at     timestamp without time zone false   false             
+# updated_at     timestamp without time zone false   false             
+# completed_at   timestamp without time zone true    false             
+# results        jsonb                true    false             
+# began_at       timestamp without time zone true    false             
 #
 #------------------------------------------------------------------------------
 
@@ -30,7 +34,7 @@ class Workout < ApplicationRecord
   end
   
   def formated_date
-    self.created_at.strftime("%A, %b %d %Y")
+    self.began_at.strftime("%A, %b %d %Y")
   end
   
   def current_results(exercise_id)

@@ -5,16 +5,12 @@
 # ---------------------- -------------------- ------- ------- ----------
 # id                     bigint               false   true              
 # name                   character varying    true    false             
-# website                character varying    true    false             
-# instagram              character varying    true    false             
-# facebook               character varying    true    false             
-# twitter                character varying    true    false             
-# photo                  character varying    true    false             
 # about                  text                 true    false             
 # routine_id             integer              true    false   0         
 # coach_id               integer              true    false   0         
-# is_coach               boolean              false   false   false     
-# is_admin               boolean              false   false   false     
+# coach                  boolean              false   false   false     
+# admin                  boolean              false   false   false     
+# bar_weight             integer              true    false   0         
 # email                  character varying    false   false             
 # encrypted_password     character varying    false   false             
 # reset_password_token   character varying    true    false             

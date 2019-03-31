@@ -2,7 +2,7 @@
   .card
     .card-header
       .card-title.h5
-        =link_to workout.created_at.strftime("%a, %b %d %Y"), edit_workout_path(workout)
+        =link_to workout.began_at.strftime("%a, %b %d %Y"), edit_workout_path(workout)
       .card-subtitle.text-gray
         Good day
       .card-body.columns

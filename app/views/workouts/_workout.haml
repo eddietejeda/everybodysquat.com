@@ -6,7 +6,7 @@
     %h3
       Previous Workout
 
-  #notification.card{"data-controller" => "timer", "data-timer-workout-created" => "#{workout.created_at.to_i}", "data-timer-workout-completed" => "#{workout.completed_at.to_i}", class: ("archived" if workout.active == false)}
+  #notification.card{"data-controller" => "timer", "data-timer-workout-created" => "#{workout.began_at.to_i}", "data-timer-workout-completed" => "#{workout.completed_at.to_i}", class: ("archived" if workout.active == false)}
     .column
       .columns.col-12
       .columns.col-12{style: "text-align: center;"}
@@ -24,7 +24,7 @@
           %br
           %span#workoutTimer{"data-target" => "timer.workout", "data-action" => "timer->sett#workoutTimer"}
             -if workout.completed_at
-              ="#{workout.created_at - workout.completed_at}"
+              ="#{workout.began_at - workout.completed_at}"
         .col-3.right
           -if workout.active
             %span.complete-workout.btn

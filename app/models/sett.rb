@@ -4,7 +4,6 @@
 # Name           SQL Type             Null    Primary Default
 # -------------- -------------------- ------- ------- ----------
 # id             bigint               false   true              
-# set_completed  boolean              false   false   false     
 # set_goal       integer              false   false             
 # reps_completed integer              false   false             
 # reps_goal      integer              false   false             
@@ -13,6 +12,7 @@
 # weight         integer              false   false   0         
 # created_at     timestamp without time zone false   false             
 # updated_at     timestamp without time zone false   false             
+# user_id        integer              false   false   0         
 #
 #------------------------------------------------------------------------------
 

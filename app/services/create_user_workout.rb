@@ -16,6 +16,7 @@ class CreateUserWorkout
       routine_id:       @user.routine_id,
       active:           true,
       exercise_group:   exercise_group_name,
+      began_at:         DateTime.now,
       results:          adjust_workout_results(template_exercises_list)
     })
 
@@ -99,20 +100,20 @@ class CreateUserWorkout
 
 
     def most_recent_workout
-      Workout.where(user_id: @user.id).order(:created_at).last
+      Workout.where(user_id: @user.id).order(:began_at).last
     end
 
 
     # previous_workout_before the workout before the a specific date
     # TODO: is this performant? 
     def previous_workout_before(before_date)
-      Workout.where("user_id = :user_id AND created_at < :created_at", { 
-        user_id: self.id, created_at: before_date 
+      Workout.where("user_id = :user_id AND began_at < :began_at", { 
+        user_id: self.id, began_at: before_date 
       }).first
     end
 
     def previous_workout_exercise_setts(exercise_id)
-      @user.previous_workout ? Sett.where(workout_id: @user.previous_workout.id, exercise_id: exercise_id).order(created_at: :desc) : Sett.none
+      @user.previous_workout ? Sett.where(workout_id: @user.previous_workout.id, exercise_id: exercise_id).order(began_at: :desc) : Sett.none
     end
 
     # def weight_of_previous_workout_exercise(exercise_id)
@@ -174,10 +175,10 @@ class CreateUserWorkout
       # doing a bunch of string escaping. Maybe there is a better way?
       query_params = {
         results: '[{"exercise_id": '+exercise_id.to_s+'}]',
-        created_at: DateTime.now - 7.days
+        began_at: DateTime.now - 7.days
       }
 
-      Workout.where("results @> :results AND created_at > :created_at", query_params).order(id: :desc).limit(1).any?
+      Workout.where("results @> :results AND began_at > :began_at", query_params).order(id: :desc).limit(1).any?
     end
   
   
@@ -186,10 +187,10 @@ class CreateUserWorkout
 
       query_params = {
         results: '[{"exercise_id": '+exercise_id.to_s+', "success": false}]',
-        created_at: DateTime.now - 7.days
+        began_at: DateTime.now - 7.days
       }
             
-      Workout.where("results @> :results AND created_at > :created_at", query_params).order(id: :desc).limit(3).count > 2
+      Workout.where("results @> :results AND began_at > :began_at", query_params).order(id: :desc).limit(3).count > 2
     end
   
     def previous_successful_training_max(exercise_id)

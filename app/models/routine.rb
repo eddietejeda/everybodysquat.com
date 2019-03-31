@@ -1,13 +1,14 @@
 #------------------------------------------------------------------------------
 # Routine
 #
-# Name        SQL Type             Null    Primary Default
-# ----------- -------------------- ------- ------- ----------
-# id          bigint               false   true              
-# name        character varying    false   false             
-# description text                 false   false             
-# created_at  timestamp without time zone false   false             
-# updated_at  timestamp without time zone false   false             
+# Name            SQL Type             Null    Primary Default
+# --------------- -------------------- ------- ------- ----------
+# id              bigint               false   true              
+# name            character varying    false   false             
+# description     text                 false   false             
+# exercise_groups character varying    true    false   {}        
+# created_at      timestamp without time zone false   false             
+# updated_at      timestamp without time zone false   false             
 #
 #------------------------------------------------------------------------------
 
