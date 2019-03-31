@@ -19,7 +19,7 @@ class Workout < ApplicationRecord
   has_many :exercises, through: :setts
 
 
-  def unique_exercises
+  def distinct_exercises
     Exercise.find( self.setts.select(:exercise_id).distinct.map{|e|e.exercise_id} )
   end
 
