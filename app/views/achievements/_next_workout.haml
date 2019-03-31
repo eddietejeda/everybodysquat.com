@@ -5,14 +5,12 @@
         %p.center 
           You have an active workout. Would you like to resume?
       .column
-        .columns
-          .col-3
-          .col-4
-            %p   
-              %a.btn{:href => resume_workouts_path}  Resume
-          .col-5
-            %p   
-              %a.btn{:href => stop_workouts_path}  Stop
+        .column
+          .columns
+            %a.col-12.btn{:href => resume_workouts_path}  Resume
+        .column
+          .columns
+            %a.col-12.btn{:href => stop_workouts_path}  Stop
 -else
   .card
     .card-header
@@ -25,9 +23,7 @@
             %b="#{formated_date(current_user.next_workout_date)}"
         .column
           .columns
-            .col-6.col-sm-12
-              %p   
-                %a.btn{:href => start_workouts_path}  Begin Workout
-            .col-6.col-sm-12
-              %p   
-                %a.btn{:href => workouts_path} View Logs
+            %a.col-12.btn{:href => start_workouts_path}  Begin Workout
+        .column
+          .columns
+            %a.col-12.btn{:href => workouts_path} View Logs

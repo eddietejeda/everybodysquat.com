@@ -125,9 +125,13 @@ class User < ApplicationRecord
 
 
   def personal_records
-    current_user.routine.distinct_exercises.map do |e|
-      current_user.highest_weight_sett(e.id).any?
-    end
+    
+    response = current_user.routine.distinct_exercises.map {|exercise|
+      current_user.highest_weight_sett(exercise.id).try("id")
+    }
+    
+    Sett.find(response)
+    
   end
 
 
@@ -138,7 +142,7 @@ class User < ApplicationRecord
 
 
   def highest_weight_sett(exercise_id)
-    Sett.where(user_id: current_user.id, exercise_id: exercise_id).where("set_goal > 0").order(weight: :desc).limit(1).first || Sett.none
+    Sett.where(user_id: current_user.id, exercise_id: exercise_id).where("reps_completed > 0").order(weight: :desc).limit(1).first || Sett.none
   end
 
 
