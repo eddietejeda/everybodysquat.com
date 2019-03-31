@@ -4,7 +4,7 @@
       Personal Best
     .card-body
       .columns.col-12
-        -if @personal_records.count < 100
+        -if @personal_records.count < 4
           %p Your PRs will be tracked after you complete four workouts
         -else
           -@personal_records.each do |record|
