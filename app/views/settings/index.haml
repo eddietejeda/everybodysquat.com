@@ -9,9 +9,9 @@
       %li.tab-item.active
         %a{:href => "#panels"} Profile
       %li.tab-item
-        %a{:href => "#panels"} Files
+        %a{:href => "#panels"} Measurements
       %li.tab-item
-        %a{:href => "#panels"} Tasks
+        %a{:href => "#panels"} Equipment
   .panel-body
     .tile.tile-centered
       .tile-content
@@ -22,15 +22,15 @@
           %i.icon.icon-edit
     .tile.tile-centered
       .tile-content
-        .tile-title.text-bold Skype
-        .tile-subtitle bruce.banner
+        .tile-title.text-bold Bar Weight
+        .tile-subtitle=current_user.bar_weight
       .tile-action
         %button.btn.btn-link.btn-action.btn-lg
           %i.icon.icon-edit
     .tile.tile-centered
       .tile-content
-        .tile-title.text-bold Location
-        .tile-subtitle Dayton, Ohio
+        .tile-title.text-bold Workout Program
+        .tile-subtitle=current_user.routine.name
       .tile-action
         %button.btn.btn-link.btn-action.btn-lg
           %i.icon.icon-edit
