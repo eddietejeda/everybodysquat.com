@@ -50,10 +50,10 @@ class WorkoutsController < ApplicationController
 
   
   def stop
-    completed = current_user.active_workout
-    current_user.complete_workout
+    workout = current_user.active_workout
+    current_user.complete_workout(workout)
     cookies.delete :restTime
-    redirect_to edit_workout_path(completed)
+    redirect_to edit_workout_path(workout)
   end
 
   

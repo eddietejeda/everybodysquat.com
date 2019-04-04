@@ -40,6 +40,14 @@ class Workout < ApplicationRecord
   def current_results(exercise_id)
     self.results.find{|e|e["exercise_id"] == exercise_id}.to_h["weight"]    
   end
+  
+  
+  # Utility function
+  def self.complete_all_workouts
+    Workout.all.each do |workout|
+      CompleteUserWorkout.new(User.find(workout.user_id)).call(workout)
+    end
+  end
 
 end
 

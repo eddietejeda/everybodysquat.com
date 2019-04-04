@@ -5,15 +5,15 @@ class CompleteUserWorkout
     @user = user
   end
 
-  def call
-    if @user.has_active_workout?
-      workout = @user.active_workout
-      workout.results = generate_results(workout)
-      workout.completed_at = DateTime.now
-      workout.active = false
-      workout.save!
-      workout
-    end
+  def call(workout)
+    
+    # workout = @user.active_workout
+    workout.results = generate_results(workout)
+    workout.completed_at = DateTime.now
+    workout.active = false
+    workout.save!
+    workout
+  
   end
   
 

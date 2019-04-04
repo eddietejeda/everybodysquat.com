@@ -71,8 +71,8 @@ class User < ApplicationRecord
   end
   
 
-  def complete_workout
-    CompleteUserWorkout.new(self).call
+  def complete_workout(workout)
+    CompleteUserWorkout.new(self).call(workout)
   end
   
   def create_workout
