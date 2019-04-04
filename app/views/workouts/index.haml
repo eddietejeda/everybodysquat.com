@@ -13,15 +13,24 @@
         
         
   
--displayed = false
+-first_workout = Workout.order(began_at: :asc).limit(1).first.began_at.to_date
+-week_number = first_workout.upto(first_workout + 1.week).count.fdiv(7).round(0) + 1
+-show_week = {}
 -@workouts.each do |workout|
   -if workout.active == true
     %h3{style: 'margin-top: 0'}
       Today
-  -if workout.active == false && displayed == false
-    %h3{style: 'margin-top: 100px'}
-      =" Week #1"
-      -displayed = true
+  -if workout.active == false 
+    -current_workout = workout.began_at.to_date.beginning_of_week
+    -number = first_workout.upto(current_workout).count.fdiv(7).round(0) - 1    
+    -unless show_week.to_h[number]
+      %h3{style: 'margin-top: 100px'}
+        =" Week ##{number}"
+        -show_week[number] = true
+    
+    
+    
+    
     
   .card{class: ("inactive" if workout.active == false)}
     =link_to edit_workout_path(workout) do 
