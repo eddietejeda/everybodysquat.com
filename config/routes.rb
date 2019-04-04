@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   resources :exercises,     only: %i[index]
   resources :templates,     only: %i[index]
   resources :charts,        only: %i[index]
-  resources :settings,      only: %i[index]
+  resources :settings,      only: %i[index update]
   resources :achievements,  only: %i[index]
   resources :settings,      only: %i[index]
   resources :timeline,      only: %i[index]
