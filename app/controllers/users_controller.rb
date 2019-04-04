@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     redirect_to "/routines"    
   end
   
-
+  
 
   private
 
@@ -26,7 +26,6 @@ class UsersController < ApplicationController
     def routine_to_user_params
       params.permit(:routine_id)
     end
-
-
+    
 
 end

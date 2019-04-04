@@ -1,38 +1,56 @@
-.panel
-  .panel-header.text-center
-    %figure.avatar.avatar-lg
-      %img{:alt => "#{current_user.name}", :src => "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest current_user.email}"}/
-    .panel-title.h5.mt-10=current_user.name
-    .panel-subtitle=current_user.username
-  %nav.panel-nav
-    %ul.tab.tab-block
-      %li.tab-item.active
-        %a{:href => "#panels"} Profile
-      %li.tab-item
-        %a{:href => "#panels"} Measurements
-      %li.tab-item
-        %a{:href => "#panels"} Equipment
-  .panel-body
-    .tile.tile-centered
-      .tile-content
-        .tile-title.text-bold E-mail
-        .tile-subtitle=current_user.email
-      .tile-action
-        %button.btn.btn-link.btn-action.btn-lg.tooltip.tooltip-left{"data-tooltip" => "Edit E-mail"}
-          %i.icon.icon-edit
-    .tile.tile-centered
-      .tile-content
-        .tile-title.text-bold Bar Weight
-        .tile-subtitle=current_user.bar_weight
-      .tile-action
-        %button.btn.btn-link.btn-action.btn-lg
-          %i.icon.icon-edit
-    .tile.tile-centered
-      .tile-content
-        .tile-title.text-bold Workout Program
-        .tile-subtitle=current_user.routine.name
-      .tile-action
-        %button.btn.btn-link.btn-action.btn-lg
-          %i.icon.icon-edit
-  .panel-footer
-    %button.btn.btn-primary.btn-block Save
+=form_with(model: @user, url: setting_path(@user)) do |f|
+  .panel
+    .panel-header.text-center
+      %figure.avatar.avatar-lg
+        %img{:alt => "#{current_user.name}", :src => "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest current_user.email}"}/
+      .panel-title.h5.mt-10=current_user.name
+      .panel-subtitle=current_user.username
+    %nav.panel-nav
+      %ul.tab.tab-block
+        %li.tab-item.active
+          %a{:href => "#panels"} Profile
+        %li.tab-item
+          %a{:href => "#panels"} Equipment
+    .panel-body
+      .tile.tile-centered
+        .tile-content
+          .tile-title.text-bold E-mail
+          .tile-subtitle
+            = f.text_field :email, value: current_user.email 
+
+      .tile.tile-centered
+        .tile-content
+          .tile-title.text-bold Workout Program
+          .tile-subtitle=current_user.routine.name
+
+
+      = f.fields_for :details, OpenStruct.new(@user.details) do |ff|
+        .tile.tile-centered
+          .tile-content
+            .tile-title.text-bold Equipment Type
+            .tile-subtitle
+              = ff.text_field :equipment_type, value: current_user.details.to_h["equipment_type"]
+
+
+        .tile.tile-centered
+          .tile-content
+            .tile-title.text-bold Plates
+            .tile-subtitle
+              = ff.text_field :equipment_plates, value: current_user.details.to_h["equipment_plates"]
+          
+
+        .tile.tile-centered
+          .tile-content
+            .tile-title.text-bold Bar Weight
+            .tile-subtitle
+              = ff.text_field :equipment_bar, value: current_user.details.to_h["equipment_bar"]
+
+        .tile.tile-centered
+          .tile-content
+            .tile-title.text-bold Body Weight
+            .tile-subtitle
+              = ff.text_field :body_weight, value: current_user.details.to_h["body_weight"]
+            
+
+    .panel-footer
+      =f.submit "Save", class: "btn.btn-primary.btn-block"

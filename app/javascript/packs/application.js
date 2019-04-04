@@ -19,6 +19,8 @@ import "../stylesheets/header.scss";
 import "../stylesheets/charts.scss";
 import "../stylesheets/notification.scss";
 import "../stylesheets/logo.scss";
+import "../stylesheets/calendar.scss";
+
 
 import "../images/index";
 const application = Application.start();
