@@ -12,7 +12,6 @@ export default class extends ApplicationController {
   connect(){  
     if ( document.getElementById('active_workout').value == 'true' ){
       this.startCountdown();
-      console.log("resuming");
     }
   }
   
