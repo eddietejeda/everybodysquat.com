@@ -18,6 +18,7 @@ import "../stylesheets/login.scss";
 import "../stylesheets/header.scss";
 import "../stylesheets/charts.scss";
 import "../stylesheets/notification.scss";
+import "../stylesheets/rest_timer.scss";
 import "../stylesheets/logo.scss";
 import "../stylesheets/calendar.scss";
 

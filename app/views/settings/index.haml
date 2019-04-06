@@ -29,27 +29,34 @@
           .tile-content
             .tile-title.text-bold Equipment Type
             .tile-subtitle
-              = ff.text_field :equipment_type, value: current_user.details.to_h["equipment_type"]
+              = ff.text_field :equipment_type, value: current_user.settings("equipment_type")
 
 
         .tile.tile-centered
           .tile-content
             .tile-title.text-bold Plates
             .tile-subtitle
-              = ff.text_field :equipment_plates, value: current_user.details.to_h["equipment_plates"]
+              = ff.text_field :equipment_plates, value: current_user.settings("equipment_plates")
           
 
         .tile.tile-centered
           .tile-content
             .tile-title.text-bold Bar Weight
             .tile-subtitle
-              = ff.text_field :equipment_bar, value: current_user.details.to_h["equipment_bar"]
+              = ff.text_field :equipment_bar, value: current_user.settings("equipment_bar")
 
         .tile.tile-centered
           .tile-content
             .tile-title.text-bold Body Weight
             .tile-subtitle
-              = ff.text_field :body_weight, value: current_user.details.to_h["body_weight"]
+              = ff.text_field :body_weight, value: current_user.settings("body_weight")
+            
+
+        .tile.tile-centered
+          .tile-content
+            .tile-title.text-bold Rest time between sets (in seconds)
+            .tile-subtitle
+              = ff.text_field :rest_time, value: current_user.settings("rest_time")
             
 
     .panel-footer

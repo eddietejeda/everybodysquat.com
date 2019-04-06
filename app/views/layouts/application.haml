@@ -22,6 +22,13 @@
         gtag('js', new Date());
         gtag('config', 'UA-132776594-1');
       
+
+    %audio#bell.audio_player{:preload => "true"}
+      %source{:src => "/bell.mp3"}
+  
+  
+
+  
     = csrf_meta_tags
   %body{class: @device_type}
     .main-container.off-canvas.off-canvas-sidebar-show

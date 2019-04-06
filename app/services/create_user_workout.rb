@@ -145,10 +145,10 @@ class CreateUserWorkout
       elsif should_decrease_weight?(exercise_id)
         # decrease
         amount = previous_successful_training_max(exercise_id).subtract(5)
-        amount < @user.bar_weight ? @user.bar_weight : amount
+        amount < @user.settings('bar_weight') ? @user.settings('bar_weight') : amount
       else
         # stay the same
-        (previous_successful_training_max(exercise_id) > 0) ? previous_successful_training_max(exercise_id) : @user.bar_weight
+        (previous_successful_training_max(exercise_id) > 0) ? previous_successful_training_max(exercise_id) : @user.settings('bar_weight')
       end
     end
   
@@ -197,7 +197,7 @@ class CreateUserWorkout
       query_params = { results: '[{"exercise_id": '+exercise_id.to_s+', "success": true}]' }
 
       amount = Workout.where("results @> :results", query_params).order(id: :desc).limit(1).last.try(:results).to_a.find{|e| e.to_h["exercise_id"] == exercise_id }.to_h["weight"].to_i    
-      amount < @user.bar_weight ? @user.bar_weight : amount
+      amount < @user.settings('bar_weight') ? @user.settings('bar_weight') : amount
     end
 
   

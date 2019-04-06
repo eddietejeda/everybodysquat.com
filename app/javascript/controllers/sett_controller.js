@@ -7,12 +7,22 @@ import cookies from "../support/cookies";
 export default class extends ApplicationController {
 
   static targets = [ "active", "reps" , "button", "weight"]
+  
+  initialize(){
+    // for (let i=0; i<100; i++){
+    //   window.clearTimeout(i);
+    // }
+  }
+  
+  disconnect(){
+    for (let i=0; i<100; i++){
+      window.clearTimeout(i);
+    }    
+  }
 
   updateReps(){
     
-    if (this.data.get('active') == 'true'){
-      console.log('workout is active');
-      
+    if (this.data.get('active') == 'true'){      
       var current, goal, reps_completed;  
       [current, goal] = this.repsTarget.innerHTML.trim().split("x").map(Number);
       reps_completed = (current == 0) ? goal : current - 1;
@@ -27,13 +37,15 @@ export default class extends ApplicationController {
       }
 
       this.railsUpdate(`/setts/${this.data.get("id")}`, "reps_completed", reps_completed);
-      cookies.setValue('restTime', 60*5); 
+      cookies.setValue('restTime', 0); 
+      setTimeout(this.delayNotification, 2000); 
     }
-    else{
-      console.log('workout not active');
-    }
-
     
+  }
+  
+
+  delayNotification() {
+    cookies.setValue('restTime', parseInt(document.getElementById('restTime').value)); 
   }
   
   updateWeight(){

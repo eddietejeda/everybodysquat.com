@@ -1,38 +1,14 @@
 - cache workout do
-  -if workout.active == true
-    %h3
-      Current Workout
-  -else
-    %h3
+  %h3
+    -if workout.active == true
+      Active Workout
+    -else
       Previous Workout
 
-  #notification.card{"data-controller" => "timer", "data-timer-workout-created" => "#{workout.began_at.to_i}", "data-timer-workout-completed" => "#{workout.completed_at.to_i}", class: ("archived" if workout.active == false)}
-    .column
-      .columns.col-12
-      .columns.col-12{style: "text-align: center;"}
-        .col-1
-        .col-3
-          -if workout.active
-            Rest Time:
-            %br
-            %span#settTimer{"data-target" => "timer.sett", "data-action" => "timer->sett#setTimer"}
-              0:00
-          -else
-            Archived workout
-        .col-5
-          Workout: 
-          %br
-          %span#workoutTimer{"data-target" => "timer.workout", "data-action" => "timer->sett#workoutTimer"}
-            -if workout.completed_at
-              ="#{workout.began_at - workout.completed_at}"
-        .col-3.right
-          -if workout.active
-            %span.complete-workout.btn
-              %a{href: '/workouts/stop'}
-                Finish
-
-      
-  .card{class: ("inactive" if workout.active == false)}
+  =render "notification", workout: workout
+  =render "workout_timer", workout: workout
+  
+  .card{class: ("inactive" if workout.active === false)}
     .card-header
       .card-title.h5.column
         .columns
@@ -62,6 +38,19 @@
                   %p  
                     ="#{sett.weight} lbs"
                     
+                / #gUMArea
+                /   %div
+                /     Record:
+                /     = succeed "Video" do
+                /       %input#mediaVideo{:checked => "checked", :name => "media", :type => "radio", :value => "video"}/
+                /     = succeed "audio" do
+                /       %input{:name => "media", :type => "radio", :value => "audio"}/
+                /   %button#gUMbtn.btn.btn-default Request Stream
+                / #btns
+                /   %button#start.btn.btn-default Start
+                /   %button#stop.btn.btn-default Stop
+                / %div
+                /   %ul#ul.list-unstyled
 
                 .col-1{"data-controller" => "video"}
                   -if ENV['FEATURE_VIDEO']
@@ -75,16 +64,7 @@
                 
 
       .card-footer
-      / #gUMArea
-      /   %div
-      /     Record:
-      /     = succeed "Video" do
-      /       %input#mediaVideo{:checked => "checked", :name => "media", :type => "radio", :value => "video"}/
-      /     = succeed "audio" do
-      /       %input{:name => "media", :type => "radio", :value => "audio"}/
-      /   %button#gUMbtn.btn.btn-default Request Stream
-      / #btns
-      /   %button#start.btn.btn-default Start
-      /   %button#stop.btn.btn-default Stop
-      / %div
-      /   %ul#ul.list-unstyled
+    -if workout.active
+      %span.complete-workout.btn
+        %a{href: '/workouts/stop'}
+          Finish

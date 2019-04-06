@@ -89,7 +89,18 @@ class User < ApplicationRecord
     return 45
   end
   
-  
+  def settings(keyname)
+    
+    default = {}
+    default["rest_time"] = (60*3) # minutes
+    default["bar_weight"] = 45
+    
+    return self.details.to_h[keyname] if self.details.to_h[keyname]
+    return default.to_h[keyname] if default.to_h[keyname]
+    return nil
+    
+    
+  end
 
   # TODO: stale?
   def workout_exercise_was_succcessful(workout_id, exercise_id)
