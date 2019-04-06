@@ -30,15 +30,12 @@ export default class extends ApplicationController {
         minutes = Math.floor(restTime / 60) % 60;
         seconds = Math.abs(parseInt(restTime % 60));
         
-        if (restTime < 0){
-          viewTarget.classList.add('hide');
-          // document.getElementById("bell").play();
+        if (restTime === -1){
+          document.getElementById("bell").play();
         }
-        else{
+        else if (restTime > 0){
           viewTarget.innerHTML = `${minutes.pad(2)}:${seconds.pad(2)}`;          
-          viewTarget.classList.add('show');
         }
-
       }
 
     }, 1000);

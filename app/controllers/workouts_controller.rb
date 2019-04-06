@@ -4,9 +4,9 @@ class WorkoutsController < ApplicationController
   # helper_method :filtering_params
 
   def index
-    offset = profile_params[:page].to_i * 10
+    offset = profile_params[:page].to_i * 50
     
-    @workouts = current_user.workouts.order(id: :desc).offset(offset).limit(10)
+    @workouts = current_user.workouts.order(id: :desc).offset(offset).limit(50)
     
     respond_to do |format|
       format.html # show.html.erb

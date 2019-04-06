@@ -1,4 +1,4 @@
 #restTimer.timer-container{"data-controller" => "rest-timer"}
   %input#restTime{type: "hidden", value: current_user.settings('rest_time').to_i + 1}
   .controlls
-    %span.display-remain-time{"data-target" => "rest-timer.view"} -
+    %span.display-remain-time{"data-target" => "rest-timer.view"} 00:00
