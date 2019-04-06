@@ -9,8 +9,11 @@ export default class extends ApplicationController {
 
   static targets = [ "view", "toggle"]
 
-  connect(){    
-    this.startCountdown();
+  connect(){  
+    if ( document.getElementById('active_workout').value == 'true' ){
+      this.startCountdown();
+      console.log("resuming");
+    }
   }
   
   
@@ -30,10 +33,11 @@ export default class extends ApplicationController {
         minutes = Math.floor(restTime / 60) % 60;
         seconds = Math.abs(parseInt(restTime % 60));
         
-        if (restTime === -1){
+        if (restTime === 0){
           document.getElementById("bell").play();
         }
-        else if (restTime > 0){
+        // even if it's zero, we should clear the clock
+        if (restTime >= 0){
           viewTarget.innerHTML = `${minutes.pad(2)}:${seconds.pad(2)}`;          
         }
       }
