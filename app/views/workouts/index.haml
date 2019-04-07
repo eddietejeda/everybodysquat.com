@@ -39,12 +39,14 @@
           =workout.formated_date
         .card-body.columns
           - workout.distinct_exercises.each do |exercise|
-            .col-6
+            .col-7
+              %span.circle{class: "#{workout.results.find{|e|e.to_h["exercise_id"] == exercise.id}.to_h["success"] ? 'green' : 'red'}"}
               =exercise.name
-            .col-4
+            .col-3
               ="#{workout.current_exercise_weight(exercise.id)} lbs"
             .col-2
               =workout.routine.try(:name)
+
 
 -if @workouts.count > 10
   .column
