@@ -33,7 +33,9 @@ Rails.application.routes.draw do
     end
   end
 
-  get "/tutorials/:exercise/:page",   to: "tutorials#index"
+
+  resources :tutorials,      only: %i[index]
+  get "/tutorials/:exercise/:page",   to: "tutorials#show"
 
   
 end
