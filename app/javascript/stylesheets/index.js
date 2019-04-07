@@ -16,3 +16,4 @@ import "./notification";
 import "./rest_timer";
 import "./logo";
 import "./calendar";
+import "./trash"

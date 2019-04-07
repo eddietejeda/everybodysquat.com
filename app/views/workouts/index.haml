@@ -32,11 +32,12 @@
     
     
     
-  .card{class: ("inactive" if workout.active == false)}
+  .card{id: "workout-#{workout.id}", "data-controller" => "card", class: ("inactive" if workout.active == false)   }
     =link_to edit_workout_path(workout) do 
       .card-header
         .card-subtitle
-          =workout.formated_date
+          =workout.formated_date 
+          
         .card-body.columns
           - workout.distinct_exercises.each do |exercise|
             .col-7
@@ -47,6 +48,15 @@
               ="#{workout.current_exercise_weight(exercise.id)} lbs"
             .col-2
               =workout.routine.try(:name)
+  
+    =link_to workout_path(workout), method: :delete, remote: :true, data: { "card-workout-id" => workout.id, confirm: 'Are you sure?',  action: 'ajax:beforeSend->card#onBeforeDestroy ajax:success->card#onDestroy' }  do 
+      .icon-trash 
+        -#{"data-action" => "click->card#destroy", "data-card-workout-id" => workout.id}
+        .trash-lid{:style => "background-color: #ff5964"}
+        .trash-container{:style => "background-color: #ff5964"}
+        .trash-line-1
+        .trash-line-2
+        .trash-line-3
 
 
 -if @workouts.count > 100

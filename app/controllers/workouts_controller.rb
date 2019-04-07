@@ -68,6 +68,20 @@ class WorkoutsController < ApplicationController
   end
   
 
+
+  def destroy
+    @workout = Workout.find(params[:id])
+    @workout.destroy
+
+    if @workout.destroy
+      head :ok
+    else
+      flash[:alert] = 'Cannot delete workout'
+    end
+
+  end
+  
+
   private
 
   def workout_params

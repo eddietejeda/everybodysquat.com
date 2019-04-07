@@ -54,6 +54,13 @@
 
         .tile.tile-centered
           .tile-content
+            .tile-title.text-bold Disable Rest Timer
+            .tile-subtitle
+              = ff.check_box :disable_rest_timer, { multiple: false }, current_user.settings("disable_rest_timer"), current_user.settings("disable_rest_timer")
+            
+
+        .tile.tile-centered
+          .tile-content
             .tile-title.text-bold Rest time between sets (in seconds)
             .tile-subtitle
               = ff.text_field :rest_time, value: current_user.settings("rest_time")
