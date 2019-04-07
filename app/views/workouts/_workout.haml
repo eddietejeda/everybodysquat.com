@@ -60,7 +60,7 @@
                 /   %ul#ul.list-unstyled
 
                 .col-1{"data-controller" => "video"}
-                  -if ENV['FEATURE_VIDEO'].nil?                
+                  -if ENV['FEATURE_VIDEO']
                     .btn-sm
                       %img.icon-video{src: "#{asset_pack_path('images/video.png')}", "data-target" => "video.button", "data-value" => "0", "data-action" => "click->video#toggleVideoRecord"}
                   

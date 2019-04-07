@@ -8,20 +8,21 @@
 //   static targets = [ "recorder"]
 //
 //
-//   let log = console.log.bind(console);
-//   let id = val => document.getElementById(val);
-//   let ul = id('ul');
-//   let gUMbtn = id('gUMbtn');
-//   let start = id('start');
-//   let stop = id('stop');
-//   let stream;
-//   let recorder;
-//   let counter=1;
-//   let chunks;
-//   let media;
-//
 //
 //   initialize(){
+//
+//     let log = console.log.bind(console);
+//     let id = val => document.getElementById(val);
+//     let ul = id('ul');
+//     let gUMbtn = id('gUMbtn');
+//     let start = id('start');
+//     let stop = id('stop');
+//     let stream;
+//     let recorder;
+//     let counter=1;
+//     let chunks;
+//     let media;
+//
 //
 //     gUMbtn.onclick = function() {
 //       let mv = id('mediaVideo'),
@@ -48,12 +49,11 @@
 //       }).catch(log);
 //     }
 //
-//
 //   }
 //
 //   toggleVideoRecord(){
 //
-//     this.data.get("index")
+//     // this.data.get("index")
 //     if (this.buttonTarget.value == 0){
 //       this.buttonTarget.value = 0;
 //       chunks=[];

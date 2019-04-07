@@ -43,6 +43,8 @@
             %a{:href => "#{workouts_path}"}  Workouts
           %li.aside-anchor{class: ('active' if params[:controller] == 'charts') }
             %a{:href => "#{charts_path}"}  Charts
+          %li.aside-anchor{class: ('active' if params[:controller] == 'tutorials') }
+            %a{:href => "#{tutorials_path}"}  Tutorials
           / %li.aside-anchor{class: ('active' if params[:controller] == 'timeline') }
           /   %a{:href => "#{timeline_index_path}"}  Timeline
           %li.aside-anchor{class: ('active' if params[:controller] == 'settings') }
