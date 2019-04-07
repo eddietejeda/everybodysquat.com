@@ -47,6 +47,7 @@ class User < ApplicationRecord
   validates :username, presence: :true, uniqueness: { case_sensitive: false }
   validate :validate_username
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
+  after_create :init_user
   
   after_create :send_admin_mail
   
@@ -56,6 +57,13 @@ class User < ApplicationRecord
   
   def has_active_workout?
     active_workout ? true : false
+  end
+
+
+  def init_user
+    self.routine = Routine.first
+    self.details = {"body_weight"=>"", "equipment_bar"=>"45", "equipment_type"=>"barbell", "equipment_plates"=>"45"}
+    self.save!
   end
 
 
@@ -156,11 +164,6 @@ class User < ApplicationRecord
   end
 
 
-  def set_default_routine
-    r = self.routine_id
-    r.routine_id = Routine.first.id
-    r.update!
-  end
   
   def is_coach?
     self.coach
