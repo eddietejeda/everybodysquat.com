@@ -9,18 +9,18 @@ export default class extends ApplicationController {
 
   static targets = [ "view", "toggle"]
 
-  connect(){  
+  initialize(){  
+    
     if ( document.getElementById('active_workout').value == 'true' ){
       // clearInterval(this.refreshTimer);
       this.startCountdown();
     }
   }
   
-  
-  
   startCountdown(){
     var viewTarget = this.viewTarget;
     var dataTarget = this.data;
+
 
     setInterval(refreshTimer, 1000);
     
