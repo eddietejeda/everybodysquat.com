@@ -1,10 +1,10 @@
-- cache workout do
+= cache workout do
   %h3
     -if workout.active == true
       Active Workout
     -else
       Previous Workout
-      
+    
   =render "notification", workout: workout
   =render "workout_timer", workout: workout
   %input{ type: 'hidden', id: "active_workout", value: workout.active.to_s }
@@ -14,7 +14,7 @@
         .columns
           .col-12
             =link_to workout.formated_date, edit_workout_path(workout)
-            
+          
       .card-subtitle.text-gray
       .card-body.columns
         - workout.distinct_exercises.each do |exercise|
@@ -35,11 +35,11 @@
               .columns.col-12{"data-controller" => "sett", "data-sett-id" => sett.id, "data-sett-active" => "#{workout.active.to_s}", "data-sett-completed-at" => workout.completed_at}
                 .left.col-3
                   %p
-                    ="Set #{index+1} "
+                    =" ∴#{index+1}  "
                 .col-3
                   %p  
                     ="#{sett.weight} lbs"
-                    
+                  
                 / #gUMArea
                 /   %div
                 /     Record:
@@ -58,13 +58,13 @@
                   -if ENV['FEATURE_VIDEO']
                     %button.btn.btn{"data-target" => "video.button", "data-value" => "0", "data-action" => "click->video#toggleVideoRecord"}
                       .icon.icon-check
-                    
+                  
                 .right.col-5
                   %button.btn.btn{"data-target" => "sett.button", "data-action" => "click->sett#updateReps", :class => ("btn-primary-light-red" if sett.reps_completed < sett.reps_goal)}
                     .div{"data-target" => "sett.reps", "value" => "0"}
                       ="#{sett.reps_completed} x #{sett.reps_goal}"
-                      
-                
+                    
+              
 
       .card-footer
     -if workout.active

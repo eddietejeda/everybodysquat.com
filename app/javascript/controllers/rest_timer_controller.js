@@ -11,6 +11,7 @@ export default class extends ApplicationController {
 
   connect(){  
     if ( document.getElementById('active_workout').value == 'true' ){
+      // clearInterval(this.refreshTimer);
       this.startCountdown();
     }
   }
@@ -18,20 +19,21 @@ export default class extends ApplicationController {
   
   
   startCountdown(){
-    let viewTarget = this.viewTarget;
-    let dataTarget = this.data;
-    
-    setInterval(function() {
+    var viewTarget = this.viewTarget;
+    var dataTarget = this.data;
 
+    setInterval(refreshTimer, 1000);
+    
+    
+    function refreshTimer() {
       let restTime = parseInt(cookies.getValue('restTime')) - 1;
-      let minutes = "0";
-      let seconds = "0";
+      let minutes, seconds = "0";
 
       if (cookies.getValue('restTime') && !parseInt(dataTarget.get("workoutCompleted"))){
         cookies.setValue('restTime', restTime);
         minutes = Math.floor(restTime / 60) % 60;
         seconds = Math.abs(parseInt(restTime % 60));
-        
+
         if (restTime === 0){
           document.getElementById("bell").play();
         }
@@ -40,10 +42,13 @@ export default class extends ApplicationController {
           viewTarget.innerHTML = `${minutes.pad(2)}:${seconds.pad(2)}`;          
         }
       }
-
-    }, 1000);
+    }
     
   }
+  
+  
+
+    
   
   pause(){
         

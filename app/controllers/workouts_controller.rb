@@ -29,11 +29,10 @@ class WorkoutsController < ApplicationController
     
       @workout = current_user.active_workout || current_user.create_workout
       fresh_when(@workout)
-
       unless @workout
         flash[:alert] = 'Cannot create a new task'
       end
-      redirect_to edit_workout_path(@workout) #"/workouts/#{@workout.id}/edit" #edit_workout_path(@workout)
+      redirect_to edit_workout_path(@workout)
       
     else
       flash[:alert] = 'Please select a routine'
