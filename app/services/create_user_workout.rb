@@ -138,16 +138,18 @@ class CreateUserWorkout
 
     def weight_for_training_max(exercise_id)
       
+      Rails.logger.debug{ "weight_for_training_max" }
+      
       if should_increase_weight?(exercise_id)
-        # increase
+        Rails.logger.debug{ "increasing exercise: #{exercise_id}" }
         previous_successful_training_max(exercise_id).add(5)
 
       elsif should_decrease_weight?(exercise_id)
-        # decrease
+        Rails.logger.debug{ "decreasing exercise: #{exercise_id}" } 
         amount = previous_successful_training_max(exercise_id).subtract(5)
         amount < @user.settings('bar_weight') ? @user.settings('bar_weight') : amount
       else
-        # stay the same
+        Rails.logger.debug{ "staying the same: #{exercise_id}" }
         (previous_successful_training_max(exercise_id) > 0) ? previous_successful_training_max(exercise_id) : @user.settings('bar_weight')
       end
     end
@@ -178,7 +180,10 @@ class CreateUserWorkout
         began_at: DateTime.now - 7.days
       }
 
-      Workout.where("results @> :results AND began_at > :began_at", query_params).order(id: :desc).limit(1).any?
+      Workout.where("results @> :results AND began_at > :began_at", 
+            query_params).order(began_at: :desc).limit(1).first.results.find{|e| 
+              (e.to_h["exercise_id"] == exercise_id) && (e.to_h["success"] == true) 
+            }
     end
   
   
@@ -190,13 +195,13 @@ class CreateUserWorkout
         began_at: DateTime.now - 7.days
       }
             
-      Workout.where("results @> :results AND began_at > :began_at", query_params).order(id: :desc).limit(3).count > 2
+      Workout.where("results @> :results AND began_at > :began_at", query_params).order(began_at: :desc).limit(3).count > 2
     end
   
     def previous_successful_training_max(exercise_id)
       query_params = { results: '[{"exercise_id": '+exercise_id.to_s+', "success": true}]' }
 
-      amount = Workout.where("results @> :results", query_params).order(id: :desc).limit(1).last.try(:results).to_a.find{|e| e.to_h["exercise_id"] == exercise_id }.to_h["weight"].to_i    
+      amount = Workout.where("results @> :results", query_params).order(began_at: :desc).limit(1).last.try(:results).to_a.find{|e| e.to_h["exercise_id"] == exercise_id }.to_h["weight"].to_i    
       amount < @user.settings('bar_weight') ? @user.settings('bar_weight') : amount
     end
 
