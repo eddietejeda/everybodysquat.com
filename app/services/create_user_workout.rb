@@ -177,11 +177,11 @@ class CreateUserWorkout
       # doing a bunch of string escaping. Maybe there is a better way?
       query_params = {
         results: '[{"exercise_id": '+exercise_id.to_s+'}]',
-        began_at: DateTime.now - 7.days
+        began_at: DateTime.now - 7.days,
+        user_id: @user.id
       }
 
-      Workout.where("results @> :results AND began_at > :began_at", 
-            query_params).order(began_at: :desc).limit(1).first.results.find{|e| 
+      Workout.where("user_id = :user_id AND results @> :results AND began_at > :began_at", query_params).order(began_at: :desc).limit(1).first.try("results").to_a.find{|e| 
               (e.to_h["exercise_id"] == exercise_id) && (e.to_h["success"] == true) 
             }
     end

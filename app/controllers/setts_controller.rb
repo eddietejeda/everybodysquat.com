@@ -6,7 +6,7 @@ class SettsController < ApplicationController
 
   
   def update
-    Sett.find(params[:id]).update!(sett_params)
+    Sett.where(id: params[:id], user_id: current_user.id).first.update!(sett_params)
   end
   
   
