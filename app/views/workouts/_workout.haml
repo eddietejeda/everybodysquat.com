@@ -33,14 +33,14 @@
           .column.col-12{style: "font-size: 15pt"}
             - workout.setts.where(exercise_id: exercise.id).order(:id).each_with_index do |sett, index|
               .columns.col-12{"data-controller" => "sett", "data-sett-id" => sett.id, "data-sett-active" => "#{workout.active.to_s}", "data-sett-completed-at" => workout.completed_at}
-                .left.col-3
+                .left.col-2
                   %p
                     =" ∴#{index+1}  "
-                .col-3
+                .col-4
                   %p 
                     -if workout.active
                       %span
-                        %input{style: "width: 70px", type: "number", min: 0, max: 2000, step: 2.5, value: sett.weight, "data-target" => "sett.weight", "data-action" => "change->sett#updateWeight"}
+                        %input{style: "width: 55px", type: "number", min: 0, max: 2000, step: 2.5, value: sett.weight, "data-target" => "sett.weight", "data-action" => "change->sett#updateWeight"}
                       %span lbs
                     -else 
                       ="#{sett.weight} lbs"
@@ -60,9 +60,9 @@
                 /   %ul#ul.list-unstyled
 
                 .col-1{"data-controller" => "video"}
-                  -if ENV['FEATURE_VIDEO']
-                    %button.btn.btn{"data-target" => "video.button", "data-value" => "0", "data-action" => "click->video#toggleVideoRecord"}
-                      .icon.icon-check
+                  -if ENV['FEATURE_VIDEO'].nil?                
+                    .btn-sm
+                      %img.icon-video{src: "#{asset_pack_path('images/video.png')}", "data-target" => "video.button", "data-value" => "0", "data-action" => "click->video#toggleVideoRecord"}
                   
                 .right.col-5
                   %button.btn.btn{"data-target" => "sett.button", "data-action" => "click->sett#updateReps", :class => ("btn-primary-light-red" if sett.reps_completed < sett.reps_goal)}
