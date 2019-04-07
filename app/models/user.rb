@@ -133,11 +133,12 @@ class User < ApplicationRecord
 
   def personal_records
     
-    response = self.routine.distinct_exercises.map {|exercise|
-      self.highest_weight_sett(exercise.id).try("id")
-    }
-    
-    
+    response = []
+    if self.routine
+      response = self.routine.distinct_exercises.map {|exercise|
+        self.highest_weight_sett(exercise.id).try("id")
+      }
+    end
     
     response.any? ? Sett.find(response) : []
     
