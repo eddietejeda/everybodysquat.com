@@ -22,7 +22,7 @@
       Today
   -if workout.active == false 
     -current_workout = workout.began_at.to_date.beginning_of_week
-    -number = first_workout.upto(current_workout).count.fdiv(7).round(0) - 1    
+    -number = first_workout.upto(current_workout).count.fdiv(7).round(0) + 1    
     -unless show_week.to_h[number]
       %h3{style: 'margin-top: 100px'}
         =" Week ##{number}"
@@ -40,7 +40,8 @@
         .card-body.columns
           - workout.distinct_exercises.each do |exercise|
             .col-7
-              %span.circle{class: "#{workout.results.find{|e|e.to_h["exercise_id"] == exercise.id}.to_h["success"] ? 'green' : 'red'}"}
+              -if workout.active === false 
+                %span.circle{class: "#{workout.results.find{|e|e.to_h["exercise_id"] == exercise.id}.to_h["success"] ? 'green' : 'red'}"}
               =exercise.name
             .col-3
               ="#{workout.current_exercise_weight(exercise.id)} lbs"
@@ -48,7 +49,7 @@
               =workout.routine.try(:name)
 
 
--if @workouts.count > 10
+-if @workouts.count > 100
   .column
     .column
       .columns
