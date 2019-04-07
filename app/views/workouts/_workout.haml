@@ -38,10 +38,12 @@
                     =" ∴#{index+1}  "
                 .col-3
                   %p 
-                    %span
-                      %input{style: "width: 70px", type: "number", min: 0, max: 2000, step: 2.5, value: sett.weight, "data-target" => "sett.weight", "data-action" => "change->sett#updateWeight"}
-                    %span lbs
-                    -#="#{sett.weight} lbs"
+                    -if workout.active
+                      %span
+                        %input{style: "width: 70px", type: "number", min: 0, max: 2000, step: 2.5, value: sett.weight, "data-target" => "sett.weight", "data-action" => "change->sett#updateWeight"}
+                      %span lbs
+                    -else 
+                      ="#{sett.weight} lbs"
                   
                 / #gUMArea
                 /   %div
