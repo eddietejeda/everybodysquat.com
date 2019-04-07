@@ -48,6 +48,17 @@ class Workout < ApplicationRecord
       CompleteUserWorkout.new(User.find(workout.user_id)).call(workout)
     end
   end
+  
+  def self.space_workout_dates
+    
+    length = Workout.all.count
+    Workout.all.each do |workout|
+      workout.began_at = length.days.ago
+      workout.save!
+      length = length - 1
+    end
+  end
+  
 
 end
 

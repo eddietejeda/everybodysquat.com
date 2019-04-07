@@ -9,15 +9,11 @@ export default class extends ApplicationController {
   static targets = [ "active", "reps" , "button", "weight"]
   
   initialize(){
-    // for (let i=0; i<100; i++){
-    //   window.clearTimeout(i);
-    // }
+    window.clearTimeout(this.delayNotification);
   }
   
   disconnect(){
-    for (let i=0; i<100; i++){
-      window.clearTimeout(i);
-    }    
+
   }
 
   updateReps(){
