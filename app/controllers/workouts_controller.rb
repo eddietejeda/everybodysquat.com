@@ -70,9 +70,8 @@ class WorkoutsController < ApplicationController
 
 
   def destroy
-    @workout = Workout.find(params[:id])
-    @workout.destroy
-
+    @workout = Workout.where(id: params[:id], user_id: current_user.id).first
+    
     if @workout.destroy
       head :ok
     else
