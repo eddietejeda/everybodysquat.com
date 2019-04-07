@@ -35,7 +35,7 @@ class TutorialsController < ApplicationController
 
     key = File.open("#{Rails.root}/app/views/tutorials/#{filename}",'r').map { |line|  line.split(':').first.strip == 'youtube_id' ? line.split(':').last.gsub!(/"/, '').strip : '' }.join("")    
 
-    return "<img src='https://img.youtube.com/vi/#{key}/hqdefault.jpg'>"
+    return "<img style='width: 100%' src='https://img.youtube.com/vi/#{key}/hqdefault.jpg'>"
     
   end
     # Only allow a trusted parameter "white list" through.
