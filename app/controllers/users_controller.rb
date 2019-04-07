@@ -2,12 +2,14 @@
 
 class UsersController < ApplicationController
   # helper_method :filtering_params
-  # validate :reserved_username
+  validate :reserved_username
+
 
   def index
     redirect_to root_path
   end
-
+  
+  
   def add_routine_to_user
     current_user.update!(routine_to_user_params)
     redirect_to "/routines"    
