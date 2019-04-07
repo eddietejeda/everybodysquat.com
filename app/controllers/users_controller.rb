@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   # helper_method :filtering_params
-  validate :reserved_username
+  # validate :reserved_username
 
 
   def index
