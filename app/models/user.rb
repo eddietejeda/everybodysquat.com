@@ -106,7 +106,13 @@ class User < ApplicationRecord
     return self.details.to_h[keyname] if self.details.to_h[keyname]
     return default.to_h[keyname] if default.to_h[keyname]
     return nil
+  end
+  
+  
+  
+  def generate_milestones
     
+    timeline = {}
     
   end
 

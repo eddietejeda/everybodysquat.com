@@ -4,9 +4,12 @@ class TimelineController < ApplicationController
 
 
   def index
-    
 
+    
+    
+    
   end
+  
   
   
   private
