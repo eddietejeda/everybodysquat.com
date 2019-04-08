@@ -17,11 +17,11 @@ class WorkoutsController < ApplicationController
   end
 
   def show
-    @workout = Workout.find(params[:id])
+    @workout = Workout.where(id: params[:id], user_id: current_user.id).first
   end
 
   def edit
-    @workout = Workout.find(params[:id])
+    @workout = Workout.where(id: params[:id], user_id: current_user.id).first
   end
 
   def start
