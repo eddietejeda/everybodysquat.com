@@ -6,6 +6,8 @@ class TimelineController < ApplicationController
   def index
     @following = current_user.following
     @followers = current_user.followers
+    
+    @requests = current_user.follow_requests
     # @pending_followers = current_user.pending_followers
     # @follow_pending = current_user.follow_pending
 

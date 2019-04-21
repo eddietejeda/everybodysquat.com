@@ -2,7 +2,7 @@ import "spectre.css/dist/spectre";
 import "spectre.css/dist/spectre-exp";
 import "spectre.css/dist/spectre-icons";
 import "chart.js/dist/Chart"
-import 'ionicons/dist/scss/ionicons'
+// import 'ionicons/dist/scss/ionicons'
 
 
 import "./main";

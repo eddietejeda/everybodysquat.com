@@ -11,13 +11,14 @@ export default class extends ApplicationController {
 
   send_invitation(){
     this.railsCreate(`/relationships`, "email", this.emailTarget.value).then(
-      result => this.render_send_invitation_html(result)
+      result => this.invitation_sent(result)
     );
     this.emailTarget.value = '';
     // this.noticeTarget.innerHTML = "Invitation sent!";
-    setTimeout( () => this.noticeTarget.style.display = 'none' , 3000); 
+    // setTimeout( () => this.noticeTarget.style.display = 'none' , 3000);
   }
-  render_send_invitation_html(response){
+  
+  invitation_sent(response){
     let button, display_name, view;
     if (response.exists){
       button = `<button class="btn btn-primary btn-sm">Cancel Request</button>`
@@ -30,9 +31,13 @@ export default class extends ApplicationController {
       view = this.invitesTarget
     }
     
+    this.render(display_name, button, view);
+  }
   
-    view.innerHTML =  `
-    <div class="tile">
+  render(display_name, button, view){
+
+    view.innerHTML += `
+     <div class="tile">
        <div class="tile-icon">
           <figure class="avatar avatar-lg">
              <img alt="Super User" src="https://picturepan2.github.io/spectre/img/avatar-3.png">
@@ -50,19 +55,21 @@ export default class extends ApplicationController {
              </div>
           </div>
        </div>
-     </div>` + view.innerHTML;
+      </div>`;
+    
   }
+  
+  
   
   
   unfollow(event){
     console.log('remove relationship');    
-    this.railsCreate(`/relationships/unfollow`, "user_id", event.target.value).then(
+    this.railsCreate(`/relationships/unfollow`, "follow_user_id", event.target.value).then(
       result => event.target.closest('.row').remove()
     )  
     
     
   }
-
 
   remove_invitation(event){
     console.log('remove invitation');
@@ -71,17 +78,32 @@ export default class extends ApplicationController {
     )  
   }
   
-  // create(){
-  //   console.log('create relationship');
-  //   this.railsCreate(`/relationship/create`, "id", this.pendingTarget.value);
-  // }
-  //
   
-
-  
-  approve(){
+  approve(event){
     console.log('approve relationship');
-    this.railsUpdate(`/relationship/approve`, "id", this.pendingTarget.value);    
+    
+    let followingTarget = this.followingTarget;
+    this.railsCreate(`/relationships/approve`, "follow_user_id", event.target.value).then(
+      result => {
+        let button, display_name, view;
+        button = `<button class="btn btn-primary btn-sm">Unfollow</button>`
+        display_name = event.target.closest('.row').querySelector('.left').textContent.trim();
+        debugger;
+        this.render(display_name, button, followingTarget);
+        
+        event.target.closest('.row').remove();    
+      }
+    )
+  }
+
+  reject(event){
+    console.log('approve relationship');
+    this.railsCreate(`/relationships/reject`, "follow_user_id", event.target.value).then(
+      result => {
+        event.target.closest('.row').remove()
+        // document.querySelectorAll('#requests .row').length;
+      }
+    );
   }
 
 

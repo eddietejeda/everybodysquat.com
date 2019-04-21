@@ -11,41 +11,17 @@
         %a{"data-link" => "#activity",  "data-action"=>"click->tabs#onClick"} Activity
       %li.tab-item
         %a{"data-link" => "#following", "data-action"=>"click->tabs#onClick"} Following
-      / %li.tab-item
-      /   %a{"data-link" => "#followers", "data-action"=>"click->tabs#onClick"} Followers
-  .panel-body
+      %li.tab-item
+        %a{"data-link" => "#requests", "data-action"=>"click->tabs#onClick"} Requests
+  .panel-body{"data-controller" => "relationship"}
     #activity.tab-content{"data-target"=>"tabs.content"}
       .hero
-        -@workouts.each do |workout|
-          =render "workout",  workout: workout 
-        =render "initial"
+        =render "activity"
     #following.tab-content{"data-target"=>"tabs.content"}
-      .hero{"data-controller" => "relationship"}
-        =render "invite"
-
-        -if @following.count > 0
-          %br
-          %h5
-            ="Following"
-          %div{"data-target" => "relationship.following"}
-            -@following.each do |following|
-              =render "relationships",  user: following 
-      
-
-        -if @invitations.count > 0
-          %br
-          %h5
-            ="Invitations sent"
-          %div{"data-target" => "relationship.invites"}
-            -@invitations.each do |invitation|
-              =render "invitations",  invitation: invitation 
-
-
-
-      / #followers.tab-content{"data-target"=>"tabs.content"}
-      /   .hero
-      /     -@followers.each do |follower|
-      /       =render "relationships",  user: follower
+      .hero
+        =render "following"
+    #requests.tab-content{"data-target"=>"tabs.content"}
+      .hero
+        =render "requests"
 
   .panel-footer
-    / %button.btn.btn-primary.btn-block Save

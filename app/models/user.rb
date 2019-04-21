@@ -81,12 +81,9 @@ class User < ApplicationRecord
   end
 
   
-  def follow_request(follow_user_id)
-    # TODO: Rails 6 note: https://sikac.hu/use-create-or-find-by-to-avoid-race-condition-in-rails-6-0-f44fca97d16b
-    f = Relationship.find_or_create_by(user_id: self.id, follow_user_id: follow_user_id)
+  def follow_requests
+    User.find(Relationship.where("follow_user_id = :follow_user_id AND approved = :approved", { follow_user_id: self.id, approved: false }).map{|u|u.user_id} ) 
     
-    f.nonce = SecureRandom.hex(32)
-    f.save!
   end
   
 

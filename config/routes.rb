@@ -30,6 +30,8 @@ Rails.application.routes.draw do
   resources :relationships, only: %i[create] do
     collection do
       post 'unfollow',           to: 'relationships#unfollow'
+      post 'approve',            to: 'relationships#approve'
+      post 'reject',             to: 'relationships#reject'
       post 'cancel_request',     to: 'relationships#cancel_request'
       post 'remove_invitation',  to: 'relationships#remove_invitation'
     end

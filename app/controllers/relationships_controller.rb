@@ -28,27 +28,23 @@ class RelationshipsController < ApplicationController
   
 
   def approve
-    if f = Relationship.where( "id = :id AND user_id = :user_id", {id: params[:id], user_id: current_user.id } ).first
-      # success
-      
-      Rails.logger.info { "approved #{f.id} "}
-      f.approved = true
-      status = f.save!
-    else
-      # failure
-      Rails.logger.info { "invite new user"}
-      current_user.invite()
-      status = false
-    end
-    
-    
+    Rails.logger.info { "approved "}
+    status = Relationship.where( "user_id = :user_id AND follow_user_id = :follow_user_id", { user_id: relationship_params[:follow_user_id], follow_user_id: current_user.id } ).first.update_attributes(approved: true)
+
+    render :json => {status: status}
+  
+  end
+
+  def reject
+    Rails.logger.info { "reject "}
+    status = Relationship.where( "user_id = :user_id AND follow_user_id = :follow_user_id", { user_id: relationship_params[:follow_user_id], follow_user_id: current_user.id } ).delete_all    
     render :json => {status: status}
   
   end
 
 
   def unfollow
-    status = current_user.relationships.where("follow_user_id = :id", {id: relationship_params[:user_id]}).delete_all
+    status = current_user.relationships.where("follow_user_id = :follow_user_id", { follow_user_id: relationship_params[:follow_user_id]}).delete_all
     render :json => status
   end
 
@@ -59,7 +55,7 @@ class RelationshipsController < ApplicationController
   #
 
   def remove_invitation
-    status = current_user.invitations.where("id = :id", {id: relationship_params[:invitation_id]}).delete_all
+    status = current_user.invitations.where("id = :invitation_id", { invitation_id: relationship_params[:invitation_id]}).delete_all
     render :json => status
   end
   
@@ -69,7 +65,7 @@ class RelationshipsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def relationship_params
-      params.permit(:email, :invitation_id, :user_id)
+      params.permit(:email, :invitation_id, :follow_user_id)
     end
   
   

@@ -1,0 +1,21 @@
+.columns
+  .column
+    .tile.row
+      -if @requests.count == 0
+        No requests
+      -else
+        -@requests.each do |user|
+          .tile-icon
+            %figure.avatar.avatar-lg        
+              =show_avatar(user.try('id'))
+          .tile-content
+            .column
+              .columns
+                -if user
+                  .col-6.left
+                    =user.try("username") 
+                  .col-6.right
+                    %button.btn.btn-primary.btn-sm{"data-action"=>"click->relationship#approve", value: user.id } 
+                      Approve
+                    %button.btn.btn-primary.btn-sm{"data-action"=>"click->relationship#reject", value: user.id } 
+                      Reject

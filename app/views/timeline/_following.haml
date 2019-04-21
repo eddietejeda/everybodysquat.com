@@ -1,0 +1,20 @@
+%div
+  =render "invite"
+
+  -if @following.count > 0
+    %br
+    %h5
+      ="Following"
+  %div{"data-target" => "relationship.following"}
+    -@following.each do |following|
+      =render "relationships",  user: following 
+
+
+  -if @invitations.count > 0
+    %br
+    %h5
+      ="Invitations sent"
+  %div{"data-target" => "relationship.invites"}
+    -@invitations.each do |invitation|
+      =render "invitations",  invitation: invitation 
+
