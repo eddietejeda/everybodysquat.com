@@ -8,6 +8,26 @@ export class ApplicationController extends Controller {
     });
   }
 
+  railsCreate(url, field, value) {
+    return new Promise((resolve, reject) => {
+      const data = new FormData();
+      data.append(field, value);
+
+      Rails.ajax({
+        url,
+        type: "POST",
+        data,
+        success: data => {
+          resolve(data);
+        },
+        error: (_jqXHR, _textStatus, errorThrown) => {
+          reject(errorThrown);
+        }
+      });
+    });
+  }
+
+
   railsUpdate(url, field, value) {
     return new Promise((resolve, reject) => {
       const data = new FormData();

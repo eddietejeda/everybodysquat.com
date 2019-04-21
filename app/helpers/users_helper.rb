@@ -26,4 +26,9 @@ module UsersHelper
     current_time.strftime("%A, %b %d %Y")
   end
   
+  def show_avatar(user_id)
+    image_tag("https://picturepan2.github.io/spectre/img/avatar-#{(user_id % 4)+1}.png", alt: "#{current_user.name}")
+  end
+
+  
 end

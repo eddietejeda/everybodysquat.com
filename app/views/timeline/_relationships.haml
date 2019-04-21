@@ -1,0 +1,15 @@
+.columns.row
+  .column
+    .tile
+      .tile-icon
+        %figure.avatar.avatar-lg        
+          =show_avatar(user.try('id'))
+      .tile-content
+        .column
+          .columns
+            -if user
+              .col-6.left
+                =user.try("username") 
+              .col-6.right
+                %button.btn.btn-primary.btn-sm{"data-action"=>"click->relationship#unfollow", value: user.id } 
+                  =current_user.following_user?(user.try('id')) ? "Unfollow" : "Cancel Request"

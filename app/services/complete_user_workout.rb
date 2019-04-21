@@ -25,6 +25,7 @@ class CompleteUserWorkout
       # byebug
       {
         exercise_id:      exercise.id,
+        name:             exercise.name,
         weight:           setts.max_by{|s|s.weight}.weight,
         reps:             setts.max_by{|s|s.weight}.reps_completed,
         sets:             setts.map{|s|s.reps_goal == s.reps_completed}.count(true),

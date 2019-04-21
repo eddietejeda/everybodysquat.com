@@ -24,7 +24,16 @@ Rails.application.routes.draw do
   resources :achievements,  only: %i[index]
   resources :settings,      only: %i[index]
   resources :timeline,      only: %i[index]
+  resources :relationships, only: %i[create ]
 
+
+  resources :relationships, only: %i[create] do
+    collection do
+      post 'unfollow',           to: 'relationships#unfollow'
+      post 'cancel_request',     to: 'relationships#cancel_request'
+      post 'remove_invitation',  to: 'relationships#remove_invitation'
+    end
+  end
   
   resources :api,           :defaults => {:format => :json} do
     collection do

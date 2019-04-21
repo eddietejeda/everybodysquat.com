@@ -1,62 +1,51 @@
-.panel
+.panel{"data-controller" => "tabs"}
   .panel-header.text-center
     %figure.avatar.avatar-lg
-      %img{:alt => "#{current_user.name}", :src => "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest current_user.email}"}/
+      =show_avatar(current_user.id)
     .panel-title.h5.mt-10
       =current_user.username
     .panel-subtitle=current_user.name
+  %nav.panel-nav
+    %ul.tab.tab-block
+      %li.tab-item
+        %a{"data-link" => "#activity",  "data-action"=>"click->tabs#onClick"} Activity
+      %li.tab-item
+        %a{"data-link" => "#following", "data-action"=>"click->tabs#onClick"} Following
+      / %li.tab-item
+      /   %a{"data-link" => "#followers", "data-action"=>"click->tabs#onClick"} Followers
   .panel-body
-    .timeline
-      #timeline-example-1.timeline-item
-        .timeline-left
-          %a.timeline-icon.tooltip{"data-tooltip" => "March 2016", :href => "#timeline-example-1"}
-        .timeline-content
-          .tile
-            .tile-content
-              %p.tile-subtitle March 2016
-              %p.tile-title Initial commit
-      #timeline-example-2.timeline-item
-        .timeline-left
-          %a.timeline-icon.icon-lg.tooltip{"data-tooltip" => "February 2017", :href => "#timeline-example-2"}
-            %i.icon.icon-check
-        .timeline-content
-          .tile
-            .tile-content
-              %p.tile-subtitle February 2017
-              %p.tile-title New Documents experience
-              %p.tile-title
-                %a{:href => "components.html#bars"}> Bars
-                \: represent the progress of a task
-              %p.tile-title
-                %a{:href => "components.html#steps"}> Steps
-                \: progress indicators of a sequence of task steps
-              %p.tile-title
-                %a{:href => "components.html#tiles"}> Tiles
-                \: repeatable or embeddable information blocks
-            .tile-action
-              %button.btn View
-      #timeline-example-3.timeline-item
-        .timeline-left
-          %a.timeline-icon.icon-lg.tooltip{"data-tooltip" => "March 2017", :href => "#timeline-example-3"}
-            %i.icon.icon-check
-        .timeline-content
-          .tile
-            .tile-content
-              %p.tile-subtitle March 2017
-              %p.tile-title
-                %a{:href => "elements.html#icons"}> Icons
-                \: single-element, responsive and pure CSS icons
-              %p.tile-title
-                %a{:href => "components.html#popovers"}> Popovers
-                \: small overlay content containers
-              %p.tile-title
-                %a{:href => "experimentals.html#calendars"}> Calendars
-                \: date or date range picker and events display
-              %p.tile-title
-                %a{:href => "experimentals.html#carousels"}> Carousels
-                \: slideshows for cycling images
-            .tile-action
-              %button.btn View
+    #activity.tab-content{"data-target"=>"tabs.content"}
+      .hero
+        -@workouts.each do |workout|
+          =render "workout",  workout: workout 
+        =render "initial"
+    #following.tab-content{"data-target"=>"tabs.content"}
+      .hero{"data-controller" => "relationship"}
+        =render "invite"
+
+        -if @following.count > 0
+          %br
+          %h5
+            ="Following"
+          %div{"data-target" => "relationship.following"}
+            -@following.each do |following|
+              =render "relationships",  user: following 
+      
+
+        -if @invitations.count > 0
+          %br
+          %h5
+            ="Invitations sent"
+          %div{"data-target" => "relationship.invites"}
+            -@invitations.each do |invitation|
+              =render "invitations",  invitation: invitation 
+
+
+
+      / #followers.tab-content{"data-target"=>"tabs.content"}
+      /   .hero
+      /     -@followers.each do |follower|
+      /       =render "relationships",  user: follower
 
   .panel-footer
     / %button.btn.btn-primary.btn-block Save

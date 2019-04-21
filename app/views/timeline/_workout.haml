@@ -1,0 +1,17 @@
+.timeline-item
+  .timeline-left
+    %a.timeline-icon.icon-lg.tooltip{"data-tooltip" => "#{workout.began_at}", :href => "#timeline-#{workout.id}"}
+      %i.icon.icon-check
+  .timeline-content
+    .tile{style: "margin: 0"}
+      .tile-content
+        %p.tile-title=formated_date( workout.began_at )
+        %b
+          =workout.user.username
+        worked on: 
+        %ul
+        -workout.results.each do |w|
+          %li
+            =w['name']
+      .tile-action
+        %i.icon.ion-md-heart

@@ -25,3 +25,15 @@ If you're interested in learning more, go here.
 
 Please note: I made this over a couple long weekends and I know that could be much better, but I can only improve it if I get feedback. But first, 
 you'll need to improve your squat. 
+
+----
+tweet - question:
+
+here is what i am thinking about.
+
+crowd source:
+- ask people to help edit
+
+when you leave a job:
+- summarize what you learned
+- 

@@ -43,11 +43,16 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, authentication_keys: [:login]
 
   has_many :workouts
+  has_many :invitations
+
   belongs_to :routine, required: false
+
+  has_many :relationships
+
   validates :username, presence: :true, uniqueness: { case_sensitive: false }
   validate :validate_username
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
-  after_create :init_user
+  after_create :set_default_user_settings
   
   after_create :send_admin_mail
   
@@ -60,13 +65,82 @@ class User < ApplicationRecord
   end
 
 
-  def init_user
+  def set_default_user_settings
     self.routine = Routine.first
     self.details = {"body_weight"=>"", "equipment_bar"=>"45", "equipment_type"=>"barbell", "equipment_plates"=>"45"}
     self.save!
   end
 
 
+  def follow_request(follow_user_id)
+    # TODO: Rails 6 note: https://sikac.hu/use-create-or-find-by-to-avoid-race-condition-in-rails-6-0-f44fca97d16b
+    f = Relationship.find_or_create_by(user_id: self.id, follow_user_id: follow_user_id)
+    
+    f.nonce = SecureRandom.hex(32)
+    f.save!
+  end
+
+  
+  def follow_request(follow_user_id)
+    # TODO: Rails 6 note: https://sikac.hu/use-create-or-find-by-to-avoid-race-condition-in-rails-6-0-f44fca97d16b
+    f = Relationship.find_or_create_by(user_id: self.id, follow_user_id: follow_user_id)
+    
+    f.nonce = SecureRandom.hex(32)
+    f.save!
+  end
+  
+
+
+  def invite(email)
+    Invitation.find_or_create_by(user_id: self.id, email: email)
+    # UserMailer.send_invitation()
+  end
+  
+
+  def follow_pending
+    User.find( Relationship.where(user_id: self.id, approved: false).map{|f|f.follow_user_id} ) 
+  end
+  
+
+  # def approved_following
+  #   User.find(Relationship.where(user_id: self.id, approved: true).map{|f|f.friend_id})
+  # end
+  
+
+  def all_following_user_workouts
+    Workout.where("user_id IN (:user_ids)", {user_ids: self.following }).order(began_at: :asc).limit(10)
+  end
+  
+
+    
+
+  def following_user?(user_id)
+    self.following.find{|u|u.id == user_id && u.approved == true}.class == User
+  end
+
+  def follow_pending?(user_id)
+    self.follow_pending.find{|u|u.id == user_id}.class == User
+  end
+
+  def invitation_pending?(email)
+    self.invitations.where("email = :email", {email: email}).count == 1
+  end
+  
+  
+  
+  
+  
+
+
+  def following
+    User.find(Relationship.where(user_id: self.id).map{|f|f.follow_user_id})
+  end
+
+  
+  def followers
+    User.find(Relationship.where(follow_user_id: self.id, approved: true).map{|f|f.follow_user_id})
+  end
+  
   # most recent workout and previous might seem similar but it's important not to confuse them
   # most_recent_work gets the most recent workout, wether there is an active one or not
   def most_recent_workout

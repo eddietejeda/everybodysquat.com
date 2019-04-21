@@ -1,0 +1,13 @@
+.columns.row
+  .column
+    .tile
+      .tile-icon
+        %figure.avatar.avatar-lg        
+          =show_avatar(1)
+      .tile-content
+        .column
+          .columns
+            .col-6.left
+              =invitation.try('email')
+            .col-6.right
+              %button.btn.btn-primary.btn-sm{"data-action"=>"click->relationship#remove_invitation", value: invitation.id }  Remove Invitation

@@ -1,0 +1,22 @@
+.panel{
+
+  .tab-item{
+    &:hover{
+      cursor: pointer;
+    }
+  }
+  
+  .tab-content{
+  
+    display: none;
+
+  }  
+  
+  .active{
+    display: block;
+  }
+  
+  .panel-body{
+    min-height: 300px;
+  }
+}

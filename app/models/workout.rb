@@ -22,6 +22,8 @@ class Workout < ApplicationRecord
   has_many :setts
   has_many :exercises, through: :setts
 
+  belongs_to :user, required: false
+
 
   def distinct_exercises
     Exercise.find( self.setts.select(:exercise_id).distinct.map{|e|e.exercise_id} )
@@ -42,13 +44,14 @@ class Workout < ApplicationRecord
   end
   
   
-  # Utility function
-  def self.complete_all_workouts
+  # Useful to clearing all the default values with new structure.
+  def self.regenerate_all_workout_results
     Workout.all.each do |workout|
       CompleteUserWorkout.new(User.find(workout.user_id)).call(workout)
     end
   end
   
+  # Spaces out all the workouts by one day. Useful for testing lots of data.
   def self.space_workout_dates
     
     length = Workout.all.count
