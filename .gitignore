@@ -24,6 +24,8 @@
 /public/assets
 /loadtest
 .bundle
-ios
 .env
 config/skylight.yml
+ios/EveryBodySquat/Carthage
+ios/EveryBodySquat/EveryBodySquat.xcodeproj/xcuserdata/
+ios/EveryBodySquat/EveryBodySquat.xcodeproj/project.xcworkspace/xcuserdata
