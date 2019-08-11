@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '2.6.1'
+ruby '2.6.3'
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
@@ -16,16 +16,17 @@ gem 'turbolinks'
 gem 'webpacker'
 
 gem 'sendgrid-ruby'
-gem "skylight"
+gem 'skylight'
 
 gem 'devise'
 gem 'omniauth'
 gem 'searchkick'
+gem 'stripe-rails'
 
 # gem 'omniauth-google'
 # gem 'omniauth-facebook'
 # gem 'high_voltage', '~> 3.1'
-gem "haml-rails", "~> 1.0"
+gem 'haml-rails', '~> 1.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

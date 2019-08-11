@@ -61,6 +61,7 @@ GEM
     childprocess (0.8.0)
       ffi (~> 1.0, >= 1.0.11)
     concurrent-ruby (1.1.5)
+    connection_pool (2.2.2)
     crass (1.0.4)
     devise (4.6.1)
       bcrypt (~> 3.0)
@@ -120,6 +121,8 @@ GEM
     multi_json (1.13.1)
     multipart-post (2.0.0)
     mustermann (1.0.3)
+    net-http-persistent (3.1.0)
+      connection_pool (~> 2.2)
     nio4r (2.4.0)
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
@@ -239,6 +242,13 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stripe (4.23.0)
+      faraday (~> 0.13)
+      net-http-persistent (~> 3.0)
+    stripe-rails (1.8.1)
+      rails (>= 3)
+      responders
+      stripe (>= 1.36.2)
     temple (0.8.0)
     thor (0.20.3)
     thread_safe (0.3.6)
@@ -288,12 +298,13 @@ DEPENDENCIES
   skylight
   spring
   spring-watcher-listen (~> 2.0.0)
+  stripe-rails
   turbolinks
   web-console (>= 3.3.0)
   webpacker
 
 RUBY VERSION
-   ruby 2.6.1p33
+   ruby 2.6.3p62
 
 BUNDLED WITH
    1.17.2
