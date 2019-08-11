@@ -38,9 +38,10 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  attr_writer :login
+  # attr_writer :login
 
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, authentication_keys: [:login]
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
+  #, authentication_keys: [:login]
 
   has_many :workouts
   has_many :invitations
@@ -49,9 +50,9 @@ class User < ApplicationRecord
 
   has_many :relationships
 
-  validates :username, presence: :true, uniqueness: { case_sensitive: false }
-  validate :validate_username
-  validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
+  # validates :username, presence: :true, uniqueness: { case_sensitive: false }
+  # validate :validate_username
+  # validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, :multiline => true
   after_create :set_default_user_settings
   
   after_create :send_admin_mail
@@ -108,9 +109,6 @@ class User < ApplicationRecord
     Workout.where("user_id IN (:user_ids)", {user_ids: self.following }).order(began_at: :asc).limit(10)
   end
   
-
-    
-
   def following_user?(user_id)
     self.following.find{|u|u.id == user_id && u.approved == true}.class == User
   end
@@ -122,12 +120,6 @@ class User < ApplicationRecord
   def invitation_pending?(email)
     self.invitations.where("email = :email", {email: email}).count == 1
   end
-  
-  
-  
-  
-  
-
 
   def following
     User.find(Relationship.where(user_id: self.id).map{|f|f.follow_user_id})
@@ -255,11 +247,11 @@ class User < ApplicationRecord
   end
   
 
-  def validate_username
-    if User.where(email: username).exists?
-      errors.add(:username, :invalid)
-    end
-  end
+  # def validate_username
+  #   if User.where(email: username).exists?
+  #     errors.add(:username, :invalid)
+  #   end
+  # end
 
   def send_admin_mail
     UserMailer.new_user_waiting_for_approval(email).deliver
@@ -274,11 +266,11 @@ class User < ApplicationRecord
     end
     recoverable
   end
-
-  def login
-    @login || self.username || self.email
-  end
-  
+  #
+  # def login
+  #   @login || self.username || self.email
+  # end
+  #
   def active_for_authentication? 
     super && approved? 
   end 
@@ -287,18 +279,18 @@ class User < ApplicationRecord
     approved? ? super : :not_approved
   end
   
-  
-  def self.find_first_by_auth_conditions(warden_conditions)
-    conditions = warden_conditions.dup
-    if login = conditions.delete(:login)
-      where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
-    else
-      if conditions[:username].nil?
-        where(conditions).first
-      else
-        where(username: conditions[:username]).first
-      end
-    end
-  end
+  #
+  # def self.find_first_by_auth_conditions(warden_conditions)
+  #   conditions = warden_conditions.dup
+  #   if login = conditions.delete(:login)
+  #     where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+  #   else
+  #     if conditions[:username].nil?
+  #       where(conditions).first
+  #     else
+  #       where(username: conditions[:username]).first
+  #     end
+  #   end
+  # end
   
 end

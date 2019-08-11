@@ -1,6 +1,7 @@
+
 https://codeclimate.com/blog/7-ways-to-decompose-fat-activerecord-models/
 
-**Extract Service Objects**
+### Extract Service Objects*
 Some actions in a system warrant a Service Object to encapsulate their operation. 
 I reach for Service Objects when an action meets one or more of these criteria:
 

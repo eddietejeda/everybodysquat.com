@@ -77,20 +77,19 @@ class WorkoutsController < ApplicationController
     else
       flash[:alert] = 'Cannot delete workout'
     end
-
   end
   
 
   private
 
-  def workout_params
-    params.require(:workout).permit(:id, :title, :completed, :completed_filter)
-  end
+    def workout_params
+      params.require(:workout).permit(:id, :title, :completed, :completed_filter)
+    end
 
 
-  def profile_params
-    params.permit(:page)    
-  end
+    def profile_params
+      params.permit(:page)    
+    end
 
 
 end
