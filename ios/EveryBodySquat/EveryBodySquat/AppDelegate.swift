@@ -35,10 +35,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    
     func visit(URL: URL){
         let viewController = VisitableViewController(url: URL)
-        navigationController.pushViewController(viewController, animated: true)
+        navigationController.pushViewController(viewController, animated: false)
         session.visit(viewController)
     }
 

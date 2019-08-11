@@ -76,6 +76,6 @@ user = {
     coach: false,
     admin: true,
     approved: true,
-    password: "this should change as soon as possible. you wil not want to type this again!"
+    password: "this should change as soon as possible. you will not want to type this again!"
 } 
 User.create(user)
