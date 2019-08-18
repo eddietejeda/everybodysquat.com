@@ -69,6 +69,16 @@
               = ff.text_field :rest_time, value: current_user.settings("rest_time")
             
 
+
+        .tile.tile-centered
+          .tile-content
+            .tile-title.text-bold Subscription
+            =stripe_javascript_tag 
+            =stripe_elements_tag submit_path: "/settings" 
+            
+
+
+
     .panel-footer
       =f.submit "Save", :class => 'btn btn-primary btn-block', "data-target" => "form.submit", "data-action" => "click->form#onSubmit"
       

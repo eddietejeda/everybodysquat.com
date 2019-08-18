@@ -36,9 +36,13 @@
 #------------------------------------------------------------------------------
 
 class User < ApplicationRecord
+
+  include Stripe::Callbacks
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   # attr_writer :login
+  attr_accessor :sign_up_code 
+  validates :sign_up_code, on: :create, presence: true, inclusion: { in: ["brooklyn"] }
 
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
   #, authentication_keys: [:login]
@@ -56,6 +60,17 @@ class User < ApplicationRecord
   after_create :set_default_user_settings
   
   after_create :send_admin_mail
+  
+  
+  after_customer_updated! do |customer, event|
+    user = User.find_by_stripe_customer_id(customer.id)
+    if customer.delinquent
+      user.is_account_current = false
+      user.save!
+    end
+  end
+  
+  
   
   def active_workout
     self.workouts.where("active = true").first
