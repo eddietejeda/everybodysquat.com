@@ -42,5 +42,9 @@
                 = render 'layouts/alert'
                 = yield
               .column.col-2.col-md-8.col-lg-2
-          #copyright.main-footer.container.grid-lg
-          
+          #copyright.main-footer.container.grid-lg{style: "text-align:center"}
+            %p.text-gray
+              Latest version:
+              %span.version
+    
+                =ENV['HEROKU_RELEASE_VERSION'] || "#{`git rev-parse --short HEAD`}"

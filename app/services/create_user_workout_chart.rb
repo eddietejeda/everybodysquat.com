@@ -8,16 +8,13 @@ class CreateUserWorkoutChart
 
 
     color_list = [
+      '#fabc60',
+      '#ffa1ac',
+      '#ffe0a3',
       '#11144c',
       '#3a9679',
       '#e16262',
-      '#e3c4a8',
-      '#4592af',
-      '#226089',
-      '#b7fbff',
-      '#ffe0a3',
-      '#ffa1ac',
-      '#fabc60'
+      '#e3c4a8'
     ]
 
 
@@ -32,6 +29,7 @@ class CreateUserWorkoutChart
 
     datasets = @user.routine.exercises.distinct.map do |e|
       
+      line_color = color_list.pop
       query = " SELECT   began_at AS x, max_weight->>'weight' AS y
                 FROM     workouts, jsonb_array_elements(results) AS max_weight
                 WHERE    results @> '[{\"exercise_id\": #{e.id}, \"success\": true}]'  AND 
@@ -44,8 +42,9 @@ class CreateUserWorkoutChart
             { "x" => f["x"].strftime('%F %T'), "y" => f["y"] } if f["y"]
         }.compact,
         fill: false,
-        backgroundColor: color_list.pop,
-        borderColor: color_list.pop 
+        backgroundColor: line_color,
+        borderColor: line_color,
+        lineTension: 0
       }
     end
     

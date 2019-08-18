@@ -1,15 +1,11 @@
-#overview.grid-hero.container.grid-lg.text-center
-  %h1 Everybodysquat
-  / %h2
-  /   Personalized guide
-  /   %br
-  /   for your
-  /   %u  barbell lifts
-  %p
-    %a.btn.btn-primary.btn-lg.mr-2{:href => "/users/sign_in"} Sign In
-    %a.btn.btn-primary.btn-lg{:href => "/users/sign_up"} Register
-  %p.text-gray
-    Latest version:
-    %span.version
-    
-      =ENV['HEROKU_RELEASE_VERSION'] || "#{`git rev-parse --short HEAD`}"
+#overview.container.grid-lg.text-center    
+  .panel.card
+    .panel-header.text-center
+      .panel-title.h5.mt-10 EveryBodySquat
+    .panel-body
+
+      %p
+        Personalized guide for your barbell lifts
+      %p
+        %a.btn.btn-primary.btn-lg.mr-2{:href => "/users/sign_in"} Sign In
+        %a.btn.btn-primary.btn-lg{:href => "/users/sign_up"} Register

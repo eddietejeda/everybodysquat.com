@@ -34,13 +34,13 @@
               %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/resume"}  Resume Workout
           -else
             %li{class: ('active' if params[:controller] == 'profiles' && params[:action] == 'workouts') }
-              %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/create"}  New Workout
+              %a.btn.btn-primary.btn-primary.btn-large{:href => "/workouts/start"}  New Workout
           %li
             %br
           %li.aside-anchor{class: ('active' if params[:controller] == 'profiles') }
             %a{:href => "#{root_path}"}  Home
           %li.aside-anchor{class: ('active' if params[:controller] == 'workouts') }
-            %a{:href => "#{workouts_path}"}  Workouts
+            %a{:href => "#{workouts_path}"}  History
           %li.aside-anchor{class: ('active' if params[:controller] == 'charts') }
             %a{:href => "#{charts_path}"}  Charts
           %li.aside-anchor{class: ('active' if params[:controller] == 'tutorials') }

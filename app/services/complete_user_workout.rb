@@ -15,7 +15,7 @@ class CompleteUserWorkout
   end
   
   def generate_results(workout)
-    
+  
     workout.distinct_exercises.map do |exercise|
       setts = Sett.where(user_id: @user.id, workout_id: workout.id, exercise_id: exercise.id)
       # byebug

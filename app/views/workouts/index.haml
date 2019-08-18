@@ -1,16 +1,16 @@
--if !current_user.has_active_workout?
-  .card
-    .card-body.columns
-      .column.col-12
-        .col-12
-          Your next workout is scheduled for 
-          %b="#{formated_date(current_user.next_workout_date)}"
-      .column
-        .column
-          .columns
-            %a.col-12.btn{:href => start_workouts_path}  New Workout
-
-        
+/ -if !current_user.has_active_workout?
+/   .card
+/     .card-body.columns
+/       .column.col-12
+/         .col-12
+/           Your next workout is scheduled for
+/           %b="#{formated_date(current_user.next_workout_date)}"
+/       .column
+/         .column
+/           .columns
+/             %a.col-12.btn{:href => start_workouts_path}  New Workout
+/
+/
         
   
 -first_workout = Workout.order(began_at: :asc).limit(1).first.began_at.to_date
@@ -24,14 +24,10 @@
     -current_workout = workout.began_at.to_date.beginning_of_week
     -number = first_workout.upto(current_workout).count.fdiv(7).round(0) + 1    
     -unless show_week.to_h[number]
-      %h3{style: 'margin-top: 100px'}
+      %h3{style: 'margin-top: 0'}
         =" Week ##{number}"
         -show_week[number] = true
-    
-    
-    
-    
-    
+
   .card{id: "workout-#{workout.id}", "data-controller" => "card", class: ("inactive" if workout.active == false)   }
     =link_to edit_workout_path(workout) do 
       .card-header

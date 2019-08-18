@@ -54,7 +54,7 @@ class WorkoutsController < ApplicationController
     workout = current_user.active_workout
     current_user.complete_workout(workout)
     cookies.delete :restTime
-    redirect_to edit_workout_path(workout)
+    redirect_to workouts_path
   end
 
   

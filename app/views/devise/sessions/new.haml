@@ -1,16 +1,14 @@
 = form_for(resource, as: resource_name, url: session_path(resource_name), html: { data: { type: "html", action: "ajax:success->devise#onLoginSuccess" } }, remote: true, authenticity_token: true) do |f|  
-  .panel
+  .panel.card
     .panel-header.text-center
       .panel-title.h5.mt-10 Login
     .panel-body
       .field.form-group
-        = f.label :email
         %br/
-        = f.text_field :email, autofocus: true, autocomplete: "email"
+        = f.text_field :email, autofocus: true, placeholder: "Email", autocomplete: "email"
       .field.form-group
-        = f.label :password
         %br/
-        = f.password_field :password, autocomplete: "current-password"
+        = f.password_field :password, placeholder: "Password", autocomplete: "current-password"
       - if devise_mapping.rememberable?
         .field.form-group
           = f.check_box :remember_me
