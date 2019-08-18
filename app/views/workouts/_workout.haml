@@ -8,7 +8,7 @@
   =render "notification", workout: workout
   =render "workout_timer", workout: workout
   %input{ type: 'hidden', id: "active_workout", value: workout.active.to_s }
-  .card{ class: ("inactive" if workout.active === false) }
+  .panel.card{ class: ("inactive" if workout.active === false) }
     .card-header
       .card-title.h5.column
         .columns
@@ -71,8 +71,14 @@
                     
               
 
-      .card-footer
-    -if workout.active
-      %span.complete-workout.btn
-        %a{href: '/workouts/stop'}
-          Finish
+      .panel-footer.card-footer
+        -if workout.active
+          %span.complete-workout.btn
+            %a{href: '/workouts/stop'}
+              Finish
+
+      / .panel-footer
+      /   / =stripe_elements_tag submit_path: "/settings"
+      /   =f.submit "Save", :class => 'btn btn-primary btn-block', "data-target" => "form.submit", "data-action" => "click->form#onSubmit"
+      /
+      /

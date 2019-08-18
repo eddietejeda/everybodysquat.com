@@ -8,21 +8,28 @@
       /   = f.label :username
       /   = f.text_field :username, autofocus: true, autocomplete: "login"
       .field.form-group
-        = f.label :email
-        = f.email_field :email, autocomplete: "email"
+        / = f.label :email
+        = f.email_field :email, autocomplete: "email", placeholder: "Email"
       .field.form-group
-        = f.label :password
+        / = f.label :password
+        %br/
+        = f.password_field :password, autocomplete: "new-password", placeholder: "Password"
         - if @minimum_password_length
           %em
             (#{@minimum_password_length} characters minimum)
-        %br/
-        = f.password_field :password, autocomplete: "new-password"
 
       .field.form-group
-        = f.label :password_confirmation
+        / = f.label :password_confirmation
         %br/
-        = f.password_field :password_confirmation, autocomplete: "new-password"
+        = f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Confirm Password"
 
+      .field.form-group
+        / = f.label :invite_code
+        %br/
+        = f.text_field :sign_up_code, placeholder: "Invite Code"
+        
+        
+        
     .panel-footer
       = f.submit value: "Sign up", class: "btn btn-primary btn-block"
       = render "devise/shared/links"
