@@ -20,3 +20,4 @@ import "./logo";
 import "./calendar";
 import "./trash"
 import "./tabs"
+import "./settings"

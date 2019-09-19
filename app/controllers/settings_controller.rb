@@ -15,6 +15,11 @@ class SettingsController < ApplicationController
     # byebug
     current_user.update!(user_detail_params)    
   end
+  
+  def premium_subcription
+
+  end
+  
 
   private
     

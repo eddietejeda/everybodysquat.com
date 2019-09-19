@@ -8,12 +8,6 @@
         
       .panel-title.h5.mt-10=current_user.name
       .panel-subtitle=current_user.username
-    / %nav.panel-nav
-    /   %ul.tab.tab-block
-    /     %li.tab-item.active
-    /       %a{:href => "#panels"} Profile
-    /     %li.tab-item
-    /       %a{:href => "#panels"} Equipment
     .panel-body
       .tile.tile-centered
         .tile-content
@@ -28,19 +22,19 @@
 
 
       = f.fields_for :details, OpenStruct.new(@user.details) do |ff|
-        .tile.tile-centered
-          .tile-content
-            .tile-title.text-bold Equipment Type
-            .tile-subtitle
-              = ff.text_field :equipment_type, value: current_user.settings("equipment_type")
+        / .tile.tile-centered
+        /   .tile-content
+        /     .tile-title.text-bold Equipment Type
+        /     .tile-subtitle
+        /       = ff.text_field :equipment_type, value: current_user.settings("equipment_type")
 
 
-        .tile.tile-centered
-          .tile-content
-            .tile-title.text-bold Plates
-            .tile-subtitle
-              = ff.text_field :equipment_plates, value: current_user.settings("equipment_plates")
-          
+        / .tile.tile-centered
+        /   .tile-content
+        /     .tile-title.text-bold Plates
+        /     .tile-subtitle
+        /       = ff.text_field :equipment_plates, value: current_user.settings("equipment_plates")
+        /
 
         .tile.tile-centered
           .tile-content
@@ -48,11 +42,11 @@
             .tile-subtitle
               = ff.text_field :equipment_bar, value: current_user.settings("equipment_bar")
 
-        .tile.tile-centered
-          .tile-content
-            .tile-title.text-bold Body Weight
-            .tile-subtitle
-              = ff.text_field :body_weight, value: current_user.settings("body_weight")
+        / .tile.tile-centered
+        /   .tile-content
+        /     .tile-title.text-bold Body Weight
+        /     .tile-subtitle
+        /       = ff.text_field :body_weight, value: current_user.settings("body_weight")
             
 
         .tile.tile-centered
@@ -73,8 +67,9 @@
         .tile.tile-centered
           .tile-content
             / .tile-title.text-bold Subscription
-            =stripe_javascript_tag 
-            
+            -#=stripe_javascript_tag 
+            -#=stripe_elements_tag submit_path: "/settings"
+              
             
 
             
@@ -82,6 +77,5 @@
 
 
     .panel-footer
-      =stripe_elements_tag submit_path: "/settings"
       =f.submit "Save", :class => 'btn btn-primary btn-block', "data-target" => "form.submit", "data-action" => "click->form#onSubmit"
       
