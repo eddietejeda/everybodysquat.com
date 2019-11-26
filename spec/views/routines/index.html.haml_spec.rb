@@ -8,7 +8,7 @@ RSpec.describe "routines/index", type: :view do
     ])
   end
 
-  it "renders a list of routines" do
-    render
-  end
+  # it "renders a list of routines" do
+  #   render
+  # end
 end

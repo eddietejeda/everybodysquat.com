@@ -5,7 +5,7 @@ RSpec.describe "templates/show", type: :view do
     @template = assign(:template, Template.create!())
   end
 
-  it "renders attributes in <p>" do
-    render
-  end
+  # it "renders attributes in <p>" do
+  #   render
+  # end
 end

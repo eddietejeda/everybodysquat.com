@@ -35,6 +35,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
+  gem 'guard-rspec', require: false
+  gem 'rspec_junit_formatter'
 end
 
 group :development do

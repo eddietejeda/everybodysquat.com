@@ -5,7 +5,7 @@ RSpec.describe "exercises/show", type: :view do
     @exercise = assign(:exercise, Exercise.create!())
   end
 
-  it "renders attributes in <p>" do
-    render
-  end
+  # it "renders attributes in <p>" do
+  #   render
+  # end
 end

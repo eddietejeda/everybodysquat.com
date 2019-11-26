@@ -5,10 +5,10 @@ RSpec.describe "exercises/new", type: :view do
     assign(:exercise, Exercise.new())
   end
 
-  it "renders new exercise form" do
-    render
+  # it "renders new exercise form" do
+  #   render
 
-    assert_select "form[action=?][method=?]", exercises_path, "post" do
-    end
-  end
+  #   assert_select "form[action=?][method=?]", exercises_path, "post" do
+  #   end
+  # end
 end

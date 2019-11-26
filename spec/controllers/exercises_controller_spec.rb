@@ -57,20 +57,20 @@ RSpec.describe ExercisesController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "returns a success response" do
-      get :new, params: {}, session: valid_session
-      expect(response).to be_successful
-    end
-  end
+  # describe "GET #new" do
+  #   it "returns a success response" do
+  #     get :new, params: {}, session: valid_session
+  #     expect(response).to be_successful
+  #   end
+  # end
 
-  describe "GET #edit" do
-    it "returns a success response" do
-      exercise = Exercise.create! valid_attributes
-      get :edit, params: {id: exercise.to_param}, session: valid_session
-      expect(response).to be_successful
-    end
-  end
+  # describe "GET #edit" do
+  #   it "returns a success response" do
+  #     exercise = Exercise.create! valid_attributes
+  #     get :edit, params: {id: exercise.to_param}, session: valid_session
+  #     expect(response).to be_successful
+  #   end
+  # end
 
   describe "POST #create" do
     context "with valid params" do

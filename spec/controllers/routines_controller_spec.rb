@@ -57,20 +57,20 @@ RSpec.describe RoutinesController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "returns a success response" do
-      get :new, params: {}, session: valid_session
-      expect(response).to be_successful
-    end
-  end
+  # describe "GET #new" do
+  #   it "returns a success response" do
+  #     get :new, params: {}, session: valid_session
+  #     expect(response).to be_successful
+  #   end
+  # end
 
-  describe "GET #edit" do
-    it "returns a success response" do
-      routine = Routine.create! valid_attributes
-      get :edit, params: {id: routine.to_param}, session: valid_session
-      expect(response).to be_successful
-    end
-  end
+  # describe "GET #edit" do
+  #   it "returns a success response" do
+  #     routine = Routine.create! valid_attributes
+  #     get :edit, params: {id: routine.to_param}, session: valid_session
+  #     expect(response).to be_successful
+  #   end
+  # end
 
   describe "POST #create" do
     context "with valid params" do

@@ -5,10 +5,10 @@ RSpec.describe "routines/new", type: :view do
     assign(:routine, Routine.new())
   end
 
-  it "renders new routine form" do
-    render
+  # it "renders new routine form" do
+  #   render
 
-    assert_select "form[action=?][method=?]", routines_path, "post" do
-    end
-  end
+  #   assert_select "form[action=?][method=?]", routines_path, "post" do
+  #   end
+  # end
 end

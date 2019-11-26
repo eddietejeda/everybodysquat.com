@@ -8,7 +8,7 @@ RSpec.describe "templates/index", type: :view do
     ])
   end
 
-  it "renders a list of templates" do
-    render
-  end
+  # it "renders a list of templates" do
+  #   render
+  # end
 end
