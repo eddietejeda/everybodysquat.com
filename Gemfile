@@ -13,7 +13,7 @@ gem 'puma', '~> 3.7'
 gem 'rails', '~> 5.2'
 gem 'redis-rails'
 gem 'turbolinks'
-gem 'webpacker'
+gem 'webpacker', '~> 4.2'
 
 gem 'sendgrid-ruby'
 gem 'skylight'
