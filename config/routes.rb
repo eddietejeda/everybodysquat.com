@@ -26,7 +26,6 @@ Rails.application.routes.draw do
   resources :timeline,      only: %i[index]
   resources :relationships, only: %i[create ]
 
-
   resources :relationships, only: %i[create] do
     collection do
       post 'unfollow',           to: 'relationships#unfollow'
@@ -48,5 +47,12 @@ Rails.application.routes.draw do
   resources :tutorials,      only: %i[index]
   get "/tutorials/:exercise/:page",   to: "tutorials#show"
 
+
   
+  get '/billing' => 'billing#index', as: :billing
+  get '/card/new' => 'billing#new_card', as: :add_payment_method
+  get '/success' => 'billing#success', as: :success
+  post '/card' => 'billing#create_card', as: :create_payment_method  
+  
+    
 end

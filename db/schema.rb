@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_17_002309) do
+ActiveRecord::Schema.define(version: 2020_03_15_184013) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(version: 2019_04_17_002309) do
     t.string "username"
     t.boolean "approved", default: false, null: false
     t.jsonb "details"
+    t.string "stripe_id"
     t.index ["approved"], name: "index_users_on_approved"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

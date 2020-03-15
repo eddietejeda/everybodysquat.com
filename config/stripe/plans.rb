@@ -3,18 +3,18 @@
 # Example
 # Stripe::Plans::PRIMO #=> 'primo'
 
-Stripe.plan :annual do |plan|
+Stripe.plan :monthly do |plan|
   # plan name as it will appear on credit card statements
-  plan.name = 'everybodysquat - annual subscription'
+  plan.name = 'everybodysquat - monthly subscription'
 
   # amount in cents. This is 6.99
-  plan.amount = 1199
+  plan.amount = 999
 
   # currency to use for the plan (default 'usd')
   plan.currency = 'usd'
 
   # interval must be either 'day', 'week', 'month' or 'year'
-  plan.interval = 'year'
+  plan.interval = 'month'
 
   # only bill once every year
   plan.interval_count = 1

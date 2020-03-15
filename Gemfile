@@ -21,7 +21,7 @@ gem 'skylight'
 gem 'devise'
 gem 'omniauth'
 gem 'searchkick'
-gem 'stripe-rails'
+gem 'stripe-rails', '~> 1.9.1'
 
 # gem 'omniauth-google'
 # gem 'omniauth-facebook'

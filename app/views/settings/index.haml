@@ -66,10 +66,8 @@
 
         .tile.tile-centered
           .tile-content
-            / .tile-title.text-bold Subscription
-            -#=stripe_javascript_tag 
-            -#=stripe_elements_tag submit_path: "/settings"
-              
+            = form_tag id: "billing-create-payment-method" do
+              = link_to "Subscribe", add_payment_method_path, remote: true, class: "btn btn-primary"              
             
 
             
