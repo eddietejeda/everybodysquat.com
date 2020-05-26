@@ -8,24 +8,25 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'dotenv-rails', :group => :development
+
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
 gem 'rails', '~> 5.2'
 gem 'redis-rails'
 gem 'turbolinks'
 gem 'webpacker', '~> 4.2'
-
 gem 'sendgrid-ruby'
 gem 'skylight'
 
 gem 'devise'
 gem 'omniauth'
+gem 'omniauth-google'
+gem 'omniauth-facebook'
+
+# gem 'high_voltage', '~> 3.1'
 gem 'searchkick'
 gem 'stripe-rails', '~> 1.9.1'
-
-# gem 'omniauth-google'
-# gem 'omniauth-facebook'
-# gem 'high_voltage', '~> 3.1'
 gem 'haml-rails', '~> 1.0'
 
 group :development, :test do
