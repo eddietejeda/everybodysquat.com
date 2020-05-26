@@ -4,7 +4,9 @@ Rails.application.routes.draw do
 
   root to: 'home#index'
   
-  devise_for :users
+  # devise_for :users
+  
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   
   resources :workouts,    only: %i[index edit create stop resume destroy] do
     collection do
@@ -46,6 +48,7 @@ Rails.application.routes.draw do
 
   resources :tutorials,      only: %i[index]
   get "/tutorials/:exercise/:page",   to: "tutorials#show"
+
 
 
   
