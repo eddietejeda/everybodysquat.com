@@ -78,4 +78,14 @@ user = {
     approved: true,
     password: "this should change as soon as possible. you will not want to type this again!"
 } 
-User.create(user)
+u = User.create(user)
+u.save!
+
+
+(1..50).each do |a|
+  u.start_workout
+  workout = u.active_workout
+  u.end_workout(workout)  
+end
+
+Workout.space_workout_dates
