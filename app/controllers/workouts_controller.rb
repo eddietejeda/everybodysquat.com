@@ -27,7 +27,7 @@ class WorkoutsController < ApplicationController
   def start
     if current_user.routine_id > 0
     
-      @workout = current_user.active_workout || current_user.create_workout
+      @workout = current_user.active_workout || current_user.start_workout
       fresh_when(@workout)
       unless @workout
         flash[:alert] = 'Cannot create a new task'
@@ -52,7 +52,7 @@ class WorkoutsController < ApplicationController
   
   def stop
     workout = current_user.active_workout
-    current_user.complete_workout(workout)
+    current_user.end_workout(workout)
     cookies.delete :restTime
     redirect_to workouts_path 
   end

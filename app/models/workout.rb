@@ -52,8 +52,7 @@ class Workout < ApplicationRecord
   end
   
   # Spaces out all the workouts by one day. Useful for testing lots of data.
-  def self.space_workout_dates
-    
+  def self.space_workout_dates    
     length = Workout.all.count
     Workout.all.each do |workout|
       workout.began_at = length.days.ago

@@ -44,10 +44,6 @@ class CreateUserWorkout
   
   private
   
-  
-    
-
-    
     def template_exercises_by_group(exercise_group)
       Template.where("routine_id = :routine_id AND exercise_group = :exercise_group", { 
         routine_id: @user.routine.id, exercise_group: exercise_group 
@@ -62,8 +58,6 @@ class CreateUserWorkout
       workout.results.find{|goal| goal["exercise_id"] == exercise_id}.to_h["weight"]
     end
     
-
-
 
     def next_exercise_group_name
       # get all possible exercise groups    
@@ -122,8 +116,6 @@ class CreateUserWorkout
     #   }.to_h["weight"] || 45
     # end
     
-  
-
 
     def adjust_workout_results(template_exercises_list)
       template_exercises_list.map{|template_exercise|
@@ -181,9 +173,14 @@ class CreateUserWorkout
         user_id: @user.id
       }
 
-      Workout.where("user_id = :user_id AND results @> :results AND began_at > :began_at", query_params).order(began_at: :desc).limit(1).first.try("results").to_a.find{|e| 
-              (e.to_h["exercise_id"] == exercise_id) && (e.to_h["success"] == true) 
-            }
+      Workout.where("user_id = :user_id AND results @> :results AND began_at > :began_at", query_params)
+              .order(began_at: :desc)
+              .limit(1)
+              .first
+              .try("results")
+              .to_a.find do |e| 
+                (e.to_h["exercise_id"] == exercise_id) && (e.to_h["success"] == true) 
+              end
     end
   
   
@@ -205,8 +202,6 @@ class CreateUserWorkout
       amount < @user.settings('bar_weight') ? @user.settings('bar_weight') : amount
     end
 
-  
-  
 
   
 end
