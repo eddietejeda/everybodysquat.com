@@ -19,4 +19,3 @@ application.load(definitionsFromContext(context));
 
 Rails.start();
 Turbolinks.start();
-import "controllers"
