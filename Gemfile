@@ -11,7 +11,7 @@ end
 gem 'dotenv-rails', :group => :development
 
 gem 'pg', '~> 0.18'
-gem 'puma', '~> 3.x'
+gem 'puma', '~> 4'
 gem 'rails', '~> 5.2'
 gem 'redis-rails'
 gem 'turbolinks'
